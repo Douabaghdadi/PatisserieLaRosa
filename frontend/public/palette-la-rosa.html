@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palette de Couleurs - La Rosa Pâtisserie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Playfair Display', Georgia, serif;
+            background: linear-gradient(135deg, #fef3f2 0%, #fce7f3 100%);
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(217, 70, 166, 0.15);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #be185d;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #ec4899;
+            font-size: 1.5rem;
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .color-card {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .color-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .color-swatch {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .color-info {
+            padding: 20px;
+            background: white;
+        }
+        
+        .color-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #9f1239;
+            margin-bottom: 8px;
+        }
+        
+        .color-code {
+            font-family: 'Courier New', monospace;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .color-usage {
+            color: #999;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #be185d;
+            margin: 50px 0 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .gradient-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .gradient-box {
+            height: 150px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #d946a6 0%, #be185d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(217, 70, 166, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(217, 70, 166, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #ec4899;
+            color: #ec4899;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .logo-preview {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #d946a6 0%, #ec4899 100%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .logo-text {
+            font-size: 4rem;
+            color: white;
+            font-weight: 800;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+        
+        .logo-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌹 La Rosa Pâtisserie</h1>
+        <div class="subtitle">Palette de Couleurs & Guide de Style</div>
+        
+        <!-- Logo Preview -->
+        <div class="logo-preview">
+            <div class="logo-text">La Rosa</div>
+            <div class="logo-subtitle">Pâtisserie & Glace</div>
+        </div>
+        
+        <!-- Couleurs Principales -->
+        <h2 class="section-title">Couleurs Principales</h2>
+        <div class="color-grid">
+            <div class="color-card">
+                <div class="color-swatch" style="background: #d946a6;">
+                    🌹
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Rose Principal</div>
+                    <div class="color-code">#d946a6</div>
+                    <div class="color-code">rgb(217, 70, 166)</div>
+                    <div class="color-usage">Boutons, titres, accents</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #ec4899;">
+                    💕
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Magenta Accent</div>
+                    <div class="color-code">#ec4899</div>
+                    <div class="color-code">rgb(236, 72, 153)</div>
+                    <div class="color-usage">Liens, hover, badges</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #be185d;">
+                    🎀
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Rose Foncé</div>
+                    <div class="color-code">#be185d</div>
+                    <div class="color-code">rgb(190, 24, 93)</div>
+                    <div class="color-usage">Textes importants, footer</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #fef3f2; color: #be185d;">
+                    ✨
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Crème Doux</div>
+                    <div class="color-code">#fef3f2</div>
+                    <div class="color-code">rgb(254, 243, 242)</div>
+                    <div class="color-usage">Fond de page, sections</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dégradés -->
+        <h2 class="section-title">Dégradés</h2>
+        <div class="gradient-showcase">
+            <div class="gradient-box" style="background: linear-gradient(135deg, #d946a6 0%, #be185d 100%);">
+                Dégradé Principal
+            </div>
+            <div class="gradient-box" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
+                Dégradé Accent
+            </div>
+            <div class="gradient-box" style="background: linear-gradient(135deg, #fef3f2 0%, #fce7f3 100%); color: #be185d;">
+                Dégradé Fond
+            </div>
+        </div>
+        
+        <!-- Boutons -->
+        <h2 class="section-title">Boutons</h2>
+        <div class="button-showcase">
+            <button class="btn btn-primary">Commander Maintenant</button>
+            <button class="btn btn-secondary">Voir le Menu</button>
+            <button class="btn btn-primary">Ajouter au Panier</button>
+            <button class="btn btn-secondary">En Savoir Plus</button>
+        </div>
+        
+        <!-- Couleurs Secondaires -->
+        <h2 class="section-title">Couleurs Secondaires</h2>
+        <div class="color-grid">
+            <div class="color-card">
+                <div class="color-swatch" style="background: #f472b6;">
+                    🌸
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Rose Clair</div>
+                    <div class="color-code">#f472b6</div>
+                    <div class="color-usage">Bordures, icônes</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #fce7f3; color: #be185d;">
+                    🌺
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Rose Pastel</div>
+                    <div class="color-code">#fce7f3</div>
+                    <div class="color-usage">Cartes, backgrounds</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #9f1239;">
+                    🍷
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Bordeaux</div>
+                    <div class="color-code">#9f1239</div>
+                    <div class="color-usage">Textes sombres</div>
+                </div>
+            </div>
+            
+            <div class="color-card">
+                <div class="color-swatch" style="background: #ffffff; border: 2px solid #fce7f3; color: #be185d;">
+                    ☁️
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Blanc Pur</div>
+                    <div class="color-code">#ffffff</div>
+                    <div class="color-usage">Cartes, conteneurs</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Guide d'utilisation -->
+        <h2 class="section-title">Guide d'Utilisation</h2>
+        <div style="background: #fef3f2; padding: 30px; border-radius: 20px; border-left: 5px solid #ec4899;">
+            <h3 style="color: #be185d; margin-bottom: 15px;">💡 Conseils de Design</h3>
+            <ul style="color: #666; line-height: 1.8; padding-left: 20px;">
+                <li><strong>Titres :</strong> Utilisez #be185d (Rose Foncé) pour les titres principaux</li>
+                <li><strong>Boutons CTA :</strong> Dégradé #d946a6 → #be185d pour les actions importantes</li>
+                <li><strong>Liens :</strong> #ec4899 (Magenta) avec hover plus foncé</li>
+                <li><strong>Fond :</strong> #fef3f2 (Crème) pour un look doux et accueillant</li>
+                <li><strong>Cartes :</strong> Blanc #ffffff avec ombre rose subtile</li>
+                <li><strong>Badges :</strong> Dégradé #ec4899 → #db2777 pour les promotions</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px; color: #999; font-size: 0.9rem;">
+            <p>🌹 Palette créée pour La Rosa Pâtisserie & Glace</p>
+            <p style="margin-top: 10px;">Design élégant et gourmand</p>
+        </div>
+    </div>
+</body>
+</html>

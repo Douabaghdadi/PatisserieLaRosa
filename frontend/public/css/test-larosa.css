@@ -1,0 +1,85 @@
+/* TEST LA ROSA - Si vous voyez ce fichier chargé, les CSS fonctionnent */
+
+/* FORCER les couleurs La Rosa - Ce fichier écrase TOUT */
+
+/* Header et Topbar */
+.fixed-top,
+.topbar {
+    background: linear-gradient(135deg, #d946a6 0%, #ec4899 100%) !important;
+}
+
+/* Tous les boutons */
+.btn-primary,
+button[style*="background: linear-gradient(135deg, #1a365d"],
+button[style*="background: #1a365d"] {
+    background: linear-gradient(135deg, #d946a6 0%, #be185d 100%) !important;
+}
+
+/* Liens et navigation */
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link.active {
+    color: #ec4899 !important;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #be185d 0%, #d946a6 100%) !important;
+}
+
+/* Boutons secondaires */
+.btn.border-secondary,
+.btn-secondary {
+    border-color: #ec4899 !important;
+    color: #ec4899 !important;
+}
+
+.btn.border-secondary:hover,
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
+    color: white !important;
+}
+
+/* Back to top */
+.back-to-top {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
+}
+
+/* Badges */
+.badge-primary,
+.badge-secondary {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
+}
+
+/* Icônes et features */
+.featurs-icon {
+    background: linear-gradient(135deg, #d946a6 0%, #be185d 100%) !important;
+}
+
+/* Carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
+}
+
+/* Tous les éléments avec anciennes couleurs - FORCER */
+[style*="#1a365d"],
+[style*="#c53030"],
+[style*="background: linear-gradient(135deg, #1a365d"] {
+    background: linear-gradient(135deg, #d946a6 0%, #be185d 100%) !important;
+}
+
+/* Message de test visible - DÉSACTIVÉ */
+/* body::before {
+    content: "🌹 LA ROSA - CSS CHARGÉ !";
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ec4899;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 0 0 10px 10px;
+    z-index: 99999;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(236, 72, 153, 0.5);
+} */

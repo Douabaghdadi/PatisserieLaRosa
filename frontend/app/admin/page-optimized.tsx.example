@@ -1,0 +1,310 @@
+// VERSION OPTIMISÉE - Utilise un seul endpoint pour toutes les statistiques
+// Pour l'utiliser, renommez ce fichier en page.tsx et supprimez l'ancien
+
+"use client";
+import { useEffect, useState } from "react";
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
+import Link from "next/link";
+import "./dashboard.css";
+
+interface DashboardStats {
+  totalRevenue: number;
+  weeklyRevenue: number;
+  revenueGrowth: number;
+  totalOrders: number;
+  weeklyOrders: number;
+  ordersGrowth: number;
+  totalProducts: number;
+  lowStockProducts: number;
+  totalUsers: number;
+  newUsers: number;
+  pendingOrders: number;
+  recentOrders: any[];
+  dailyRevenue: number;
+  monthlyRevenue: number;
+  dailyOrders: number;
+  monthlyOrders: number;
+  ordersByStatus?: {
+    pending: number;
+    confirmed: number;
+    shipped: number;
+    delivered: number;
+    cancelled: number;
+  };
+}
+
+export default function AdminPage() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
+
+  const fetchDashboardStats = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/stats/dashboard", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await response.json();
+      setStats(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Erreur lors du chargement des statistiques:", error);
+      setLoading(false);
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    const badges: any = {
+      pending: { class: "badge-warning", text: "En attente" },
+      confirmed: { class: "badge-info", text: "Confirmée" },
+      shipped: { class: "badge-primary", text: "Expédiée" },
+      delivered: { class: "badge-success", text: "Livrée" },
+      cancelled: { class: "badge-danger", text: "Annulée" }
+    };
+    const badge = badges[status] || badges.pending;
+    return <span className={`badge ${badge.class}`}>{badge.text}</span>;
+  };
+
+  if (loading || !stats) {
+    return (
+      <div className="container-scroller">
+        <Navbar />
+        <div className="container-fluid page-body-wrapper">
+          <Sidebar />
+          <div className="main-panel">
+            <div className="content-wrapper">
+              <div className="d-flex justify-content-center align-items-center" style={{ height: "80vh" }}>
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container-scroller">
+      <Navbar />
+      <div className="container-fluid page-body-wrapper">
+        <Sidebar />
+        <div className="main-panel">
+          <div className="content-wrapper">
+            <div className="page-header">
+              <h3 className="page-title">
+                <span className="page-title-icon bg-gradient-primary text-white me-2">
+                  <i className="mdi mdi-home"></i>
+                </span> Dashboard
+              </h3>
+              <nav aria-label="breadcrumb">
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i className="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            {/* Statistiques principales */}
+            <div className="row">
+              <div className="col-md-3 stretch-card grid-margin">
+                <div className="card bg-gradient-danger card-img-holder text-white">
+                  <div className="card-body">
+                    <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
+                    <h4 className="font-weight-normal mb-3">
+                      Ventes Hebdomadaires 
+                      <i className="mdi mdi-chart-line mdi-24px float-end"></i>
+                    </h4>
+                    <h2 className="mb-5">{stats.weeklyRevenue.toFixed(2)} TND</h2>
+                    <h6 className="card-text">
+                      {stats.revenueGrowth >= 0 ? "+" : ""}{stats.revenueGrowth.toFixed(1)}% vs semaine dernière
+                    </h6>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3 stretch-card grid-margin">
+                <div className="card bg-gradient-info card-img-holder text-white">
+                  <div className="card-body">
+                    <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
+                    <h4 className="font-weight-normal mb-3">
+                      Commandes Hebdomadaires 
+                      <i className="mdi mdi-bookmark-outline mdi-24px float-end"></i>
+                    </h4>
+                    <h2 className="mb-5">{stats.weeklyOrders}</h2>
+                    <h6 className="card-text">
+                      {stats.ordersGrowth >= 0 ? "+" : ""}{stats.ordersGrowth.toFixed(1)}% vs semaine dernière
+                    </h6>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3 stretch-card grid-margin">
+                <div className="card bg-gradient-success card-img-holder text-white">
+                  <div className="card-body">
+                    <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
+                    <h4 className="font-weight-normal mb-3">
+                      Produits 
+                      <i className="mdi mdi-package-variant mdi-24px float-end"></i>
+                    </h4>
+                    <h2 className="mb-5">{stats.totalProducts}</h2>
+                    <h6 className="card-text">
+                      {stats.lowStockProducts} produit{stats.lowStockProducts > 1 ? "s" : ""} en rupture
+                    </h6>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3 stretch-card grid-margin">
+                <div className="card bg-gradient-warning card-img-holder text-white">
+                  <div className="card-body">
+                    <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
+                    <h4 className="font-weight-normal mb-3">
+                      Utilisateurs 
+                      <i className="mdi mdi-account-multiple mdi-24px float-end"></i>
+                    </h4>
+                    <h2 className="mb-5">{stats.totalUsers}</h2>
+                    <h6 className="card-text">
+                      {stats.newUsers} nouveau{stats.newUsers > 1 ? "x" : ""} cette semaine
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Statistiques secondaires */}
+            <div className="row">
+              <div className="col-md-4 grid-margin stretch-card">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div>
+                        <h4 className="card-title mb-2">Revenu Total</h4>
+                        <h2 className="text-primary mb-0">{stats.totalRevenue.toFixed(2)} TND</h2>
+                      </div>
+                      <div className="icon-lg bg-primary-light rounded-circle">
+                        <i className="mdi mdi-cash-multiple text-primary mdi-36px"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4 grid-margin stretch-card">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div>
+                        <h4 className="card-title mb-2">Total Commandes</h4>
+                        <h2 className="text-info mb-0">{stats.totalOrders}</h2>
+                      </div>
+                      <div className="icon-lg bg-info-light rounded-circle">
+                        <i className="mdi mdi-cart text-info mdi-36px"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4 grid-margin stretch-card">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div>
+                        <h4 className="card-title mb-2">Commandes en Attente</h4>
+                        <h2 className="text-warning mb-0">{stats.pendingOrders}</h2>
+                      </div>
+                      <div className="icon-lg bg-warning-light rounded-circle">
+                        <i className="mdi mdi-clock-alert text-warning mdi-36px"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Commandes récentes */}
+            <div className="row">
+              <div className="col-12 grid-margin">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h4 className="card-title mb-0">Commandes Récentes</h4>
+                      <Link href="/admin/orders" className="btn btn-sm btn-primary">
+                        <i className="mdi mdi-eye"></i> Voir tout
+                      </Link>
+                    </div>
+                    <div className="table-responsive">
+                      <table className="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>ID Commande</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {stats.recentOrders.length > 0 ? (
+                            stats.recentOrders.map((order: any) => (
+                              <tr key={order._id}>
+                                <td>
+                                  <span className="font-weight-bold text-primary">
+                                    #{order._id.slice(-8).toUpperCase()}
+                                  </span>
+                                </td>
+                                <td>
+                                  <div>
+                                    <div className="font-weight-bold">{order.user?.name || "N/A"}</div>
+                                    <small className="text-muted">{order.user?.email || "N/A"}</small>
+                                  </div>
+                                </td>
+                                <td>
+                                  {new Date(order.createdAt).toLocaleDateString('fr-FR')}
+                                  <br />
+                                  <small className="text-muted">
+                                    {new Date(order.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                                  </small>
+                                </td>
+                                <td className="font-weight-bold text-success">
+                                  {order.totalAmount.toFixed(2)} TND
+                                </td>
+                                <td>{getStatusBadge(order.status)}</td>
+                                <td>
+                                  <Link 
+                                    href="/admin/orders" 
+                                    className="btn btn-sm btn-info"
+                                    title="Voir détails"
+                                  >
+                                    <i className="mdi mdi-eye"></i>
+                                  </Link>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={6} className="text-center py-4">
+                                <i className="mdi mdi-cart-off" style={{ fontSize: '48px', color: '#ccc' }}></i>
+                                <p className="text-muted mt-2">Aucune commande récente</p>
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer className="footer">
+            <div className="d-sm-flex justify-content-center justify-content-sm-between">
+              <span className="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023 Parapharmacie. All rights reserved.</span>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  );
+}

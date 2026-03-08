@@ -1,0 +1,39 @@
+"use client";
+import Link from "next/link";
+
+export default function ClientDocuments() {
+  return (
+    <div style={{ minHeight: "100vh", backgroundColor: "#f5f7fa", padding: "2rem 0" }}>
+      <div className="container">
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 className="mb-1" style={{ color: "#2c3e50", fontWeight: "700" }}>
+              ☁️ Documents à télécharger
+            </h2>
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb mb-0">
+                <li className="breadcrumb-item">
+                  <Link href="/client" style={{ textDecoration: "none" }}>Dashboard</Link>
+                </li>
+                <li className="breadcrumb-item active">Documents</li>
+              </ol>
+            </nav>
+          </div>
+          <Link href="/client" className="btn btn-outline-primary">
+            <i className="mdi mdi-arrow-left me-2"></i>
+            Retour
+          </Link>
+        </div>
+
+        <div className="card border-0 shadow-sm">
+          <div className="card-body text-center py-5">
+            <div style={{ fontSize: "5rem", opacity: 0.3 }}>☁️</div>
+            <h4 className="mt-3 mb-2">Documents à télécharger</h4>
+            <p className="text-muted">Espace téléchargements, documents mis à votre disposition</p>
+            <p className="text-muted small">Cette fonctionnalité sera bientôt disponible</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
