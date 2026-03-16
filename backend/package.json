@@ -7,9 +7,16 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "check": "node check-system.js",
-    "seed": "node seed-patisserie.js"
+    "seed": "node seed-patisserie.js",
+    "test-atlas": "node test-atlas-connection.js",
+    "check-atlas": "node check-atlas-setup.js"
   },
-  "keywords": ["patisserie", "ecommerce", "api", "larosa"],
+  "keywords": [
+    "patisserie",
+    "ecommerce",
+    "api",
+    "larosa"
+  ],
   "author": "La Rosa",
   "license": "ISC",
   "dependencies": {
@@ -20,7 +27,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.2",
-    "multer": "^2.0.2",
+    "multer": "^2.1.1",
     "nodemailer": "^7.0.12",
     "passport": "^0.7.0",
     "passport-facebook-token": "^4.0.0"

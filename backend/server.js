@@ -14,15 +14,22 @@ const statsRoutes = require('./routes/statsRoutes');
 const favoriteRoutes = require('./routes/favorites');
 const paymentRoutes = require('./routes/paymentRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const healthRoutes = require('./routes/health');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connexion MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connecté'))
-  .catch(err => console.error('Erreur MongoDB:', err));
+// Connexion MongoDB Atlas
+mongoose.connect(process.env.MONGODB_URI, {
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+})
+  .then(() => console.log('✅ MongoDB Atlas connecté avec succès'))
+  .catch(err => {
+    console.error('❌ Erreur de connexion MongoDB Atlas:', err.message);
+    process.exit(1);
+  });
 
 // Middleware
 app.use(cors());
@@ -30,6 +37,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
+app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
