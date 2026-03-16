@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: [PatisserieLaRosa, develop]
   pull_request:
-    branches: [main, develop]
+    branches: [PatisserieLaRosa, develop]
 
 env:
   NODE_VERSION: '20.x'
@@ -68,7 +68,7 @@ jobs:
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
     needs: [test-backend, test-frontend]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/PatisserieLaRosa'
     
     steps:
       - uses: actions/checkout@v4
@@ -107,7 +107,7 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: build-and-push
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/PatisserieLaRosa'
     
     steps:
       - uses: actions/checkout@v4
