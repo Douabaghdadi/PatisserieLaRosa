@@ -54,6 +54,7 @@ export interface User {
   phone?: string;
   address?: string;
   profileImage?: string;
+  provider?: 'local' | 'google' | 'facebook';
 }
 
 export interface Order {
