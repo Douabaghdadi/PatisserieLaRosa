@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useFavorites } from '../../context/FavoritesContext';
 import FlavorDropdown from '../../components/FlavorDropdown';
@@ -8,6 +8,16 @@ interface Flavor {
   _id: string;
   name: string;
   color?: string;
+}
+
+interface Brand {
+  _id: string;
+  name: string;
+}
+
+interface Category {
+  _id: string;
+  name: string;
 }
 
 interface Product {
@@ -24,9 +34,8 @@ interface Product {
 
 export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [brands, setBrands] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [flavors, setFlavors] = useState<Flavor[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -37,7 +46,6 @@ export default function ShopPage() {
   const [showInStockOnly, setShowInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
@@ -49,20 +57,15 @@ export default function ShopPage() {
       .then(r => r.json())
       .then(data => {
         setProducts(data);
-        setFilteredProducts(data);
-        const init: { [key: string]: number } = {};
-        data.forEach((p: Product) => { init[p._id] = 1; });
-        setQuantities(init);
         setLoading(false);
       });
   }, []);
 
-
-  useEffect(() => {
+  const filteredProducts = useMemo(() => {
     let result = [...products];
     if (selectedBrand) result = result.filter((p) => p.brand?._id === selectedBrand);
     if (selectedCategory) result = result.filter((p) => p.category?._id === selectedCategory);
-    if (selectedFlavor) result = result.filter((p) => p.flavors?.some((f: any) => f._id === selectedFlavor));
+    if (selectedFlavor) result = result.filter((p) => p.flavors?.some((f: Flavor) => f._id === selectedFlavor));
     if (showDiscountOnly) result = result.filter((p) => (p.discount ?? 0) > 0);
     if (showInStockOnly) result = result.filter((p) => (p.stock ?? 0) > 0);
     if (priceRange.min) {
@@ -94,7 +97,7 @@ export default function ShopPage() {
     } else if (sortBy === 'name-asc') {
       result.sort((a, b) => a.name.localeCompare(b.name));
     }
-    setFilteredProducts(result);
+    return result;
   }, [products, selectedBrand, selectedCategory, selectedFlavor, priceRange, showDiscountOnly, showInStockOnly, sortBy]);
 
   
@@ -447,7 +450,14 @@ export default function ShopPage() {
                           {(product.discount ?? 0) > 0 && (
                             <span style={{ position: 'absolute', top: '10px', right: '10px', background: '#ec4899', color: 'white', padding: '5px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '700' }}>-{product.discount}%</span>
                           )}
-                          <button onClick={(e) => { e.preventDefault(); isFavorite ? removeFavorite(product._id) : addFavorite(product._id); }} style={{ position: 'absolute', bottom: '10px', right: '10px', width: '36px', height: '36px', borderRadius: '50%', border: 'none', background: isFavorite ? '#fce7f3' : 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                          <button onClick={(e) => { 
+                            e.preventDefault(); 
+                            if (isFavorite) {
+                              removeFavorite(product._id);
+                            } else {
+                              addFavorite(product._id);
+                            }
+                          }} style={{ position: 'absolute', bottom: '10px', right: '10px', width: '36px', height: '36px', borderRadius: '50%', border: 'none', background: isFavorite ? '#fce7f3' : 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
                             <i className={isFavorite ? 'fas fa-heart' : 'far fa-heart'} style={{ color: isFavorite ? '#ec4899' : '#666', fontSize: '14px' }}></i>
                           </button>
                         </div>

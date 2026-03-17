@@ -1,7 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useFavorites } from '../../context/FavoritesContext';
+
+interface Brand {
+  _id: string;
+  name: string;
+}
+
+interface Category {
+  _id: string;
+  name: string;
+}
 
 interface Product {
   _id: string;
@@ -17,14 +27,14 @@ interface Product {
 
 export default function PromotionsPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [brands, setBrands] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [sortBy, setSortBy] = useState('');
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
@@ -41,7 +51,6 @@ export default function PromotionsPage() {
       .then(data => {
         const promoProducts = data.filter((p: Product) => (p.discount ?? 0) > 0);
         setProducts(promoProducts);
-        setFilteredProducts(promoProducts);
         const initialQuantities: { [key: string]: number } = {};
         promoProducts.forEach((p: Product) => { initialQuantities[p._id] = 1; });
         setQuantities(initialQuantities);
@@ -49,8 +58,7 @@ export default function PromotionsPage() {
       });
   }, []);
 
-
-  useEffect(() => {
+  const filteredProducts = useMemo(() => {
     let result = [...products];
     if (selectedBrand) result = result.filter((p) => p.brand?._id === selectedBrand);
     if (selectedCategory) result = result.filter((p) => p.category?._id === selectedCategory);
@@ -81,7 +89,7 @@ export default function PromotionsPage() {
     } else if (sortBy === 'discount-desc') {
       result.sort((a, b) => (b.discount ?? 0) - (a.discount ?? 0));
     }
-    setFilteredProducts(result);
+    return result;
   }, [products, selectedBrand, selectedCategory, priceRange, sortBy]);
 
   

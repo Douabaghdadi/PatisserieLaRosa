@@ -25,18 +25,6 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const code = searchParams.get('code');
-    if (code) {
-      const state = searchParams.get('state');
-      if (state === 'google') {
-        handleGoogleCallback(code);
-      } else {
-        handleFacebookCallback(code);
-      }
-    }
-  }, [searchParams]);
-
   const handleFacebookCallback = async (code: string) => {
     try {
       const res = await fetch("http://localhost:5000/api/auth/facebook", {
@@ -48,12 +36,12 @@ export default function LoginPage() {
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        router.push(data.user.role === 'admin' ? '/admin' : '/');
+        router.push("/");
       } else {
-        setError(data.error);
+        setError(data.message || "Erreur de connexion Facebook");
       }
-    } catch (err) {
-      setError("Erreur de connexion Facebook");
+    } catch {
+      setError("Erreur de connexion");
     }
   };
 
@@ -68,14 +56,27 @@ export default function LoginPage() {
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        router.push(data.user.role === 'admin' ? '/admin' : '/');
+        router.push("/");
       } else {
-        setError(data.error);
+        setError(data.message || "Erreur de connexion Google");
       }
-    } catch (err) {
-      setError("Erreur de connexion Google");
+    } catch {
+      setError("Erreur de connexion");
     }
   };
+
+  useEffect(() => {
+    const code = searchParams.get('code');
+    if (code) {
+      const state = searchParams.get('state');
+      if (state === 'google') {
+        handleGoogleCallback(code);
+      } else {
+        handleFacebookCallback(code);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -263,7 +264,7 @@ export default function LoginPage() {
             <div style={{ textAlign: "center" }}>
               <span style={{ color: "#718096", fontSize: "13px" }}>Pas encore de compte ? </span>
               <Link href="/register" style={{ color: "#ec4899", textDecoration: "none", fontWeight: "700", fontSize: "13px" }}>
-                S'inscrire
+                S&apos;inscrire
               </Link>
             </div>
           </form>

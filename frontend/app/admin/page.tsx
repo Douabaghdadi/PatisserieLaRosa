@@ -5,6 +5,36 @@ import Navbar from "./components/Navbar";
 import Link from "next/link";
 import "./dashboard.css";
 
+interface Order {
+  _id: string;
+  status: string;
+  totalAmount: number;
+  createdAt: string;
+  user?: {
+    name: string;
+    email: string;
+  };
+  items?: Array<{
+    product: {
+      name: string;
+    };
+    quantity: number;
+  }>;
+}
+
+interface Product {
+  _id: string;
+  name: string;
+  stock: number;
+}
+
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+}
+
 interface DashboardStats {
   totalRevenue: number;
   weeklyRevenue: number;
@@ -17,7 +47,7 @@ interface DashboardStats {
   totalUsers: number;
   newUsers: number;
   pendingOrders: number;
-  recentOrders: any[];
+  recentOrders: Order[];
   dailyRevenue: number;
   monthlyRevenue: number;
   dailyOrders: number;
@@ -45,10 +75,6 @@ export default function AdminPage() {
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDashboardStats();
-  }, []);
-
   const fetchDashboardStats = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -61,9 +87,9 @@ export default function AdminPage() {
         fetch("http://localhost:5000/api/users", { headers })
       ]);
 
-      const orders = await ordersRes.json();
-      const products = await productsRes.json();
-      const users = await usersRes.json();
+      const orders: Order[] = await ordersRes.json();
+      const products: Product[] = await productsRes.json();
+      const users: User[] = await usersRes.json();
 
       // Calculer les statistiques
       const now = new Date();
@@ -74,24 +100,24 @@ export default function AdminPage() {
 
       // Revenus
       const totalRevenue = orders
-        .filter((o: any) => o.status !== "cancelled")
-        .reduce((sum: number, o: any) => sum + o.totalAmount, 0);
+        .filter((o: Order) => o.status !== "cancelled")
+        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
 
       const dailyRevenue = orders
-        .filter((o: any) => o.status !== "cancelled" && new Date(o.createdAt) >= oneDayAgo)
-        .reduce((sum: number, o: any) => sum + o.totalAmount, 0);
+        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= oneDayAgo)
+        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
 
       const weeklyRevenue = orders
-        .filter((o: any) => o.status !== "cancelled" && new Date(o.createdAt) >= oneWeekAgo)
-        .reduce((sum: number, o: any) => sum + o.totalAmount, 0);
+        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= oneWeekAgo)
+        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
 
       const monthlyRevenue = orders
-        .filter((o: any) => o.status !== "cancelled" && new Date(o.createdAt) >= oneMonthAgo)
-        .reduce((sum: number, o: any) => sum + o.totalAmount, 0);
+        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= oneMonthAgo)
+        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
 
       const previousWeekRevenue = orders
-        .filter((o: any) => o.status !== "cancelled" && new Date(o.createdAt) >= twoWeeksAgo && new Date(o.createdAt) < oneWeekAgo)
-        .reduce((sum: number, o: any) => sum + o.totalAmount, 0);
+        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= twoWeeksAgo && new Date(o.createdAt) < oneWeekAgo)
+        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
 
       const revenueGrowth = previousWeekRevenue > 0 
         ? ((weeklyRevenue - previousWeekRevenue) / previousWeekRevenue) * 100 
@@ -99,28 +125,28 @@ export default function AdminPage() {
 
       // Commandes
       const totalOrders = orders.length;
-      const dailyOrders = orders.filter((o: any) => new Date(o.createdAt) >= oneDayAgo).length;
-      const weeklyOrders = orders.filter((o: any) => new Date(o.createdAt) >= oneWeekAgo).length;
-      const monthlyOrders = orders.filter((o: any) => new Date(o.createdAt) >= oneMonthAgo).length;
-      const previousWeekOrders = orders.filter((o: any) => new Date(o.createdAt) >= twoWeeksAgo && new Date(o.createdAt) < oneWeekAgo).length;
+      const dailyOrders = orders.filter((o: Order) => new Date(o.createdAt) >= oneDayAgo).length;
+      const weeklyOrders = orders.filter((o: Order) => new Date(o.createdAt) >= oneWeekAgo).length;
+      const monthlyOrders = orders.filter((o: Order) => new Date(o.createdAt) >= oneMonthAgo).length;
+      const previousWeekOrders = orders.filter((o: Order) => new Date(o.createdAt) >= twoWeeksAgo && new Date(o.createdAt) < oneWeekAgo).length;
       const ordersGrowth = previousWeekOrders > 0 
         ? ((weeklyOrders - previousWeekOrders) / previousWeekOrders) * 100 
         : 100;
 
       // Produits
       const totalProducts = products.length;
-      const lowStockProducts = products.filter((p: any) => p.stock < 10).length;
+      const lowStockProducts = products.filter((p: Product) => p.stock < 10).length;
 
       // Utilisateurs
       const totalUsers = users.length;
-      const newUsers = users.filter((u: any) => new Date(u.createdAt) >= oneWeekAgo).length;
+      const newUsers = users.filter((u: User) => new Date(u.createdAt) >= oneWeekAgo).length;
 
       // Commandes en attente
-      const pendingOrders = orders.filter((o: any) => o.status === "pending").length;
+      const pendingOrders = orders.filter((o: Order) => o.status === "pending").length;
 
       // Commandes récentes (5 dernières)
       const recentOrders = orders
-        .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .sort((a: Order, b: Order) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .slice(0, 5);
 
       setStats({
@@ -148,8 +174,13 @@ export default function AdminPage() {
     }
   };
 
+  useEffect(() => {
+    fetchDashboardStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const getStatusBadge = (status: string) => {
-    const badges: any = {
+    const badges: Record<string, { class: string; text: string }> = {
       pending: { class: "badge-warning", text: "En attente" },
       confirmed: { class: "badge-info", text: "Confirmée" },
       shipped: { class: "badge-primary", text: "Expédiée" },

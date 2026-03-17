@@ -315,7 +315,7 @@ export default function MagasinsPage() {
             <i className="fas fa-question-circle" style={{ fontSize: '28px', color: '#ec4899' }}></i>
           </div>
           <h3 style={{ color: '#333', fontSize: '1.4rem', fontWeight: '700', marginBottom: '12px' }}>
-            Besoin d'aide ?
+            Besoin d&apos;aide ?
           </h3>
           <p style={{ color: '#666', fontSize: '15px', marginBottom: '25px', maxWidth: '500px', margin: '0 auto 25px', lineHeight: '1.6' }}>
             Notre équipe est disponible pour vous conseiller et répondre à toutes vos questions

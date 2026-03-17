@@ -15,17 +15,18 @@ export default function EditUserPage() {
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
-  useEffect(() => {
-    if (params.id) {
-      fetchUser();
-    }
-  }, [params.id]);
-
   const fetchUser = async () => {
     const res = await fetch(`http://localhost:5000/api/users/${params.id}`);
     const data = await res.json();
     setFormData({ name: data.name, email: data.email, role: data.role, photo: data.photo || "" });
   };
+
+  useEffect(() => {
+    if (params.id) {
+      fetchUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

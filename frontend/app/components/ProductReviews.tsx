@@ -21,14 +21,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [canReview, setCanReview] = useState(false);
-  const [hasPurchased, setHasPurchased] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
-
-  useEffect(() => {
-    fetchReviews();
-    checkLoginStatus();
-    checkCanReview();
-  }, [productId]);
 
   const checkLoginStatus = () => {
     const token = localStorage.getItem("token");
@@ -47,7 +40,6 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
       });
       const data = await res.json();
       setCanReview(data.canReview);
-      setHasPurchased(data.hasPurchased);
       setHasReviewed(data.hasReviewed);
     } catch (error) {
       console.error("Erreur lors de la vérification:", error);
@@ -63,6 +55,13 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
       console.error("Erreur lors du chargement des avis:", error);
     }
   };
+
+  useEffect(() => {
+    fetchReviews();
+    checkLoginStatus();
+    checkCanReview();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId]);
 
   const submitReview = async (e: React.FormEvent) => {
     e.preventDefault();

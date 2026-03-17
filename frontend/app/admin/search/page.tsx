@@ -162,7 +162,7 @@ function SearchContent() {
     <div className="content-wrapper">
       <div className="page-header">
         <h3 className="page-title">
-          Résultats de recherche pour "{query}"
+          Résultats de recherche pour &quot;{query}&quot;
         </h3>
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
@@ -229,7 +229,7 @@ function SearchContent() {
             <div className="card">
               <div className="card-body text-center py-5">
                 <i className="mdi mdi-magnify-close" style={{ fontSize: "64px", color: "#ccc" }}></i>
-                <p className="text-muted mt-3">Aucun résultat trouvé pour "{query}"</p>
+                <p className="text-muted mt-3">Aucun résultat trouvé pour &quot;{query}&quot;</p>
               </div>
             </div>
           ) : (

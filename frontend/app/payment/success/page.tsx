@@ -3,12 +3,18 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+interface Order {
+  _id: string;
+  totalAmount: number;
+  status: string;
+}
+
 export default function PaymentSuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const orderId = searchParams.get('orderId');
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     if (!orderId) {

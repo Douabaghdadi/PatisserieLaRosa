@@ -46,7 +46,7 @@ export default function NewCategoryPage() {
       } else {
         alert("Erreur lors de la création de la catégorie");
       }
-    } catch (error) {
+    } catch {
       alert("Erreur lors de la création de la catégorie");
     } finally {
       setLoading(false);

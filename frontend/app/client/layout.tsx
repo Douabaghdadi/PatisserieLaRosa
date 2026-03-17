@@ -9,12 +9,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
       return;
     }
+    setMounted(true);
   }, [router]);
 
   if (!mounted) {

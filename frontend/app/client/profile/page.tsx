@@ -3,9 +3,19 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+interface User {
+  _id?: string;
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  profileImage?: string;
+}
+
 export default function ClientProfile() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -21,10 +31,14 @@ export default function ClientProfile() {
     if (!token) { router.push("/login"); return; }
     const userData = localStorage.getItem("user");
     if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-      setFormData({ name: parsedUser.name || "", email: parsedUser.email || "", phone: parsedUser.phone || "", address: parsedUser.address || "" });
-      if (parsedUser.profileImage) setProfileImage(parsedUser.profileImage);
+      try {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+        setFormData({ name: parsedUser.name || "", email: parsedUser.email || "", phone: parsedUser.phone || "", address: parsedUser.address || "" });
+        if (parsedUser.profileImage) setProfileImage(parsedUser.profileImage);
+      } catch {
+        // Invalid JSON
+      }
     }
     setLoading(false);
   }, [router]);

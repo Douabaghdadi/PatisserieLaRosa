@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../../context/CartContext';
@@ -10,6 +10,12 @@ interface Flavor {
   _id: string;
   name: string;
   color?: string;
+}
+
+interface Subcategory {
+  _id: string;
+  name: string;
+  category?: { _id: string; name: string };
 }
 
 interface Product {
@@ -28,9 +34,7 @@ interface Product {
 export default function SubcategoryPage() {
   const params = useParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [subcategory, setSubcategory] = useState<any>(null);
-  const [brands, setBrands] = useState<any[]>([]);
+  const [subcategory, setSubcategory] = useState<Subcategory | null>(null);
   const [flavors, setFlavors] = useState<Flavor[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -56,10 +60,6 @@ export default function SubcategoryPage() {
       .then(r => r.json())
       .then(data => setSubcategory(data));
 
-    fetch('http://localhost:5000/api/brands')
-      .then(r => r.json())
-      .then(data => setBrands(data));
-
     fetch('http://localhost:5000/api/flavors')
       .then(r => r.json())
       .then(data => setFlavors(data));
@@ -68,10 +68,9 @@ export default function SubcategoryPage() {
       .then(r => r.json())
       .then(data => {
         const filtered = data.filter((p: Product) => 
-          p.subcategories?.some((sub: any) => sub._id === params.id)
+          p.subcategories?.some((sub: { _id: string; name: string }) => sub._id === params.id)
         );
         setProducts(filtered);
-        setFilteredProducts(filtered);
         // Initialiser les quantités
         const initialQuantities: { [key: string]: number } = {};
         filtered.forEach((p: Product) => { initialQuantities[p._id] = 1; });
@@ -80,10 +79,10 @@ export default function SubcategoryPage() {
       });
   }, [params.id]);
 
-  useEffect(() => {
+  const filteredProducts = useMemo(() => {
     let result = [...products];
     if (selectedBrand) result = result.filter((p) => p.brand?._id === selectedBrand);
-    if (selectedFlavor) result = result.filter((p) => p.flavors?.some((f: any) => f._id === selectedFlavor));
+    if (selectedFlavor) result = result.filter((p) => p.flavors?.some((f: Flavor) => f._id === selectedFlavor));
     if (showDiscountOnly) result = result.filter((p) => (p.discount ?? 0) > 0);
     if (priceRange.min) {
       result = result.filter((p) => {
@@ -110,8 +109,8 @@ export default function SubcategoryPage() {
         return priceB - priceA;
       });
     }
-    setFilteredProducts(result);
-  }, [products, selectedBrand, priceRange, showDiscountOnly, sortBy]);
+    return result;
+  }, [products, selectedBrand, priceRange, showDiscountOnly, sortBy, selectedFlavor]);
 
   const handleQuantityChange = (productId: string, delta: number) => {
     setQuantities(prev => ({ ...prev, [productId]: Math.max(1, (prev[productId] || 1) + delta) }));

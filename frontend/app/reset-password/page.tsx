@@ -10,16 +10,15 @@ export default function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [token, setToken] = useState("");
-
+  
+  // Use useMemo to derive token from searchParams without setState in useEffect
+  const token = searchParams.get('token') || "";
+  
   useEffect(() => {
-    const tokenParam = searchParams.get('token');
-    if (tokenParam) {
-      setToken(tokenParam);
-    } else {
+    if (!token) {
       setError("Token de récupération manquant");
     }
-  }, [searchParams]);
+  }, [token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

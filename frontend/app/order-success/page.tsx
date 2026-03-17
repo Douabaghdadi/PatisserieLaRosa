@@ -35,18 +35,18 @@ interface Order {
 export default function OrderSuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [orderRef, setOrderRef] = useState("");
+  
+  // Derive orderRef directly from searchParams without setState
+  const orderRef = searchParams.get("ref") || "";
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const ref = searchParams.get("ref");
     const orderId = searchParams.get("id");
-    if (!ref) {
+    if (!orderRef) {
       router.push("/");
       return;
     }
-    setOrderRef(ref);
     
     if (orderId) {
       const token = localStorage.getItem("token");
@@ -62,7 +62,7 @@ export default function OrderSuccessPage() {
     } else {
       setIsLoading(false);
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, orderRef]);
 
   const downloadPDF = async () => {
     const doc = new jsPDF();

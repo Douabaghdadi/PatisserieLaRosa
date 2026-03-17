@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useFavorites } from '../../context/FavoritesContext';
@@ -10,6 +10,16 @@ interface Flavor {
 }
 
 interface Subcategory {
+  _id: string;
+  name: string;
+}
+
+interface Brand {
+  _id: string;
+  name: string;
+}
+
+interface Category {
   _id: string;
   name: string;
 }
@@ -32,9 +42,8 @@ export default function RecherchePage() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [brands, setBrands] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -74,13 +83,11 @@ export default function RecherchePage() {
           return false;
         });
         setProducts(searchResults);
-        setFilteredProducts(searchResults);
         setLoading(false);
       });
   }, [query]);
 
-
-  useEffect(() => {
+  const filteredProducts = useMemo(() => {
     let result = [...products];
     if (selectedBrand) result = result.filter((p) => p.brand?._id === selectedBrand);
     if (selectedCategory) result = result.filter((p) => p.category?._id === selectedCategory);
@@ -110,7 +117,7 @@ export default function RecherchePage() {
         return priceB - priceA;
       });
     }
-    setFilteredProducts(result);
+    return result;
   }, [products, selectedBrand, selectedCategory, priceRange, showDiscountOnly, sortBy]);
 
   
@@ -180,7 +187,7 @@ export default function RecherchePage() {
             </div>
             <div>
               <h1 style={{ fontSize: '1.8rem', fontWeight: '700', color: 'white', margin: 0, letterSpacing: '-0.5px' }}>
-                Résultats pour "{query}"
+                Résultats pour &quot;{query}&quot;
               </h1>
               <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', margin: 0, fontWeight: '400' }}>
                 {filteredProducts.length} produit(s) trouvé(s)
@@ -323,9 +330,9 @@ export default function RecherchePage() {
               <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '60px', textAlign: 'center', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
                 <i className="fas fa-search" style={{ fontSize: '50px', color: '#cbd5e1', marginBottom: '20px' }}></i>
                 <h3 style={{ color: '#1a202c', marginBottom: '10px' }}>Aucun résultat</h3>
-                <p style={{ fontSize: '16px', color: '#64748b', margin: 0 }}>Aucun produit ne correspond à votre recherche "{query}"</p>
+                <p style={{ fontSize: '16px', color: '#64748b', margin: 0 }}>Aucun produit ne correspond à votre recherche &quot;{query}&quot;</p>
                 <Link href="/" style={{ display: 'inline-block', marginTop: '20px', padding: '12px 24px', background: '#ec4899', color: 'white', borderRadius: '10px', textDecoration: 'none', fontWeight: '600' }}>
-                  Retour à l'accueil
+                  Retour à l&apos;accueil
                 </Link>
               </div>
             ) : (
@@ -354,7 +361,14 @@ export default function RecherchePage() {
                           {(product.discount ?? 0) > 0 && (
                             <span style={{ position: 'absolute', top: '10px', right: '10px', background: '#ec4899', color: 'white', padding: '5px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '700' }}>-{product.discount}%</span>
                           )}
-                          <button onClick={(e) => { e.preventDefault(); isFavorite ? removeFavorite(product._id) : addFavorite(product._id); }} style={{ position: 'absolute', bottom: '10px', right: '10px', width: '36px', height: '36px', borderRadius: '50%', border: 'none', background: isFavorite ? '#fce7f3' : 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                          <button onClick={(e) => { 
+                            e.preventDefault(); 
+                            if (isFavorite) {
+                              removeFavorite(product._id);
+                            } else {
+                              addFavorite(product._id);
+                            }
+                          }} style={{ position: 'absolute', bottom: '10px', right: '10px', width: '36px', height: '36px', borderRadius: '50%', border: 'none', background: isFavorite ? '#fce7f3' : 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
                             <i className={isFavorite ? 'fas fa-heart' : 'far fa-heart'} style={{ color: isFavorite ? '#ec4899' : '#666', fontSize: '14px' }}></i>
                           </button>
                         </div>

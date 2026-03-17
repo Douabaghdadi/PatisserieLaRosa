@@ -5,20 +5,18 @@ import Link from "next/link";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
-export default function ProfilePage() {
-  const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+interface User {
+  _id?: string;
+  id?: string;
+  name: string;
+  email: string;
+  role: string;
+  photo?: string;
+  profileImage?: string;
+}
 
-  useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-      if (parsedUser._id || parsedUser.id) {
-        fetchUserDetails(parsedUser._id || parsedUser.id);
-      }
-    }
-  }, []);
+export default function ProfilePage() {
+  const [user, setUser] = useState<User | null>(null);
 
   const fetchUserDetails = async (id: string) => {
     try {
@@ -32,6 +30,18 @@ export default function ProfilePage() {
       console.error('Erreur lors du chargement du profil:', error);
     }
   };
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      if (parsedUser._id || parsedUser.id) {
+        fetchUserDetails(parsedUser._id || parsedUser.id);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!user) return <div>Chargement...</div>;
 

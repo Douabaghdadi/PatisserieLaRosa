@@ -227,7 +227,7 @@ export default function RegisterPage() {
                 onMouseOver={(e) => (e.target as HTMLButtonElement).style.background = "#db2777"}
                 onMouseOut={(e) => (e.target as HTMLButtonElement).style.background = "#ec4899"}
               >
-                S'inscrire
+                S&apos;inscrire
               </button>
             
               <div style={{ textAlign: "center" }}>

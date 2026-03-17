@@ -2,8 +2,27 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface OrderItem {
+  _id: string;
+  product: {
+    _id: string;
+    name: string;
+    image: string;
+  };
+  quantity: number;
+  price: number;
+}
+
+interface Order {
+  _id: string;
+  items: OrderItem[];
+  status: string;
+  createdAt: string;
+  total: number;
+}
+
 export default function OrdersPage() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -23,9 +42,9 @@ export default function OrdersPage() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [router]);
 
-  const statusColors: any = {
+  const statusColors: Record<string, string> = {
     pending: '#ffc107',
     confirmed: '#17a2b8',
     shipped: '#007bff',
@@ -33,7 +52,7 @@ export default function OrdersPage() {
     cancelled: '#dc3545'
   };
 
-  const statusLabels: any = {
+  const statusLabels: Record<string, string> = {
     pending: 'En attente',
     confirmed: 'Confirmée',
     shipped: 'Expédiée',
@@ -56,11 +75,11 @@ export default function OrdersPage() {
         
         {orders.length === 0 ? (
           <div style={{backgroundColor: 'white', borderRadius: '16px', padding: '60px', textAlign: 'center', boxShadow: '0 5px 20px rgba(0,0,0,0.05)'}}>
-            <p style={{fontSize: '18px', color: '#999'}}>Vous n'avez pas encore de commandes</p>
+            <p style={{fontSize: '18px', color: '#999'}}>Vous n&apos;avez pas encore de commandes</p>
           </div>
         ) : (
           <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-            {orders.map((order: any) => (
+            {orders.map((order: Order) => (
               <div key={order._id} style={{backgroundColor: 'white', borderRadius: '16px', padding: '30px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)'}}>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #f0f0f0'}}>
                   <div>
@@ -77,7 +96,7 @@ export default function OrdersPage() {
                 </div>
                 
                 <div style={{marginBottom: '20px'}}>
-                  {order.items.map((item: any) => (
+                  {order.items.map((item: OrderItem) => (
                     <div key={item._id} style={{display: 'flex', gap: '15px', marginBottom: '15px'}}>
                       <img src={item.product.image} alt={item.product.name} style={{width: '60px', height: '60px', objectFit: 'contain', borderRadius: '8px', backgroundColor: '#fafafa'}} />
                       <div style={{flex: 1}}>

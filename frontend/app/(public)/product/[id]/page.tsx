@@ -7,9 +7,29 @@ import ProductReviews from '../../../components/ProductReviews';
 import StarRating from '../../../components/StarRating';
 import { useFavorites } from '../../../context/FavoritesContext';
 
+interface Subcategory {
+  _id: string;
+  name: string;
+}
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  discount?: number;
+  description?: string;
+  image?: string;
+  stock?: number;
+  rating?: number;
+  ratingCount?: number;
+  brand?: { _id: string; name: string };
+  category?: { _id: string; name: string };
+  subcategories?: Subcategory[];
+}
+
 export default function ProductPage() {
   const params = useParams();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
@@ -46,8 +66,8 @@ export default function ProductPage() {
     );
   }
 
-  const finalPrice = product.discount > 0 
-    ? (product.price * (1 - product.discount / 100)).toFixed(2)
+  const finalPrice = (product.discount ?? 0) > 0 
+    ? (product.price * (1 - (product.discount ?? 0) / 100)).toFixed(2)
     : product.price;
 
   return (
@@ -102,7 +122,7 @@ export default function ProductPage() {
                   style={{width: '100%', height: '100%', objectFit: 'cover'}} 
                   alt={product.name} 
                 />
-                {product.discount > 0 && (
+                {(product.discount ?? 0) > 0 && (
                   <div style={{
                     position: 'absolute', 
                     top: '20px', 
@@ -118,7 +138,7 @@ export default function ProductPage() {
                     -{product.discount}%
                   </div>
                 )}
-                {product.stock === 0 && (
+                {(product.stock ?? 0) === 0 && (
                   <div style={{
                     position: 'absolute', 
                     top: '20px', 
@@ -170,7 +190,7 @@ export default function ProductPage() {
                 {/* Subcategories */}
                 {product.subcategories && product.subcategories.length > 0 && (
                   <div style={{marginBottom: '20px'}}>
-                    {product.subcategories.map((sub: any) => (
+                    {product.subcategories.map((sub: Subcategory) => (
                       <span key={sub._id} style={{
                         display: 'inline-block', 
                         backgroundColor: '#f7fafc', 
@@ -243,7 +263,7 @@ export default function ProductPage() {
                         Rupture de stock
                       </span>
                       <span style={{color: '#718096', fontSize: '12px'}}>
-                        Ce produit n'est plus disponible actuellement
+                        Ce produit n&apos;est plus disponible actuellement
                       </span>
                     </div>
                   </div>

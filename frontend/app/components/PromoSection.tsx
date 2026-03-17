@@ -234,7 +234,7 @@ export default function PromoSection() {
           <div className="col-lg-9">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#1a202c', margin: 0 }}>
-                Coup d'œil sur nos <span style={{ color: '#c53030' }}>Promotions</span>
+                Coup d&apos;œil sur nos <span style={{ color: '#c53030' }}>Promotions</span>
               </h2>
               <Link href="/promotions" style={{
                 display: 'flex',

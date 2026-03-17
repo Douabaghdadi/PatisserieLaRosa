@@ -13,10 +13,6 @@ export default function EditFlavorPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    fetchFlavor();
-  }, []);
-
   const fetchFlavor = async () => {
     try {
       const res = await fetch(`http://localhost:5000/api/flavors/${params.id}`);
@@ -31,6 +27,11 @@ export default function EditFlavorPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchFlavor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

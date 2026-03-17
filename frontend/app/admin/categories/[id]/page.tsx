@@ -59,7 +59,7 @@ export default function EditCategoryPage() {
       } else {
         alert("Erreur lors de la modification de la catégorie");
       }
-    } catch (error) {
+    } catch {
       alert("Erreur lors de la modification de la catégorie");
     } finally {
       setLoading(false);

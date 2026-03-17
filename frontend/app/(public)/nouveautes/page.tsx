@@ -16,11 +16,21 @@ interface Product {
   createdAt?: string;
 }
 
+interface Brand {
+  _id: string;
+  name: string;
+}
+
+interface Category {
+  _id: string;
+  name: string;
+}
+
 export default function NouveautesPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [brands, setBrands] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -45,9 +55,6 @@ export default function NouveautesPage() {
         const sorted = [...data].sort((a: Product, b: Product) => b._id.localeCompare(a._id));
         setProducts(sorted);
         setFilteredProducts(sorted);
-        const initialQuantities: { [key: string]: number } = {};
-        sorted.forEach((p: Product) => { initialQuantities[p._id] = 1; });
-        setQuantities(initialQuantities);
         setLoading(false);
       });
   }, []);
@@ -87,10 +94,6 @@ export default function NouveautesPage() {
     }
     setFilteredProducts(result);
   }, [products, selectedBrand, selectedCategory, priceRange, showDiscountOnly, sortBy]);
-
-  
-
-  
 
   return (
     <>
@@ -231,7 +234,7 @@ export default function NouveautesPage() {
                   onChange={(e) => setSelectedCategory(e.target.value)}
                 >
                   <option value="">Toutes les catégories</option>
-                  {categories.map((cat: any) => (
+                  {categories.map((cat: Category) => (
                     <option key={cat._id} value={cat._id}>{cat.name}</option>
                   ))}
                 </select>
@@ -245,7 +248,7 @@ export default function NouveautesPage() {
                   onChange={(e) => setSelectedBrand(e.target.value)}
                 >
                   <option value="">Toutes les marques</option>
-                  {brands.map((brand: any) => (
+                  {brands.map((brand: Brand) => (
                     <option key={brand._id} value={brand._id}>{brand.name}</option>
                   ))}
                 </select>
@@ -466,5 +469,6 @@ export default function NouveautesPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

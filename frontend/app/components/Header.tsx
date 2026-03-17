@@ -5,17 +5,58 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useFavorites } from '../context/FavoritesContext';
 
+interface User {
+  _id?: string;
+  id?: string;
+  name: string;
+  email: string;
+  role: string;
+  profileImage?: string;
+}
+
+interface Category {
+  _id: string;
+  name: string;
+  image?: string;
+}
+
+interface Subcategory {
+  _id: string;
+  name: string;
+  category: string | Category;
+}
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  image?: string;
+  category?: Category;
+}
+
 export default function Header() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [subcategories, setSubcategories] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      const userData = localStorage.getItem('user');
+      if (userData && userData !== 'undefined') {
+        try {
+          return JSON.parse(userData);
+        } catch {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCategoriesMenu, setShowCategoriesMenu] = useState(false);
   const [showStoresMenu, setShowStoresMenu] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [categoryMenuTimeout, setCategoryMenuTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -23,11 +64,6 @@ export default function Header() {
   const { favoritesCount } = useFavorites();
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData && userData !== 'undefined') {
-      setUser(JSON.parse(userData));
-    }
-    
     fetch('http://localhost:5000/api/categories')
       .then(res => res.json())
       .then(data => {

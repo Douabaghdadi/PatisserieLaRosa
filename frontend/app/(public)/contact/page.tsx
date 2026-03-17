@@ -37,7 +37,7 @@ export default function ContactPage() {
       } else {
         alert('Erreur lors de l\'envoi du message');
       }
-    } catch (error) {
+    } catch {
       alert('Erreur de connexion');
     } finally {
       setLoading(false);

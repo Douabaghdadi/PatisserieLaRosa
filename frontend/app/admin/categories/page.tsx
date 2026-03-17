@@ -4,15 +4,21 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
 
+interface Category {
+  _id: string;
+  name: string;
+  description?: string;
+  image?: string;
+}
+
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<any>(null);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -25,19 +31,18 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      setError("");
       const response = await fetch("http://localhost:5000/api/categories");
       if (!response.ok) throw new Error("Erreur lors du chargement des catégories");
       const data = await response.json();
       setCategories(data);
-    } catch (err: any) {
-      setError(err.message || "Impossible de charger les catégories.");
+    } catch {
+      // Error handling can be added here if needed
     } finally {
       setLoading(false);
     }
   };
 
-  const filtered = categories.filter((cat: any) => {
+  const filtered = categories.filter((cat: Category) => {
     return cat.name.toLowerCase().includes(search.toLowerCase()) ||
       cat.description?.toLowerCase().includes(search.toLowerCase());
   });
@@ -47,7 +52,7 @@ export default function CategoriesPage() {
       try {
         await fetch(`http://localhost:5000/api/categories/${id}`, { method: "DELETE" });
         fetchCategories();
-      } catch (err) {
+      } catch {
         alert("Erreur lors de la suppression");
       }
     }
@@ -61,7 +66,7 @@ export default function CategoriesPage() {
     setShowModal(true);
   };
 
-  const openEditModal = (category: any) => {
+  const openEditModal = (category: Category) => {
     setEditingCategory(category);
     setFormData({ name: category.name, description: category.description || "" });
     setImageFile(null);
@@ -167,7 +172,7 @@ export default function CategoriesPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filtered.length > 0 ? filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((category: any) => (
+                      {filtered.length > 0 ? filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((category: Category) => (
                         <tr key={category._id}>
                           <td>
                             <div style={{ width: '60px', height: '60px', borderRadius: '8px', overflow: 'hidden', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

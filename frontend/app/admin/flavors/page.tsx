@@ -18,7 +18,7 @@ export default function FlavorsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [showModal, setShowModal] = useState(false);
-  const [editingFlavor, setEditingFlavor] = useState<any>(null);
+  const [editingFlavor, setEditingFlavor] = useState<Flavor | null>(null);
   const [formData, setFormData] = useState({ name: '', description: '' });
   const [submitting, setSubmitting] = useState(false);
 

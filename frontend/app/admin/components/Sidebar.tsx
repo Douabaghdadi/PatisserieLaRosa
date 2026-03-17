@@ -1,7 +1,13 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+interface User {
+  name: string;
+  email: string;
+  role: string;
+}
 
 const menuItems = [
   { path: "/admin", icon: "mdi-view-dashboard", label: "Dashboard", color: "#d946a6" },
@@ -16,15 +22,13 @@ const menuItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [user, setUser] = useState<any>(null);
-  const [collapsed, setCollapsed] = useState(false);
-
-  useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setUser(JSON.parse(userData));
+  const [user] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      const userData = localStorage.getItem('user');
+      return userData ? JSON.parse(userData) : null;
     }
-  }, []);
+    return null;
+  });
 
   const isActive = (path: string) => {
     if (path === "/admin") return pathname === "/admin";

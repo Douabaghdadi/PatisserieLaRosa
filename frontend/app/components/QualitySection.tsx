@@ -34,7 +34,7 @@ export default function QualitySection() {
                 letterSpacing: '0.5px',
                 fontFamily: "'Playfair Display', serif"
               }}>
-                L'Art de la Pâtisserie<br/>
+                L&apos;Art de la Pâtisserie<br/>
                 Tunisienne
               </h2>
 
@@ -46,7 +46,7 @@ export default function QualitySection() {
                 lineHeight: '1.8',
                 fontWeight: '300'
               }}>
-                Depuis 15 ans, La Rosa perpétue la tradition de la pâtisserie artisanale en Tunisie. Chaque création est le fruit d'un savoir-faire authentique, alliant recettes traditionnelles et techniques modernes pour vous offrir des moments de pure gourmandise.
+                Depuis 15 ans, La Rosa perpétue la tradition de la pâtisserie artisanale en Tunisie. Chaque création est le fruit d&apos;un savoir-faire authentique, alliant recettes traditionnelles et techniques modernes pour vous offrir des moments de pure gourmandise.
               </p>
 
               {/* Deuxième paragraphe */}
@@ -57,7 +57,7 @@ export default function QualitySection() {
                 lineHeight: '1.8',
                 fontWeight: '300'
               }}>
-                De nos gâteaux d'anniversaire personnalisés à notre pâtisserie fine raffinée, nous mettons un point d'honneur à utiliser des ingrédients de première qualité. Notre passion : transformer chaque célébration en un souvenir inoubliable grâce à des créations aussi belles que délicieuses.
+                De nos gâteaux d&apos;anniversaire personnalisés à notre pâtisserie fine raffinée, nous mettons un point d&apos;honneur à utiliser des ingrédients de première qualité. Notre passion : transformer chaque célébration en un souvenir inoubliable grâce à des créations aussi belles que délicieuses.
               </p>
             </div>
           </div>
