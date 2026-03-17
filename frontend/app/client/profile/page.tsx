@@ -13,6 +13,7 @@ interface User {
   profileImage?: string;
   role?: string;
   createdAt?: string;
+  provider?: 'local' | 'google' | 'facebook';
 }
 
 export default function ClientProfile() {
