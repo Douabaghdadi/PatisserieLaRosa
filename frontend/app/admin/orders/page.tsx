@@ -5,6 +5,19 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
 
+interface OrderItem {
+  product?: {
+    name?: string;
+  };
+  price: number;
+  quantity: number;
+}
+
+interface Order {
+  items: OrderItem[];
+  [key: string]: any;
+}
+
 export default function OrdersPage() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
@@ -17,7 +30,7 @@ export default function OrdersPage() {
   const [filterPayment, setFilterPayment] = useState("");
   const [sortBy, setSortBy] = useState("date-desc");
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -804,7 +817,7 @@ export default function OrdersPage() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  ${selectedOrder.items.map(item => `
+                                  ${selectedOrder.items.map((item: OrderItem) => `
                                     <tr>
                                       <td class="product-name">${item.product?.name || 'Produit'}</td>
                                       <td>${item.price.toFixed(2)} TND</td>

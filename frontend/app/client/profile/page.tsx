@@ -11,6 +11,8 @@ interface User {
   phone?: string;
   address?: string;
   profileImage?: string;
+  role?: string;
+  createdAt?: string;
 }
 
 export default function ClientProfile() {
@@ -61,7 +63,7 @@ export default function ClientProfile() {
         method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...formData, profileImage })
       });
-      const updatedUser = { ...user, ...formData, profileImage };
+      const updatedUser = { ...user, ...formData, profileImage: profileImage ?? undefined };
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
       setShowSuccess(true);

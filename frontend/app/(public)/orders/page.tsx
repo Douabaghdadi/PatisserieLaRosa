@@ -19,6 +19,14 @@ interface Order {
   status: string;
   createdAt: string;
   total: number;
+  totalAmount?: number;
+  shippingAddress?: {
+    fullName?: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    postalCode?: string;
+  };
 }
 
 export default function OrdersPage() {
@@ -113,16 +121,16 @@ export default function OrdersPage() {
                   <div>
                     <div style={{fontSize: '14px', color: '#666', marginBottom: '5px'}}>Adresse de livraison</div>
                     <div style={{fontSize: '14px', fontWeight: '600'}}>
-                      {order.shippingAddress.fullName} - {order.shippingAddress.phone}
+                      {order.shippingAddress?.fullName} - {order.shippingAddress?.phone}
                     </div>
                     <div style={{fontSize: '14px', color: '#666'}}>
-                      {order.shippingAddress.address}, {order.shippingAddress.city} {order.shippingAddress.postalCode}
+                      {order.shippingAddress?.address}, {order.shippingAddress?.city} {order.shippingAddress?.postalCode}
                     </div>
                   </div>
                   <div style={{textAlign: 'right'}}>
                     <div style={{fontSize: '14px', color: '#666', marginBottom: '5px'}}>Total</div>
                     <div style={{fontSize: '24px', fontWeight: '700', color: '#81C784'}}>
-                      {order.totalAmount.toFixed(2)} TND
+                      {(order.totalAmount ?? order.total).toFixed(2)} TND
                     </div>
                   </div>
                 </div>

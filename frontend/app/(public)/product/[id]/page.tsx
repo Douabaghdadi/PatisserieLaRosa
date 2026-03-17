@@ -68,7 +68,7 @@ export default function ProductPage() {
 
   const finalPrice = (product.discount ?? 0) > 0 
     ? (product.price * (1 - (product.discount ?? 0) / 100)).toFixed(2)
-    : product.price;
+    : product.price.toFixed(2);
 
   return (
     <>
@@ -215,7 +215,7 @@ export default function ProductPage() {
                   marginBottom: '20px',
                   border: '1px solid #e2e8f0'
                 }}>
-                  {product.discount > 0 ? (
+                  {(product.discount ?? 0) > 0 ? (
                     <>
                       <div style={{fontSize: '14px', color: '#cbd5e0', textDecoration: 'line-through', marginBottom: '4px', fontWeight: '500'}}>
                         {product.price.toFixed(3)} DT
