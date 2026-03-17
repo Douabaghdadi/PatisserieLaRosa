@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -18,7 +18,7 @@ interface Order {
   [key: string]: any;
 }
 
-export default function OrdersPage() {
+function OrdersContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
   
@@ -993,6 +993,23 @@ export default function OrdersPage() {
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+
+export default function OrdersPage() {
+  return (
+    <div className="container-scroller">
+      <Navbar />
+      <div className="container-fluid page-body-wrapper">
+        <Sidebar />
+        <div className="main-panel">
+          <Suspense fallback={<div className="content-wrapper"><div className="d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}><div className="spinner-border text-primary" /></div></div>}>
+            <OrdersContent />
+          </Suspense>
+        </div>
+      </div>
     </div>
   );
 }

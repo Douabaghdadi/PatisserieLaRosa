@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import jsPDF from "jspdf";
@@ -32,7 +32,7 @@ interface Order {
   createdAt: string;
 }
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   
@@ -358,5 +358,14 @@ export default function OrderSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div className="spinner-border" style={{ color: '#ec4899' }} /></div>}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }
