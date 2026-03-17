@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useFavorites } from '../../context/FavoritesContext';
@@ -38,7 +38,7 @@ interface Product {
   flavors?: Flavor[];
 }
 
-export default function RecherchePage() {
+function RechercheContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const [products, setProducts] = useState<Product[]>([]);
@@ -61,25 +61,25 @@ export default function RecherchePage() {
       .then(data => {
         const searchResults = data.filter((p: Product) => {
           const searchTerm = query.toLowerCase();
-          
+
           // Recherche dans le nom du produit
           if (p.name?.toLowerCase().includes(searchTerm)) return true;
-          
+
           // Recherche dans la description
           if (p.description?.toLowerCase().includes(searchTerm)) return true;
-          
+
           // Recherche dans la marque
           if (p.brand?.name?.toLowerCase().includes(searchTerm)) return true;
-          
+
           // Recherche dans la catégorie
           if (p.category?.name?.toLowerCase().includes(searchTerm)) return true;
-          
+
           // Recherche dans les sous-catégories
           if (p.subcategories?.some(sub => sub.name?.toLowerCase().includes(searchTerm))) return true;
-          
+
           // Recherche dans les goûts
           if (p.flavors?.some(flavor => flavor.name?.toLowerCase().includes(searchTerm))) return true;
-          
+
           return false;
         });
         setProducts(searchResults);
@@ -120,9 +120,9 @@ export default function RecherchePage() {
     return result;
   }, [products, selectedBrand, selectedCategory, priceRange, showDiscountOnly, sortBy]);
 
-  
 
-  
+
+
 
   return (
     <>
@@ -167,7 +167,7 @@ export default function RecherchePage() {
       }}>
         <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%' }}></div>
         <div style={{ position: 'absolute', bottom: '-30px', left: '10%', width: '100px', height: '100px', background: 'rgba(255,255,255,0.08)', borderRadius: '50%' }}></div>
-        
+
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <nav aria-label="breadcrumb" style={{ marginBottom: '15px' }}>
             <ol className="breadcrumb" style={{ backgroundColor: 'transparent', padding: 0, margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -180,7 +180,7 @@ export default function RecherchePage() {
               <li className="breadcrumb-item active" style={{ color: 'white', fontSize: '13px', fontWeight: '600' }}>Recherche</li>
             </ol>
           </nav>
-          
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
             <div style={{ width: '50px', height: '50px', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <i className="fas fa-search" style={{ color: 'white', fontSize: '22px' }}></i>
@@ -208,16 +208,16 @@ export default function RecherchePage() {
 
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ fontSize: '12px', fontWeight: '600', color: '#ec4899', marginBottom: '8px', display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Catégorie</label>
-                <select 
-                  style={{ 
-                    width: '100%', 
-                    padding: '10px 12px', 
-                    border: '2px solid #fce7f3', 
-                    borderRadius: '10px', 
-                    fontSize: '14px', 
-                    outline: 'none', 
-                    cursor: 'pointer', 
-                    color: '#333', 
+                <select
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    border: '2px solid #fce7f3',
+                    borderRadius: '10px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    color: '#333',
                     background: 'white',
                     fontWeight: '500',
                     appearance: 'none',
@@ -226,27 +226,27 @@ export default function RecherchePage() {
                     backgroundPosition: 'right 12px center',
                     backgroundSize: '20px',
                     paddingRight: '40px'
-                  }} 
-                  value={selectedCategory} 
+                  }}
+                  value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                 >
                   <option value="">Toutes les catégories</option>
                   {categories.map((cat: any) => (<option key={cat._id} value={cat._id}>{cat.name}</option>))}
                 </select>
               </div>
-              
+
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ fontSize: '12px', fontWeight: '600', color: '#ec4899', marginBottom: '8px', display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Marque</label>
-                <select 
-                  style={{ 
-                    width: '100%', 
-                    padding: '10px 12px', 
-                    border: '2px solid #fce7f3', 
-                    borderRadius: '10px', 
-                    fontSize: '14px', 
-                    outline: 'none', 
-                    cursor: 'pointer', 
-                    color: '#333', 
+                <select
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    border: '2px solid #fce7f3',
+                    borderRadius: '10px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    color: '#333',
                     background: 'white',
                     fontWeight: '500',
                     appearance: 'none',
@@ -255,8 +255,8 @@ export default function RecherchePage() {
                     backgroundPosition: 'right 12px center',
                     backgroundSize: '20px',
                     paddingRight: '40px'
-                  }} 
-                  value={selectedBrand} 
+                  }}
+                  value={selectedBrand}
                   onChange={(e) => setSelectedBrand(e.target.value)}
                 >
                   <option value="">Toutes les marques</option>
@@ -283,16 +283,16 @@ export default function RecherchePage() {
 
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ fontSize: '12px', fontWeight: '600', color: '#ec4899', marginBottom: '8px', display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Trier par</label>
-                <select 
-                  style={{ 
-                    width: '100%', 
-                    padding: '10px 12px', 
-                    border: '2px solid #fce7f3', 
-                    borderRadius: '10px', 
-                    fontSize: '14px', 
-                    outline: 'none', 
-                    cursor: 'pointer', 
-                    color: '#333', 
+                <select
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    border: '2px solid #fce7f3',
+                    borderRadius: '10px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    color: '#333',
                     background: 'white',
                     fontWeight: '500',
                     appearance: 'none',
@@ -301,8 +301,8 @@ export default function RecherchePage() {
                     backgroundPosition: 'right 12px center',
                     backgroundSize: '20px',
                     paddingRight: '40px'
-                  }} 
-                  value={sortBy} 
+                  }}
+                  value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
                   <option value="">Pertinence</option>
@@ -361,8 +361,8 @@ export default function RecherchePage() {
                           {(product.discount ?? 0) > 0 && (
                             <span style={{ position: 'absolute', top: '10px', right: '10px', background: '#ec4899', color: 'white', padding: '5px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '700' }}>-{product.discount}%</span>
                           )}
-                          <button onClick={(e) => { 
-                            e.preventDefault(); 
+                          <button onClick={(e) => {
+                            e.preventDefault();
                             if (isFavorite) {
                               removeFavorite(product._id);
                             } else {
@@ -385,7 +385,7 @@ export default function RecherchePage() {
                             <span style={{ fontSize: '18px', fontWeight: '700', color: (product.discount ?? 0) > 0 ? '#16a34a' : '#ec4899' }}>{finalPrice.toFixed(3)}</span>
                             <span style={{ fontSize: '12px', color: '#666', fontWeight: '600' }}>DT</span>
                           </div>
-                          <Link 
+                          <Link
                             href={`/product/${product._id}`}
                             style={{
                               width: '100%',
@@ -400,7 +400,7 @@ export default function RecherchePage() {
                               borderRadius: '10px',
                               padding: '12px 15px',
                               cursor: (product.stock ?? 0) > 0 ? 'pointer' : 'not-allowed',
-                              fontSize: '13px',
+              fontSize: '13px',
                               fontWeight: '700',
                               boxShadow: (product.stock ?? 0) > 0 ? '0 4px 12px rgba(236, 72, 153, 0.3)' : 'none',
                               pointerEvents: (product.stock ?? 0) === 0 ? 'none' : 'auto'
@@ -422,3 +422,12 @@ export default function RecherchePage() {
     </>
   );
 }
+
+export default function RecherchePage() {
+  return (
+    <Suspense fallback={<div style={{ textAlign: 'center', padding: '100px 0' }}><div className="spinner-border" style={{ color: '#ec4899' }} role="status"></div></div>}>
+      <RechercheContent />
+    </Suspense>
+  );
+}
+
