@@ -1,4 +1,5 @@
 "use client";
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useState, useEffect } from "react";
 import StarRating from "./StarRating";
 
@@ -33,7 +34,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
     if (!token) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews/can-review/${productId}`, {
+      const res = await fetch(`${API_URL}/reviews/can-review/${productId}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -48,7 +49,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews/product/${productId}`);
+      const res = await fetch(`${API_URL}/reviews/product/${productId}`);
       const data = await res.json();
       setReviews(data);
     } catch (error) {

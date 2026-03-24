@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
@@ -33,7 +34,7 @@ export default function PromoSection() {
     setDebugInfo('Chargement en cours...');
     
     // Charger les sous-catégories pour trouver l'ID de Macarons classiques
-    fetch('http://localhost:5000/api/subcategories')
+    fetch(`${API_URL}/subcategories')
       .then(res => res.json())
       .then(subcategories => {
         const macaronsSubcategory = subcategories.find((sub: any) => 
@@ -47,7 +48,7 @@ export default function PromoSection() {
       .catch(err => console.error('Erreur chargement sous-catégories:', err));
     
     // Charger les produits
-    fetch('http://localhost:5000/api/products')
+    fetch(`${API_URL}/products')
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

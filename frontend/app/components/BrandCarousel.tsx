@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState } from 'react';
 
 interface Brand {
@@ -11,7 +12,7 @@ export default function BrandCarousel() {
   const [brands, setBrands] = useState<Brand[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/brands')
+    fetch(`${API_URL}/brands')
       .then(res => res.json())
       .then(data => setBrands(data))
       .catch(err => console.error('Erreur:', err));
@@ -148,7 +149,7 @@ export default function BrandCarousel() {
           >
             {brand.image ? (
               <img 
-                src={`http://localhost:5000${brand.image}`}
+                src={`${API_URL}${brand.image}`}
                 alt={brand.name}
                 style={{
                   maxWidth: '120px',

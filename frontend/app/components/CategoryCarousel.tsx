@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -14,7 +15,7 @@ export default function CategoryCarousel() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/categories/with-count')
+    fetch(`${API_URL}/categories/with-count')
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error('Erreur:', err));
@@ -112,7 +113,7 @@ export default function CategoryCarousel() {
               }}>
                 {category.image ? (
                   <img 
-                    src={`http://localhost:5000${category.image}`}
+                    src={`${API_URL}${category.image}`}
                     alt={category.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />

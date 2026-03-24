@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -16,8 +17,8 @@ export default function CategoryCards() {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://localhost:5000/api/categories').then(res => res.json()),
-      fetch('http://localhost:5000/api/subcategories').then(res => res.json())
+      fetch(`${API_URL}/categories').then(res => res.json()),
+      fetch(`${API_URL}/subcategories').then(res => res.json())
     ])
       .then(([categoriesData, subcategoriesData]) => {
         setCategories(categoriesData);

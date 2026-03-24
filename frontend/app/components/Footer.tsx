@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -7,7 +8,7 @@ export default function Footer() {
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/categories')
+    fetch(`${API_URL}/categories')
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error('Erreur chargement catégories:', err));

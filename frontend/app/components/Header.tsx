@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -927,7 +928,7 @@ export default function Header() {
                           src={product.image?.startsWith('http') 
                             ? product.image 
                             : product.image 
-                              ? `http://localhost:5000${product.image}` 
+                              ? `${API_URL}${product.image}` 
                               : '/img/product-placeholder.jpg'}
                           alt={product.name}
                           style={{
@@ -1312,7 +1313,7 @@ export default function Header() {
                       height: '350px'
                     }}>
                       <img 
-                        src={cat.image?.startsWith('http') ? cat.image : cat.image ? `http://localhost:5000${cat.image}` : '/img/category-patisserie.jpg'}
+                        src={cat.image?.startsWith('http') ? cat.image : cat.image ? `${API_URL}${cat.image}` : '/img/category-patisserie.jpg'}
                         alt={cat.name}
                         style={{
                           width: '100%',
