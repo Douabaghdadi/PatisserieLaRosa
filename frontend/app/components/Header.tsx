@@ -64,7 +64,9 @@ export default function Header() {
   const { favoritesCount } = useFavorites();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/categories')
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    
+    fetch(`${apiUrl}/categories`)
       .then(res => res.json())
       .then(data => {
         console.log('Categories loaded:', data);
@@ -72,7 +74,7 @@ export default function Header() {
       })
       .catch(err => console.error('Erreur chargement catégories:', err));
 
-    fetch('http://localhost:5000/api/subcategories')
+    fetch(`${apiUrl}/subcategories`)
       .then(res => res.json())
       .then(data => {
         console.log('Subcategories loaded:', data);
@@ -103,7 +105,8 @@ export default function Header() {
     const delaySearch = setTimeout(() => {
       if (searchQuery.trim().length >= 2) {
         setIsSearching(true);
-        fetch(`http://localhost:5000/api/products?search=${encodeURIComponent(searchQuery)}`)
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        fetch(`${apiUrl}/products?search=${encodeURIComponent(searchQuery)}`)
           .then(res => res.json())
           .then(data => {
             setSearchResults(data.slice(0, 6)); // Limiter à 6 résultats
