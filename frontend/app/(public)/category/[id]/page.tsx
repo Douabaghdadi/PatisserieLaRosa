@@ -78,22 +78,22 @@ export default function CategoryPage() {
       .then(r => r.json())
       .then(data => setCategory(data));
 
-    fetch(`${API_URL}/brands')
+    fetch(`${API_URL}/brands`)
       .then(r => r.json())
       .then(data => setBrands(data));
 
-    fetch(`${API_URL}/flavors')
+    fetch(`${API_URL}/flavors`)
       .then(r => r.json())
       .then(data => setFlavors(data));
 
-    fetch(`${API_URL}/subcategories')
+    fetch(`${API_URL}/subcategories`)
       .then(r => r.json())
       .then(data => {
         const filtered = data.filter((sub: Subcategory) => sub.category?._id === params.id);
         setSubcategories(filtered);
       });
 
-    fetch(`${API_URL}/products')
+    fetch(`${API_URL}/products`)
       .then(r => r.json())
       .then(data => {
         const filtered = data.filter((p: Product) => p.category?._id === params.id);

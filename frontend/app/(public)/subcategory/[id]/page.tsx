@@ -61,11 +61,11 @@ export default function SubcategoryPage() {
       .then(r => r.json())
       .then(data => setSubcategory(data));
 
-    fetch(`${API_URL}/flavors')
+    fetch(`${API_URL}/flavors`)
       .then(r => r.json())
       .then(data => setFlavors(data));
 
-    fetch(`${API_URL}/products')
+    fetch(`${API_URL}/products`)
       .then(r => r.json())
       .then(data => {
         const filtered = data.filter((p: Product) => 

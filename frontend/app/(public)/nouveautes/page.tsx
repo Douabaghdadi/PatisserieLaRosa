@@ -41,15 +41,15 @@ export default function NouveautesPage() {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
-    fetch(`${API_URL}/brands')
+    fetch(`${API_URL}/brands`)
       .then(r => r.json())
       .then(data => setBrands(data));
 
-    fetch(`${API_URL}/categories')
+    fetch(`${API_URL}/categories`)
       .then(r => r.json())
       .then(data => setCategories(data));
 
-    fetch(`${API_URL}/products')
+    fetch(`${API_URL}/products`)
       .then(r => r.json())
       .then(data => {
         // Trier par date de création (les plus récents en premier)

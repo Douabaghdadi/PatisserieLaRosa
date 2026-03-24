@@ -1,6 +1,6 @@
-import { API_URL, getImageUrl } from '@/lib/api';
 "use client";
 import { useState, useEffect } from "react";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 export default function ContactPage() {
   const [isMobile, setIsMobile] = useState(false);
@@ -25,7 +25,7 @@ export default function ContactPage() {
     setLoading(true);
     
     try {
-      const response = await fetch(`${API_URL}/contacts', {
+      const response = await fetch(`${API_URL}/contacts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -233,7 +233,7 @@ export default function ContactPage() {
                       onMouseEnter={(e) => e.currentTarget.style.background = "#ec4899"}
                       onMouseLeave={(e) => e.currentTarget.style.background = "#333"}
                     >
-                      <i className={`fab fa-${social.icon}`}></i>
+                      <i className={'fab fa-' + social.icon}></i>
                     </a>
                   ))}
                 </div>

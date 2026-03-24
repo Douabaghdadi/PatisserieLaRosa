@@ -50,11 +50,11 @@ export default function ShopPage() {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
-    fetch(`${API_URL}/brands').then(r => r.json()).then(setBrands);
-    fetch(`${API_URL}/categories').then(r => r.json()).then(setCategories);
-    fetch(`${API_URL}/flavors').then(r => r.json()).then(setFlavors);
+    fetch(`${API_URL}/brands`).then(r => r.json()).then(setBrands);
+    fetch(`${API_URL}/categories`).then(r => r.json()).then(setCategories);
+    fetch(`${API_URL}/flavors`).then(r => r.json()).then(setFlavors);
 
-    fetch(`${API_URL}/products')
+    fetch(`${API_URL}/products`)
       .then(r => r.json())
       .then(data => {
         setProducts(data);
