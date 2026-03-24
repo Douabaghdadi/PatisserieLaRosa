@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { API_URL, getImageUrl } from '@/lib/api';
 
 export default function EditFlavorPage() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function EditFlavorPage() {
 
   const fetchFlavor = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/flavors/${params.id}`);
+      const res = await fetch(`${API_URL}/api/flavors/${params.id}`);
       const data = await res.json();
       setFormData({
         name: data.name,
@@ -39,7 +40,7 @@ export default function EditFlavorPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/flavors/${params.id}`, {
+      const res = await fetch(`${API_URL}/api/flavors/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

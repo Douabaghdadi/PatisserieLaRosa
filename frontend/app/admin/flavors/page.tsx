@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
+import { API_URL, getImageUrl } from '@/lib/api';
 
 interface Flavor {
   _id: string;
@@ -29,7 +30,7 @@ export default function FlavorsPage() {
   const fetchFlavors = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/flavors');
+      const res = await fetch(`${API_URL}/api/flavors');
       const data = await res.json();
       setFlavors(data);
     } catch (error) {
@@ -44,7 +45,7 @@ export default function FlavorsPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/flavors/${id}`, {
+      const res = await fetch(`${API_URL}/api/flavors/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

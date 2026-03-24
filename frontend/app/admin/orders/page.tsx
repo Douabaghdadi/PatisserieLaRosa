@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 interface OrderItem {
   product?: {
@@ -42,7 +43,7 @@ function OrdersContent() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/orders/all", {
+      const response = await fetch(`${API_URL}/api/orders/all", {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await response.json();
@@ -55,7 +56,7 @@ function OrdersContent() {
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status: newStatus })

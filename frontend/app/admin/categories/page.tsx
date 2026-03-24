@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 interface Category {
   _id: string;
@@ -31,7 +32,7 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/categories");
+      const response = await fetch(`${API_URL}/api/categories");
       if (!response.ok) throw new Error("Erreur lors du chargement des catégories");
       const data = await response.json();
       setCategories(data);
@@ -50,7 +51,7 @@ export default function CategoriesPage() {
   const deleteCategory = async (id: string) => {
     if (confirm("Voulez-vous vraiment supprimer cette catégorie ?")) {
       try {
-        await fetch(`http://localhost:5000/api/categories/${id}`, { method: "DELETE" });
+        await fetch(`${API_URL}/api/categories/${id}`, { method: "DELETE" });
         fetchCategories();
       } catch {
         alert("Erreur lors de la suppression");
@@ -70,7 +71,7 @@ export default function CategoriesPage() {
     setEditingCategory(category);
     setFormData({ name: category.name, description: category.description || "" });
     setImageFile(null);
-    setImagePreview(category.image ? `http://localhost:5000${category.image}` : "");
+    setImagePreview(category.image ? `${API_URL.replace(/\/api$/, "")}${category.image}` : "");
     setShowModal(true);
   };
 
@@ -177,7 +178,7 @@ export default function CategoriesPage() {
                           <td>
                             <div style={{ width: '60px', height: '60px', borderRadius: '8px', overflow: 'hidden', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                               {category.image ? (
-                                <img src={`http://localhost:5000${category.image}`} alt={category.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={`${API_URL.replace(/\/api$/, "")}${category.image}`} alt={category.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               ) : (
                                 <i className="mdi mdi-image" style={{ fontSize: '24px', color: '#ccc' }}></i>
                               )}

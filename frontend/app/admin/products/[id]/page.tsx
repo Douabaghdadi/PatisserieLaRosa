@@ -4,6 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import Link from "next/link";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 export default function EditProductPage() {
   const router = useRouter();
@@ -25,20 +26,20 @@ export default function EditProductPage() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/categories")
+    fetch(`${API_URL}/api/categories")
       .then(r => r.json())
       .then(data => setCategories(data));
-    fetch("http://localhost:5000/api/subcategories")
+    fetch(`${API_URL}/api/subcategories")
       .then(r => r.json())
       .then(data => setSubcategories(data));
-    fetch("http://localhost:5000/api/brands")
+    fetch(`${API_URL}/api/brands")
       .then(r => r.json())
       .then(data => setBrands(data));
-    fetch("http://localhost:5000/api/flavors")
+    fetch(`${API_URL}/api/flavors")
       .then(r => r.json())
       .then(data => setFlavors(data));
 
-    fetch(`http://localhost:5000/api/products/${params.id}`)
+    fetch(`${API_URL}/api/products/${params.id}`)
       .then(r => r.json())
       .then(data => setFormData({
         name: data.name,
@@ -60,7 +61,7 @@ export default function EditProductPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch(`http://localhost:5000/api/products/${params.id}`, {
+    await fetch(`${API_URL}/api/products/${params.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)

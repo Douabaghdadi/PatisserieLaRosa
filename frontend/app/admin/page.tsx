@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import Link from "next/link";
 import "./dashboard.css";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 interface Order {
   _id: string;
@@ -82,9 +83,9 @@ export default function AdminPage() {
 
       // Récupérer toutes les données en parallèle
       const [ordersRes, productsRes, usersRes] = await Promise.all([
-        fetch("http://localhost:5000/api/orders/all", { headers }),
-        fetch("http://localhost:5000/api/products", { headers }),
-        fetch("http://localhost:5000/api/users", { headers })
+        fetch(`${API_URL}/api/orders/all", { headers }),
+        fetch(`${API_URL}/api/products", { headers }),
+        fetch(`${API_URL}/api/users", { headers })
       ]);
 
       const orders: Order[] = await ordersRes.json();

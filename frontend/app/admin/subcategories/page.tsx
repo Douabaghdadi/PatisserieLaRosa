@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 export default function SubcategoriesPage() {
   const [subcategories, setSubcategories] = useState([]);
@@ -19,11 +20,11 @@ export default function SubcategoriesPage() {
 
   useEffect(() => {
     fetchSubcategories();
-    fetch("http://localhost:5000/api/categories").then(r => r.json()).then(data => setCategories(data));
+    fetch(`${API_URL}/api/categories").then(r => r.json()).then(data => setCategories(data));
   }, []);
 
   const fetchSubcategories = () => {
-    fetch("http://localhost:5000/api/subcategories").then(r => r.json()).then(data => setSubcategories(data));
+    fetch(`${API_URL}/api/subcategories").then(r => r.json()).then(data => setSubcategories(data));
   };
 
   const filtered = subcategories.filter((sub: any) => {
@@ -42,7 +43,7 @@ export default function SubcategoriesPage() {
 
   const deleteSubcategory = async (id: string) => {
     if (confirm("Voulez-vous vraiment supprimer cette sous-catégorie ?")) {
-      await fetch(`http://localhost:5000/api/subcategories/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/api/subcategories/${id}`, { method: "DELETE" });
       fetchSubcategories();
     }
   };
