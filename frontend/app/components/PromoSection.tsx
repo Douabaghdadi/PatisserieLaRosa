@@ -34,7 +34,7 @@ export default function PromoSection() {
     setDebugInfo('Chargement en cours...');
     
     // Charger les sous-catégories pour trouver l'ID de Macarons classiques
-    fetch(`${API_URL}/subcategories')
+    fetch(`${API_URL}/subcategories`)
       .then(res => res.json())
       .then(subcategories => {
         const macaronsSubcategory = subcategories.find((sub: any) => 
@@ -48,7 +48,7 @@ export default function PromoSection() {
       .catch(err => console.error('Erreur chargement sous-catégories:', err));
     
     // Charger les produits
-    fetch(`${API_URL}/products')
+    fetch(`${API_URL}/products`)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

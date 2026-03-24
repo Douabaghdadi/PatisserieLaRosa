@@ -15,7 +15,7 @@ export default function CategoryCarousel() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/categories/with-count')
+    fetch(`${API_URL}/categories/with-count`)
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error('Erreur:', err));

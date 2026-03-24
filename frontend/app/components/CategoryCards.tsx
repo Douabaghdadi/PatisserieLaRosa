@@ -17,8 +17,8 @@ export default function CategoryCards() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${API_URL}/categories').then(res => res.json()),
-      fetch(`${API_URL}/subcategories').then(res => res.json())
+      fetch(`${API_URL}/categories`).then(res => res.json()),
+      fetch(`${API_URL}/subcategories`).then(res => res.json())
     ])
       .then(([categoriesData, subcategoriesData]) => {
         setCategories(categoriesData);

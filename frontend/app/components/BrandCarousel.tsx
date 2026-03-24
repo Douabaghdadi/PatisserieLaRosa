@@ -12,7 +12,7 @@ export default function BrandCarousel() {
   const [brands, setBrands] = useState<Brand[]>([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/brands')
+    fetch(`${API_URL}/brands`)
       .then(res => res.json())
       .then(data => setBrands(data))
       .catch(err => console.error('Erreur:', err));

@@ -8,7 +8,7 @@ export default function Footer() {
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/categories')
+    fetch(`${API_URL}/categories`)
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error('Erreur chargement catégories:', err));
@@ -74,7 +74,7 @@ export default function Footer() {
                     e.currentTarget.style.color = '#ec4899';
                   }}
                 >
-                  <i className={`fab fa-${social.icon}`}></i>
+                  <i className={'fab fa-' + social.icon}></i>
                 </a>
               ))}
             </div>
