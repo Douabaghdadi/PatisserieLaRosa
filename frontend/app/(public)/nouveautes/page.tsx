@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useFavorites } from '../../context/FavoritesContext';
@@ -40,15 +41,15 @@ export default function NouveautesPage() {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/brands')
+    fetch(`${API_URL}/brands')
       .then(r => r.json())
       .then(data => setBrands(data));
 
-    fetch('http://localhost:5000/api/categories')
+    fetch(`${API_URL}/categories')
       .then(r => r.json())
       .then(data => setCategories(data));
 
-    fetch('http://localhost:5000/api/products')
+    fetch(`${API_URL}/products')
       .then(r => r.json())
       .then(data => {
         // Trier par date de création (les plus récents en premier)
@@ -369,7 +370,7 @@ export default function NouveautesPage() {
                         <div style={{ position: 'relative', backgroundColor: '#f7fafc', height: '280px' }}>
                           <Link href={`/product/${product._id}`}>
                             <img 
-                              src={product.image?.startsWith('http') ? product.image : product.image ? `http://localhost:5000${product.image}` : '/img/product-placeholder.jpg'}
+                              src={getImageUrl(product.image)}
                               alt={product.name}
                               style={{ width: '100%', height: '280px', objectFit: 'contain', padding: '20px' }}
                             />

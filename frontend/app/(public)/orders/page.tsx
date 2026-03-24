@@ -1,3 +1,4 @@
+import { API_URL, getImageUrl } from '@/lib/api';
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -41,7 +42,7 @@ export default function OrdersPage() {
       return;
     }
 
-    fetch('http://localhost:5000/api/orders', {
+    fetch(`${API_URL}/orders', {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(r => r.json())

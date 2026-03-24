@@ -7,6 +7,7 @@ import CategoryCards from '../components/CategoryCards';
 import FeaturesSection from '../components/FeaturesSection';
 import QualitySection from '../components/QualitySection';
 import AnimatedSectionTitle from '../components/AnimatedSectionTitle';
+import { API_URL, getImageUrl } from '@/lib/api';
 
 interface Product {
   _id: string;
@@ -41,8 +42,8 @@ export default function Home() {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://localhost:5000/api/products').then(res => res.json()),
-      fetch('http://localhost:5000/api/categories').then(res => res.json())
+      fetch(`${API_URL}/products`).then(res => res.json()),
+      fetch(`${API_URL}/categories`).then(res => res.json())
     ])
       .then(([productsData, categoriesData]) => {
         setProducts(productsData);
@@ -366,7 +367,7 @@ export default function Home() {
                         }}>
                           <div style={{ position: 'relative', background: '#faf9f7', height: '280px' }}>
                             <Link href={`/product/${product._id}`}>
-                              <img src={product.image?.startsWith('http') ? product.image : product.image ? `http://localhost:5000${product.image}` : '/img/product-placeholder.jpg'}
+                              <img src={getImageUrl(product.image)}
                                 alt={product.name} style={{ width: '100%', height: '280px', objectFit: 'cover' }} />
                             </Link>
                             {(product.discount ?? 0) > 0 && (
@@ -535,7 +536,7 @@ export default function Home() {
                         }}>
                           <div style={{ position: 'relative', background: '#faf9f7', height: '280px' }}>
                             <Link href={`/product/${product._id}`}>
-                              <img src={product.image?.startsWith('http') ? product.image : product.image ? `http://localhost:5000${product.image}` : '/img/product-placeholder.jpg'}
+                              <img src={getImageUrl(product.image)}
                                 alt={product.name} style={{ width: '100%', height: '280px', objectFit: 'cover' }} />
                             </Link>
                             {(product.discount ?? 0) > 0 && (

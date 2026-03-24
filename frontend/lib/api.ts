@@ -1,9 +1,7 @@
-export const API_URL = 'http://localhost:5000';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-export const fetchProducts = async () => {
-  const response = await fetch(`${API_URL}/api/products`);
-  if (!response.ok) {
-    throw new Error('Erreur lors de la récupération des produits');
-  }
-  return response.json();
+export const getImageUrl = (imagePath?: string) => {
+  if (!imagePath) return '/img/product-placeholder.jpg';
+  if (imagePath.startsWith('http')) return imagePath;
+  return `${API_URL}${imagePath}`;
 };

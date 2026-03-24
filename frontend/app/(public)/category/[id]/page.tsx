@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -73,26 +74,26 @@ export default function CategoryPage() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/categories/${params.id}`)
+    fetch(`${API_URL}/categories/${params.id}`)
       .then(r => r.json())
       .then(data => setCategory(data));
 
-    fetch('http://localhost:5000/api/brands')
+    fetch(`${API_URL}/brands')
       .then(r => r.json())
       .then(data => setBrands(data));
 
-    fetch('http://localhost:5000/api/flavors')
+    fetch(`${API_URL}/flavors')
       .then(r => r.json())
       .then(data => setFlavors(data));
 
-    fetch('http://localhost:5000/api/subcategories')
+    fetch(`${API_URL}/subcategories')
       .then(r => r.json())
       .then(data => {
         const filtered = data.filter((sub: Subcategory) => sub.category?._id === params.id);
         setSubcategories(filtered);
       });
 
-    fetch('http://localhost:5000/api/products')
+    fetch(`${API_URL}/products')
       .then(r => r.json())
       .then(data => {
         const filtered = data.filter((p: Product) => p.category?._id === params.id);
@@ -530,7 +531,7 @@ export default function CategoryPage() {
                         <div style={{ position: 'relative', backgroundColor: '#fef3f8', height: '280px' }}>
                           <Link href={`/product/${product._id}`}>
                             <img 
-                              src={product.image?.startsWith('http') ? product.image : product.image ? `http://localhost:5000${product.image}` : '/img/product-placeholder.jpg'}
+                              src={getImageUrl(product.image)}
                               alt={product.name}
                               style={{ width: '100%', height: '280px', objectFit: 'contain', padding: '20px' }}
                             />

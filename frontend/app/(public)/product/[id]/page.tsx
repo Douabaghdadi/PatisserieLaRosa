@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -34,7 +35,7 @@ export default function ProductPage() {
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${params.id}`)
+    fetch(`${API_URL}/products/${params.id}`)
       .then(r => r.json())
       .then(data => {
         setProduct(data);

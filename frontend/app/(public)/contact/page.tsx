@@ -1,3 +1,4 @@
+import { API_URL, getImageUrl } from '@/lib/api';
 "use client";
 import { useState, useEffect } from "react";
 
@@ -24,7 +25,7 @@ export default function ContactPage() {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/contacts', {
+      const response = await fetch(`${API_URL}/contacts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

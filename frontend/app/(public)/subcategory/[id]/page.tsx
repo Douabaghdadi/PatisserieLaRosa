@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -56,15 +57,15 @@ export default function SubcategoryPage() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/subcategories/${params.id}`)
+    fetch(`${API_URL}/subcategories/${params.id}`)
       .then(r => r.json())
       .then(data => setSubcategory(data));
 
-    fetch('http://localhost:5000/api/flavors')
+    fetch(`${API_URL}/flavors')
       .then(r => r.json())
       .then(data => setFlavors(data));
 
-    fetch('http://localhost:5000/api/products')
+    fetch(`${API_URL}/products')
       .then(r => r.json())
       .then(data => {
         const filtered = data.filter((p: Product) => 
@@ -453,7 +454,7 @@ export default function SubcategoryPage() {
                         <div style={{ position: 'relative', backgroundColor: '#fafafa', height: '260px' }}>
                           <Link href={`/product/${product._id}`}>
                             <img 
-                              src={product.image?.startsWith('http') ? product.image : product.image ? `http://localhost:5000${product.image}` : '/img/product-placeholder.jpg'}
+                              src={getImageUrl(product.image)}
                               alt={product.name}
                               style={{ width: '100%', height: '260px', objectFit: 'contain', padding: '20px' }}
                             />

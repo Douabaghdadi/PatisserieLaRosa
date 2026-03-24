@@ -1,4 +1,5 @@
 'use client';
+import { API_URL, getImageUrl } from '@/lib/api';
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useFavorites } from '../../context/FavoritesContext';
@@ -49,11 +50,11 @@ export default function ShopPage() {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/brands').then(r => r.json()).then(setBrands);
-    fetch('http://localhost:5000/api/categories').then(r => r.json()).then(setCategories);
-    fetch('http://localhost:5000/api/flavors').then(r => r.json()).then(setFlavors);
+    fetch(`${API_URL}/brands').then(r => r.json()).then(setBrands);
+    fetch(`${API_URL}/categories').then(r => r.json()).then(setCategories);
+    fetch(`${API_URL}/flavors').then(r => r.json()).then(setFlavors);
 
-    fetch('http://localhost:5000/api/products')
+    fetch(`${API_URL}/products')
       .then(r => r.json())
       .then(data => {
         setProducts(data);
@@ -442,7 +443,7 @@ export default function ShopPage() {
                         }}>
                         <div style={{ position: 'relative', backgroundColor: '#fafafa', height: '260px' }}>
                           <Link href={`/product/${product._id}`}>
-                            <img src={product.image?.startsWith('http') ? product.image : product.image ? `http://localhost:5000${product.image}` : '/img/product-placeholder.jpg'} alt={product.name} style={{ width: '100%', height: '260px', objectFit: 'contain', padding: '20px' }} />
+                            <img src={getImageUrl(product.image)} alt={product.name} style={{ width: '100%', height: '260px', objectFit: 'contain', padding: '20px' }} />
                           </Link>
                           {product.brand?.name && (
                             <span style={{ position: 'absolute', top: '10px', left: '10px', background: '#333', color: 'white', padding: '5px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '600' }}>{product.brand.name}</span>
