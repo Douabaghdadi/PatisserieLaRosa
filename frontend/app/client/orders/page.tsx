@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 interface OrderItem {
   product: {

@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_URL } from '@/lib/api';
 
 interface User {
   _id?: string;

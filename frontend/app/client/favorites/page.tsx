@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useFavorites } from "../../context/FavoritesContext";
+import { API_URL, getImageUrl } from '@/lib/api';
 
 export default function FavoritesPage() {
   const [products, setProducts] = useState<any[]>([]);
