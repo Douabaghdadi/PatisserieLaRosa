@@ -16,7 +16,7 @@ export default function EditFlavorPage() {
 
   const fetchFlavor = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/flavors/${params.id}`);
+      const res = await fetch(`${API_URL}/flavors/${params.id}`);
       const data = await res.json();
       setFormData({
         name: data.name,
@@ -40,7 +40,7 @@ export default function EditFlavorPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/flavors/${params.id}`, {
+      const res = await fetch(`${API_URL}/flavors/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

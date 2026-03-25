@@ -28,7 +28,7 @@ export default function AdminMessagesPage() {
   const fetchContacts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/api/contacts", {
+      const response = await fetch(`${API_URL}/contacts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
@@ -45,7 +45,7 @@ export default function AdminMessagesPage() {
   const updateStatus = async (id: string, status: string) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`${API_URL}/api/contacts/${id}/status`, {
+      await fetch(`${API_URL}/contacts/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export default function AdminMessagesPage() {
     if (!confirm("Supprimer ce message ?")) return;
     try {
       const token = localStorage.getItem("token");
-      await fetch(`${API_URL}/api/contacts/${id}`, {
+      await fetch(`${API_URL}/contacts/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });

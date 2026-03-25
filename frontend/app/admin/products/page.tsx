@@ -41,7 +41,7 @@ export default function ProductsPage() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/api/products");
+      const response = await fetch(`${API_URL}/products`);
       if (!response.ok) throw new Error("Erreur");
       setProducts(await response.json());
     } catch (err: any) {
@@ -52,17 +52,17 @@ export default function ProductsPage() {
   };
 
   const fetchCategories = async () => {
-    const res = await fetch(`${API_URL}/api/categories");
+    const res = await fetch(`${API_URL}/categories`);
     if (res.ok) setCategories(await res.json());
   };
 
   const fetchSubcategories = async () => {
-    const res = await fetch(`${API_URL}/api/subcategories");
+    const res = await fetch(`${API_URL}/subcategories`);
     if (res.ok) setSubcategories(await res.json());
   };
 
   const fetchFlavors = async () => {
-    const res = await fetch(`${API_URL}/api/flavors");
+    const res = await fetch(`${API_URL}/flavors`);
     if (res.ok) setFlavors(await res.json());
   };
 
@@ -88,14 +88,14 @@ export default function ProductsPage() {
 
   const deleteProduct = async (id: string) => {
     if (confirm("Supprimer ce produit ?")) {
-      await fetch(`${API_URL}/api/products/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/products/${id}`, { method: "DELETE" });
       fetchProducts();
     }
   };
 
   const toggleStock = async (product: any) => {
     const newStock = product.stock > 0 ? 0 : (product.previousStock > 0 ? product.previousStock : 10);
-    await fetch(`${API_URL}/api/products/${product._id}`, {
+    await fetch(`${API_URL}/products/${product._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...product, stock: newStock, previousStock: product.stock, category: product.category?._id, subcategories: product.subcategories?.map((s: any) => s._id) })

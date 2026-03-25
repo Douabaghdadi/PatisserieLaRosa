@@ -21,7 +21,7 @@ export default function ProfilePage() {
 
   const fetchUserDetails = async (id: string) => {
     try {
-      const res = await fetch(`${API_URL}/api/users/${id}`);
+      const res = await fetch(`${API_URL}/users/${id}`);
       if (res.ok) {
         const data = await res.json();
         setUser(data);

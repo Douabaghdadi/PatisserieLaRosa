@@ -27,16 +27,16 @@ export default function NewProductPage() {
   const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/categories")
+    fetch(`${API_URL}/categories`)
       .then(r => r.json())
       .then(data => setCategories(data));
-    fetch(`${API_URL}/api/subcategories")
+    fetch(`${API_URL}/subcategories`)
       .then(r => r.json())
       .then(data => setSubcategories(data));
-    fetch(`${API_URL}/api/brands")
+    fetch(`${API_URL}/brands`)
       .then(r => r.json())
       .then(data => setBrands(data));
-    fetch(`${API_URL}/api/flavors")
+    fetch(`${API_URL}/flavors`)
       .then(r => r.json())
       .then(data => setFlavors(data));
   }, []);
@@ -71,7 +71,7 @@ export default function NewProductPage() {
     if (imageFile) {
       formDataToSend.append("image", imageFile);
     }
-    await fetch(`${API_URL}/api/products", {
+    await fetch(`${API_URL}/products`, {
       method: "POST",
       body: formDataToSend
     });

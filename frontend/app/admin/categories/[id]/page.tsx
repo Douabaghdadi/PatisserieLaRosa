@@ -16,7 +16,7 @@ export default function EditCategoryPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/categories/${params.id}`)
+    fetch(`${API_URL}/categories/${params.id}`)
       .then(r => r.json())
       .then(data => {
         setFormData({ name: data.name, description: data.description || "" });
@@ -50,7 +50,7 @@ export default function EditCategoryPage() {
         formDataToSend.append("image", imageFile);
       }
 
-      const response = await fetch(`${API_URL}/api/categories/${params.id}`, {
+      const response = await fetch(`${API_URL}/categories/${params.id}`, {
         method: "PUT",
         body: formDataToSend
       });

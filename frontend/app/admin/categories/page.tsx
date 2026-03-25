@@ -32,7 +32,7 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/api/categories");
+      const response = await fetch(`${API_URL}/categories`);
       if (!response.ok) throw new Error("Erreur lors du chargement des catégories");
       const data = await response.json();
       setCategories(data);
@@ -51,7 +51,7 @@ export default function CategoriesPage() {
   const deleteCategory = async (id: string) => {
     if (confirm("Voulez-vous vraiment supprimer cette catégorie ?")) {
       try {
-        await fetch(`${API_URL}/api/categories/${id}`, { method: "DELETE" });
+        await fetch(`${API_URL}/categories/${id}`, { method: "DELETE" });
         fetchCategories();
       } catch {
         alert("Erreur lors de la suppression");
@@ -94,8 +94,8 @@ export default function CategoriesPage() {
       if (imageFile) formDataToSend.append("image", imageFile);
 
       const url = editingCategory 
-        ? `http://localhost:5000/api/categories/${editingCategory._id}`
-        : "http://localhost:5000/api/categories";
+        ? `${API_URL}/categories/${editingCategory._id}`
+        : `${API_URL}/categories`;
       
       await fetch(url, {
         method: editingCategory ? "PUT" : "POST",

@@ -37,7 +37,7 @@ export default function NewCategoryPage() {
         formDataToSend.append("image", imageFile);
       }
 
-      const response = await fetch(`${API_URL}/api/categories", {
+      const response = await fetch(`${API_URL}/categories`, {
         method: "POST",
         body: formDataToSend
       });

@@ -17,11 +17,11 @@ export default function EditSubcategoryPage() {
   });
 
   useEffect(() => {
-    fetch(`${API_URL}/api/categories")
+    fetch(`${API_URL}/categories`)
       .then(r => r.json())
       .then(data => setCategories(data));
 
-    fetch(`${API_URL}/api/subcategories/${params.id}`)
+    fetch(`${API_URL}/subcategories/${params.id}`)
       .then(r => r.json())
       .then(data => setFormData({
         name: data.name,
@@ -32,7 +32,7 @@ export default function EditSubcategoryPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch(`${API_URL}/api/subcategories/${params.id}`, {
+    await fetch(`${API_URL}/subcategories/${params.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)

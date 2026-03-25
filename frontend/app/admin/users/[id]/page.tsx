@@ -17,7 +17,7 @@ export default function EditUserPage() {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
   const fetchUser = async () => {
-    const res = await fetch(`${API_URL}/api/users/${params.id}`);
+    const res = await fetch(`${API_URL}/users/${params.id}`);
     const data = await res.json();
     setFormData({ name: data.name, email: data.email, role: data.role, photo: data.photo || "" });
   };
@@ -38,7 +38,7 @@ export default function EditUserPage() {
     if (photoFile) {
       data.append("photo", photoFile);
     }
-    const res = await fetch(`${API_URL}/api/users/${params.id}`, {
+    const res = await fetch(`${API_URL}/users/${params.id}`, {
       method: "PUT",
       body: data
     });

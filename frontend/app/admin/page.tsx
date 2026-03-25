@@ -83,9 +83,9 @@ export default function AdminPage() {
 
       // Récupérer toutes les données en parallèle
       const [ordersRes, productsRes, usersRes] = await Promise.all([
-        fetch(`${API_URL}/api/orders/all", { headers }),
-        fetch(`${API_URL}/api/products", { headers }),
-        fetch(`${API_URL}/api/users", { headers })
+        fetch(`${API_URL}/orders/all`, { headers }),
+        fetch(`${API_URL}/products`, { headers }),
+        fetch(`${API_URL}/users`, { headers })
       ]);
 
       const orders: Order[] = await ordersRes.json();

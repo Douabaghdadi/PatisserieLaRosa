@@ -73,7 +73,7 @@ function SearchContent() {
 
     try {
       // Recherche produits
-      const prodRes = await fetch(`${API_URL}/api/products");
+      const prodRes = await fetch(`${API_URL}/products`);
       if (prodRes.ok) {
         const prodData = await prodRes.json();
         setProducts(prodData.filter((p: Product) => 
@@ -83,7 +83,7 @@ function SearchContent() {
       }
 
       // Recherche commandes (admin endpoint)
-      const orderRes = await fetch(`${API_URL}/api/orders/all", { headers });
+      const orderRes = await fetch(`${API_URL}/orders/all`, { headers });
       if (orderRes.ok) {
         const orderData = await orderRes.json();
         setOrders(orderData.filter((o: Order) => {
@@ -97,7 +97,7 @@ function SearchContent() {
       }
 
       // Recherche utilisateurs
-      const userRes = await fetch(`${API_URL}/api/users", { headers });
+      const userRes = await fetch(`${API_URL}/users`, { headers });
       if (userRes.ok) {
         const userData = await userRes.json();
         setUsers(userData.filter((u: User) => 
@@ -107,7 +107,7 @@ function SearchContent() {
       }
 
       // Recherche messages
-      const contactRes = await fetch(`${API_URL}/api/contacts", { headers });
+      const contactRes = await fetch(`${API_URL}/contacts`, { headers });
       if (contactRes.ok) {
         const contactData = await contactRes.json();
         setContacts(contactData.filter((c: Contact) => 

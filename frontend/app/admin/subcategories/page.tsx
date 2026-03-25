@@ -20,11 +20,11 @@ export default function SubcategoriesPage() {
 
   useEffect(() => {
     fetchSubcategories();
-    fetch(`${API_URL}/api/categories").then(r => r.json()).then(data => setCategories(data));
+    fetch(`${API_URL}/categories`).then(r => r.json()).then(data => setCategories(data));
   }, []);
 
   const fetchSubcategories = () => {
-    fetch(`${API_URL}/api/subcategories").then(r => r.json()).then(data => setSubcategories(data));
+    fetch(`${API_URL}/subcategories`).then(r => r.json()).then(data => setSubcategories(data));
   };
 
   const filtered = subcategories.filter((sub: any) => {
@@ -43,7 +43,7 @@ export default function SubcategoriesPage() {
 
   const deleteSubcategory = async (id: string) => {
     if (confirm("Voulez-vous vraiment supprimer cette sous-catégorie ?")) {
-      await fetch(`${API_URL}/api/subcategories/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/subcategories/${id}`, { method: "DELETE" });
       fetchSubcategories();
     }
   };
@@ -66,8 +66,8 @@ export default function SubcategoriesPage() {
     
     try {
       const url = editingSubcategory 
-        ? `http://localhost:5000/api/subcategories/${editingSubcategory._id}`
-        : "http://localhost:5000/api/subcategories";
+        ? `${API_URL}/subcategories/${editingSubcategory._id}`
+        : `${API_URL}/subcategories`;
       
       await fetch(url, {
         method: editingSubcategory ? "PUT" : "POST",

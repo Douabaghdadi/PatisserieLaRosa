@@ -16,14 +16,14 @@ export default function NewSubcategoryPage() {
   });
 
   useEffect(() => {
-    fetch(`${API_URL}/api/categories")
+    fetch(`${API_URL}/categories`)
       .then(r => r.json())
       .then(data => setCategories(data));
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch(`${API_URL}/api/subcategories", {
+    await fetch(`${API_URL}/subcategories`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)

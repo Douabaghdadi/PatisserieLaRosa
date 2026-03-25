@@ -43,7 +43,7 @@ function OrdersContent() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/api/orders/all", {
+      const response = await fetch(`${API_URL}/orders/all`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await response.json();
@@ -56,7 +56,7 @@ function OrdersContent() {
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
+      const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status: newStatus })

@@ -30,7 +30,7 @@ export default function FlavorsPage() {
   const fetchFlavors = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/api/flavors');
+      const res = await fetch(`${API_URL}/flavors`);
       const data = await res.json();
       setFlavors(data);
     } catch (error) {
@@ -45,7 +45,7 @@ export default function FlavorsPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/flavors/${id}`, {
+      const res = await fetch(`${API_URL}/flavors/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -79,8 +79,8 @@ export default function FlavorsPage() {
     try {
       const token = localStorage.getItem('token');
       const url = editingFlavor 
-        ? `http://localhost:5000/api/flavors/${editingFlavor._id}`
-        : 'http://localhost:5000/api/flavors';
+        ? `${API_URL}/flavors/${editingFlavor._id}`
+        : `${API_URL}/flavors`;
       
       const res = await fetch(url, {
         method: editingFlavor ? 'PUT' : 'POST',

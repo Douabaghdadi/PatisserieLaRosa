@@ -26,20 +26,20 @@ export default function EditProductPage() {
   });
 
   useEffect(() => {
-    fetch(`${API_URL}/api/categories")
+    fetch(`${API_URL}/categories`)
       .then(r => r.json())
       .then(data => setCategories(data));
-    fetch(`${API_URL}/api/subcategories")
+    fetch(`${API_URL}/subcategories`)
       .then(r => r.json())
       .then(data => setSubcategories(data));
-    fetch(`${API_URL}/api/brands")
+    fetch(`${API_URL}/brands`)
       .then(r => r.json())
       .then(data => setBrands(data));
-    fetch(`${API_URL}/api/flavors")
+    fetch(`${API_URL}/flavors`)
       .then(r => r.json())
       .then(data => setFlavors(data));
 
-    fetch(`${API_URL}/api/products/${params.id}`)
+    fetch(`${API_URL}/products/${params.id}`)
       .then(r => r.json())
       .then(data => setFormData({
         name: data.name,
@@ -61,7 +61,7 @@ export default function EditProductPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch(`${API_URL}/api/products/${params.id}`, {
+    await fetch(`${API_URL}/products/${params.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
