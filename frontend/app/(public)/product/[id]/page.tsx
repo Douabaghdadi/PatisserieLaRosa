@@ -119,7 +119,7 @@ export default function ProductPage() {
                 overflow: 'hidden'
               }}>
                 <img 
-                  src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`) : '/img/product-placeholder.jpg'} 
+                  src={getImageUrl(product.image)} 
                   style={{width: '100%', height: '100%', objectFit: 'cover'}} 
                   alt={product.name} 
                 />

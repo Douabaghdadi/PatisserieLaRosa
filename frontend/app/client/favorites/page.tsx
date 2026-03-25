@@ -17,7 +17,7 @@ export default function FavoritesPage() {
       }
 
       try {
-        const res = await fetch("http://localhost:5000/api/favorites", {
+        const res = await fetch(`${API_URL}/favorites`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -131,7 +131,7 @@ export default function FavoritesPage() {
             const finalPrice = product.discount > 0
               ? (product.price * (1 - product.discount / 100)).toFixed(3)
               : product.price.toFixed(3);
-            const imgSrc = product.image?.startsWith('http') ? product.image : `http://localhost:5000${product.image}`;
+            const imgSrc = getImageUrl(product.image);
 
             return (
               <div 

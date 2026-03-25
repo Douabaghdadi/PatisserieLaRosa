@@ -60,7 +60,7 @@ export default function ClientProfile() {
     setSaving(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/auth/update-profile", {
+      const response = await fetch(`${API_URL}/auth/update-profile`, {
         method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...formData, profileImage })
       });
@@ -81,7 +81,7 @@ export default function ClientProfile() {
     setSaving(true);
     try {
       const token = localStorage.getItem("token");
-      await fetch("http://localhost:5000/api/auth/change-password", {
+      await fetch(`${API_URL}/auth/change-password`, {
         method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ currentPassword: passwordData.currentPassword, newPassword: passwordData.newPassword })
       });

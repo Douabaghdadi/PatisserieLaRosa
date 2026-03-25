@@ -65,7 +65,7 @@ export default function Header() {
   const { favoritesCount } = useFavorites();
 
   useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const apiUrl = API_URL;
     
     fetch(`${apiUrl}/categories`)
       .then(res => res.json())
@@ -106,7 +106,7 @@ export default function Header() {
     const delaySearch = setTimeout(() => {
       if (searchQuery.trim().length >= 2) {
         setIsSearching(true);
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const apiUrl = API_URL;
         fetch(`${apiUrl}/products?search=${encodeURIComponent(searchQuery)}`)
           .then(res => res.json())
           .then(data => {
