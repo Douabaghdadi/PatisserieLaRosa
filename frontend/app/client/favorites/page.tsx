@@ -58,13 +58,13 @@ export default function FavoritesPage() {
         <div style={{
           width: "50px",
           height: "50px",
-          background: "linear-gradient(135deg, #c53030 0%, #e53e3e 100%)",
+          background: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
           borderRadius: "12px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           margin: "0 auto 12px",
-          boxShadow: "0 4px 15px rgba(197,48,48,0.25)"
+          boxShadow: "0 4px 15px rgba(236,72,153,0.25)"
         }}>
           <i className="fas fa-heart" style={{ fontSize: "22px", color: "white" }}></i>
         </div>
@@ -109,13 +109,13 @@ export default function FavoritesPage() {
               alignItems: "center",
               gap: "8px",
               padding: "12px 25px",
-              background: "linear-gradient(135deg, #c53030 0%, #e53e3e 100%)",
+              background: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
               color: "white",
               textDecoration: "none",
               borderRadius: "10px",
               fontSize: "14px",
               fontWeight: "600",
-              boxShadow: "0 6px 20px rgba(197,48,48,0.25)"
+              boxShadow: "0 6px 20px rgba(236,72,153,0.25)"
             }}
           >
             <i className="fas fa-shopping-bag"></i>
@@ -175,7 +175,7 @@ export default function FavoritesPage() {
                     transition: "all 0.3s"
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "#c53030";
+                    e.currentTarget.style.background = "#ec4899";
                     e.currentTarget.style.color = "white";
                   }}
                   onMouseLeave={(e) => {
@@ -193,7 +193,7 @@ export default function FavoritesPage() {
                     position: "absolute",
                     top: "12px",
                     left: "12px",
-                    background: "linear-gradient(135deg, #c53030 0%, #e53e3e 100%)",
+                    background: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
                     color: "white",
                     padding: "5px 12px",
                     borderRadius: "20px",
@@ -286,7 +286,7 @@ export default function FavoritesPage() {
                         <span style={{
                           fontSize: "18px",
                           fontWeight: "700",
-                          color: "#c53030"
+                          color: "#ec4899"
                         }}>
                           {finalPrice} DT
                         </span>
@@ -312,11 +312,11 @@ export default function FavoritesPage() {
                       width: "6px",
                       height: "6px",
                       borderRadius: "50%",
-                      background: product.stock > 0 ? "#38a169" : "#c53030"
+                      background: product.stock > 0 ? "#38a169" : "#ec4899"
                     }}></div>
                     <span style={{
                       fontSize: "12px",
-                      color: product.stock > 0 ? "#38a169" : "#c53030",
+                      color: product.stock > 0 ? "#38a169" : "#ec4899",
                       fontWeight: "500"
                     }}>
                       {product.stock > 0 ? `En stock (${product.stock})` : "Rupture de stock"}
