@@ -69,14 +69,6 @@ export default function ClientDashboard() {
 
   const dashboardCards: DashboardCard[] = [
     {
-      title: "Mes commandes",
-      subtitle: "Suivez l'état de toutes vos commandes",
-      icon: "📦",
-      link: "/client/orders",
-      color: "#1a365d",
-      bgGradient: "linear-gradient(135deg, #1a365d 0%, #2c5282 100%)"
-    },
-    {
       title: "Mes favoris",
       subtitle: "Retrouvez tous vos produits favoris",
       icon: "❤️",
