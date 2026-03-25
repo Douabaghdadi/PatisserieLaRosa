@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Header from "../components/Header";
+import { API_URL } from '@/lib/api';
 
 const FacebookLogin = dynamic(() => import("../components/FacebookLogin"), {
   ssr: false,
@@ -27,7 +28,7 @@ function LoginContent() {
 
   const handleFacebookCallback = async (code: string) => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/facebook", {
+      const res = await fetch(`${API_URL}/auth/facebook`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code })
@@ -47,7 +48,7 @@ function LoginContent() {
 
   const handleGoogleCallback = async (code: string) => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/google", {
+      const res = await fetch(`${API_URL}/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code })
@@ -82,7 +83,7 @@ function LoginContent() {
     e.preventDefault();
     setError("");
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
