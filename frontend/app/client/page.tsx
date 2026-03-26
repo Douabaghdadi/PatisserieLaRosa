@@ -134,7 +134,7 @@ export default function ClientDashboard() {
 
       {/* Dashboard Cards Grid */}
       <div className="container pb-5">
-        <div className="row g-4">
+        <div className="row g-4 justify-content-center">
           {dashboardCards.map((card, index) => (
             <div key={index} className="col-md-6 col-lg-4">
               <Link href={card.link} style={{ textDecoration: "none" }}>

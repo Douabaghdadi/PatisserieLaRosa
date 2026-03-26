@@ -81,8 +81,10 @@ exports.facebookLogin = async (req, res) => {
       return res.status(400).json({ error: 'Code d\'autorisation manquant' });
     }
     
+    const redirectUri = `${process.env.FRONTEND_URL}/login`;
+    
     // Échanger le code contre un token d'accès
-    const tokenUrl = `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&redirect_uri=${encodeURIComponent('http://localhost:3000/login')}&code=${code}`;
+    const tokenUrl = `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&redirect_uri=${encodeURIComponent(redirectUri)}&code=${code}`;
     
     https.get(tokenUrl, (tokenResponse) => {
       let tokenData = '';
@@ -182,6 +184,8 @@ exports.googleLogin = async (req, res) => {
       return res.status(400).json({ error: 'Code d\'autorisation manquant' });
     }
     
+    const redirectUri = `${process.env.FRONTEND_URL}/login`;
+    
     // Échanger le code contre un token d'accès
     const tokenUrl = `https://oauth2.googleapis.com/token`;
     const tokenData = {
@@ -189,7 +193,7 @@ exports.googleLogin = async (req, res) => {
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       code: code,
       grant_type: 'authorization_code',
-      redirect_uri: 'http://localhost:3000/login'
+      redirect_uri: redirectUri
     };
     
     const tokenResponse = await fetch(tokenUrl, {

@@ -7,7 +7,8 @@ interface FacebookLoginProps {
 
 export default function FacebookLogin({ onSuccess, onError }: FacebookLoginProps) {
   const handleFacebookLogin = () => {
-    const facebookAuthUrl = `https://www.facebook.com/v18.0/dialog/oauth?client_id=1770752150168884&redirect_uri=${encodeURIComponent('http://localhost:3000/login')}&scope=email&response_type=code`;
+    const redirectUri = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const facebookAuthUrl = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}&redirect_uri=${encodeURIComponent(`${redirectUri}/login`)}&scope=email&response_type=code`;
     window.location.href = facebookAuthUrl;
   };
 
