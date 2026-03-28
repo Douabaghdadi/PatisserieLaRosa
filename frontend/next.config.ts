@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Force rebuild with OAuth env vars - 2026-03-28
 };
 
 export default nextConfig;
