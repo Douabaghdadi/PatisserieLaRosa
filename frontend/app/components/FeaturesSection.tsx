@@ -68,7 +68,7 @@ export default function FeaturesSection() {
 
           {/* Contenu à droite */}
           <div 
-            className="col-lg-6"
+            className="col-lg-6 features-content"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateX(0)' : 'translateX(50px)',
@@ -77,7 +77,7 @@ export default function FeaturesSection() {
           >
             <div style={{ paddingLeft: '40px' }}>
               {/* Titre principal */}
-              <h2 style={{
+              <h2 className="features-title" style={{
                 fontSize: '2.8rem',
                 fontWeight: '300',
                 color: '#2c1810',
@@ -89,7 +89,7 @@ export default function FeaturesSection() {
               </h2>
 
               {/* Sous-titre */}
-              <p style={{
+              <p className="features-subtitle" style={{
                 fontSize: '1rem',
                 color: '#666',
                 marginBottom: '50px',

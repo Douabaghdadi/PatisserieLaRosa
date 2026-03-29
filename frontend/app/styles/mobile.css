@@ -1,5 +1,23 @@
 /* Styles responsive pour mobile */
 
+/* Section Features - Correction du padding sur mobile */
+@media (max-width: 768px) {
+  .features-content > div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .features-title {
+    font-size: 2rem !important;
+    text-align: center !important;
+  }
+
+  .features-subtitle {
+    text-align: center !important;
+    margin-bottom: 30px !important;
+  }
+}
+
 /* Hero Banner - Plus grand sur mobile */
 @media (max-width: 768px) {
   .hero-banner {
