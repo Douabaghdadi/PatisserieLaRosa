@@ -39,17 +39,28 @@
   }
 
   .product-card {
-    min-width: 250px !important;
-    max-width: 250px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
   }
 
   .product-image {
-    height: 220px !important;
+    height: 250px !important;
+  }
+
+  .product-image img {
+    height: 250px !important;
+    object-fit: cover !important;
+  }
+
+  .product-card > div:last-child {
+    padding: 20px 15px !important;
   }
 
   .product-title {
     font-size: 14px !important;
-    height: 40px !important;
+    height: auto !important;
+    min-height: 40px !important;
+    margin-bottom: 10px !important;
   }
 
   .product-price {
