@@ -3,6 +3,7 @@ import { API_URL, getImageUrl } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import '../styles/mobile.css';
 
 export default function Footer() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -15,7 +16,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer style={{
+    <footer className="footer" style={{
       background: '#1a1a1a',
       color: 'white',
       paddingTop: '40px'
@@ -24,7 +25,7 @@ export default function Footer() {
       <div className="container">
         <div className="row g-4">
           {/* Brand */}
-          <div className="col-lg-4 col-md-6">
+          <div className="col-lg-4 col-md-6 col-12 footer-brand">
             <div className="mb-3">
               <Image 
                 src="/img/logo-la-rosa.png" 
@@ -37,11 +38,11 @@ export default function Footer() {
                 }}
               />
             </div>
-            <p style={{color: 'rgba(255,255,255,0.6)', lineHeight: '1.6', marginBottom: '18px', fontSize: '13px'}}>
+            <p className="footer-description" style={{color: 'rgba(255,255,255,0.6)', lineHeight: '1.6', marginBottom: '18px', fontSize: '13px'}}>
               Votre pâtisserie artisanale en Tunisie. Gâteaux, pâtisseries françaises, 
               glaces et macarons de qualité supérieure.
             </p>
-            <div className="d-flex gap-2">
+            <div className="footer-social d-flex gap-2">
               {[
                 { icon: 'facebook-f', url: 'https://www.facebook.com/LaR0sa' },
                 { icon: 'instagram', url: 'https://www.instagram.com/larosa.korba' },
@@ -81,8 +82,8 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="col-lg-2 col-md-6">
-            <h5 style={{fontWeight: '600', marginBottom: '15px', color: 'white', fontSize: '15px'}}>Liens Rapides</h5>
+          <div className="col-lg-2 col-md-6 col-6 footer-links">
+            <h5 className="footer-title" style={{fontWeight: '600', marginBottom: '15px', color: 'white', fontSize: '15px'}}>Liens Rapides</h5>
             <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
               {[
                 { name: 'Accueil', href: '/' },
@@ -117,8 +118,8 @@ export default function Footer() {
           </div>
 
           {/* Categories */}
-          <div className="col-lg-2 col-md-6">
-            <h5 style={{fontWeight: '600', marginBottom: '15px', color: 'white', fontSize: '15px'}}>Catégories</h5>
+          <div className="col-lg-2 col-md-6 col-6 footer-categories">
+            <h5 className="footer-title" style={{fontWeight: '600', marginBottom: '15px', color: 'white', fontSize: '15px'}}>Catégories</h5>
             <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
               {categories.slice(0, 5).map((cat) => (
                 <li key={cat._id} style={{marginBottom: '8px'}}>
@@ -146,8 +147,8 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="col-lg-4 col-md-6">
-            <h5 style={{fontWeight: '600', marginBottom: '15px', color: 'white', fontSize: '15px'}}>Contact</h5>
+          <div className="col-lg-4 col-md-6 col-12 footer-contact">
+            <h5 className="footer-title" style={{fontWeight: '600', marginBottom: '15px', color: 'white', fontSize: '15px'}}>Contact</h5>
             <div style={{marginBottom: '15px'}}>
               <div className="d-flex align-items-start gap-3 mb-2">
                 <div style={{
