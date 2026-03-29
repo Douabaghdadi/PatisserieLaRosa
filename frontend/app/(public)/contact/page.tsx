@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { API_URL, getImageUrl } from '@/lib/api';
+import '../../styles/mobile.css';
 
 export default function ContactPage() {
   const [isMobile, setIsMobile] = useState(false);
@@ -48,7 +49,7 @@ export default function ContactPage() {
   return (
     <div style={{ backgroundColor: "#fafafa", minHeight: "100vh", paddingBottom: "80px" }}>
       {/* Hero Section - Rose moderne */}
-      <div style={{ 
+      <div className="contact-hero" style={{ 
         background: "linear-gradient(135deg, #ec4899 0%, #f472b6 100%)", 
         padding: "60px 0 50px", 
         marginBottom: "50px",
@@ -85,10 +86,10 @@ export default function ContactPage() {
               Support Client
             </span>
           </span>
-          <h1 style={{ fontSize: "2.5rem", fontWeight: "700", color: "white", marginBottom: "12px", letterSpacing: "-0.5px" }}>
+          <h1 className="contact-hero-title" style={{ fontSize: "2.5rem", fontWeight: "700", color: "white", marginBottom: "12px", letterSpacing: "-0.5px" }}>
             Contactez-nous
           </h1>
-          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", maxWidth: "600px", margin: "0 auto", fontWeight: "400" }}>
+          <p className="contact-hero-text" style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", maxWidth: "600px", margin: "0 auto", fontWeight: "400" }}>
             Une question sur nos produits ? Notre équipe est là pour vous aider.
           </p>
         </div>
@@ -97,8 +98,8 @@ export default function ContactPage() {
       <div className="container">
         <div className="row g-5">
           {/* Informations de contact */}
-          <div className="col-lg-4">
-            <div style={{ 
+          <div className="col-lg-4 col-12 contact-info-col">
+            <div className="contact-info-card" style={{ 
               backgroundColor: "white", 
               borderRadius: "16px", 
               padding: isMobile ? "25px 20px" : "35px", 
@@ -242,8 +243,8 @@ export default function ContactPage() {
           </div>
 
           {/* Formulaire de contact */}
-          <div className="col-lg-8">
-            <div style={{ 
+          <div className="col-lg-8 col-12 contact-form-col">
+            <div className="contact-form-card" style={{ 
               backgroundColor: "white", 
               borderRadius: "16px", 
               padding: "35px", 

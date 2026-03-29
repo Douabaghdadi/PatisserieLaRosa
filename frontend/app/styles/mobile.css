@@ -189,3 +189,50 @@
     padding-right: 15px !important;
   }
 }
+
+/* Page Contact - Responsive */
+@media (max-width: 768px) {
+  .contact-hero {
+    padding: 40px 0 35px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .contact-hero-title {
+    font-size: 2rem !important;
+  }
+
+  .contact-hero-text {
+    font-size: 14px !important;
+    padding: 0 15px !important;
+  }
+
+  .contact-info-col,
+  .contact-form-col {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  .contact-info-card {
+    padding: 25px 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .contact-info-card h3 {
+    font-size: 18px !important;
+    margin-bottom: 25px !important;
+  }
+
+  .contact-form-card {
+    padding: 25px 20px !important;
+  }
+
+  .contact-form-card h3 {
+    font-size: 18px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .contact-form-card form button {
+    width: 100% !important;
+    padding: 14px 20px !important;
+  }
+}
