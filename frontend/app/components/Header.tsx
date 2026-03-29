@@ -1370,51 +1370,82 @@ export default function Header() {
         background: 'white',
         zIndex: 1025,
         overflowY: 'auto',
-        padding: '20px'
+        padding: '0'
       }}>
         {/* Navigation principale */}
-        <div style={{ marginBottom: '30px' }}>
+        <div style={{ 
+          borderBottom: '1px solid #f0f0f0',
+          padding: '20px'
+        }}>
           <Link 
             href="/" 
             onClick={() => setShowMobileMenu(false)}
             style={{
-              display: 'block',
-              padding: '15px 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '15px',
+              padding: '15px 10px',
               color: '#1a1a1a',
               fontSize: '16px',
               fontWeight: '500',
               textDecoration: 'none',
-              borderBottom: '1px solid #f0f0f0'
+              borderRadius: '8px',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#fdf2f8';
+              e.currentTarget.style.color = '#ec4899';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#1a1a1a';
             }}
           >
+            <i className="fas fa-home" style={{ fontSize: '18px', width: '20px' }}></i>
             Accueil
           </Link>
           <Link 
             href="/shop" 
             onClick={() => setShowMobileMenu(false)}
             style={{
-              display: 'block',
-              padding: '15px 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '15px',
+              padding: '15px 10px',
               color: '#1a1a1a',
               fontSize: '16px',
               fontWeight: '500',
               textDecoration: 'none',
-              borderBottom: '1px solid #f0f0f0'
+              borderRadius: '8px',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#fdf2f8';
+              e.currentTarget.style.color = '#ec4899';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#1a1a1a';
             }}
           >
+            <i className="fas fa-shopping-bag" style={{ fontSize: '18px', width: '20px' }}></i>
             Boutique
           </Link>
         </div>
 
         {/* Catégories */}
-        <div style={{ marginBottom: '30px' }}>
+        <div style={{ 
+          padding: '20px',
+          borderBottom: '1px solid #f0f0f0'
+        }}>
           <h3 style={{
-            fontSize: '18px',
-            fontWeight: '600',
+            fontSize: '14px',
+            fontWeight: '700',
             color: '#ec4899',
             marginBottom: '15px',
             textTransform: 'uppercase',
-            letterSpacing: '1px'
+            letterSpacing: '1.5px',
+            paddingLeft: '10px'
           }}>
             Catégories
           </h3>
@@ -1424,110 +1455,183 @@ export default function Header() {
               href={`/category/${cat._id}`}
               onClick={() => setShowMobileMenu(false)}
               style={{
-                display: 'block',
-                padding: '12px 0',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '15px',
+                padding: '12px 10px',
                 color: '#1a1a1a',
                 fontSize: '15px',
                 textDecoration: 'none',
-                borderBottom: '1px solid #f0f0f0'
+                borderRadius: '8px',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#fdf2f8';
+                e.currentTarget.style.color = '#ec4899';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#1a1a1a';
               }}
             >
+              <i className="fas fa-chevron-right" style={{ fontSize: '12px', width: '20px', color: '#ec4899' }}></i>
               {cat.name}
             </Link>
           ))}
         </div>
 
-        {/* Magasins */}
-        <div style={{ marginBottom: '30px' }}>
+        {/* Magasins et Contact */}
+        <div style={{ 
+          padding: '20px',
+          borderBottom: '1px solid #f0f0f0'
+        }}>
           <Link 
             href="/magasins" 
             onClick={() => setShowMobileMenu(false)}
             style={{
-              display: 'block',
-              padding: '15px 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '15px',
+              padding: '15px 10px',
               color: '#1a1a1a',
               fontSize: '16px',
               fontWeight: '500',
               textDecoration: 'none',
-              borderBottom: '1px solid #f0f0f0'
+              borderRadius: '8px',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#fdf2f8';
+              e.currentTarget.style.color = '#ec4899';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#1a1a1a';
             }}
           >
+            <i className="fas fa-map-marker-alt" style={{ fontSize: '18px', width: '20px' }}></i>
             Nos Magasins
           </Link>
           <Link 
             href="/contact" 
             onClick={() => setShowMobileMenu(false)}
             style={{
-              display: 'block',
-              padding: '15px 0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '15px',
+              padding: '15px 10px',
               color: '#1a1a1a',
               fontSize: '16px',
               fontWeight: '500',
               textDecoration: 'none',
-              borderBottom: '1px solid #f0f0f0'
+              borderRadius: '8px',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#fdf2f8';
+              e.currentTarget.style.color = '#ec4899';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#1a1a1a';
             }}
           >
+            <i className="fas fa-envelope" style={{ fontSize: '18px', width: '20px' }}></i>
             Contact
           </Link>
         </div>
 
         {/* Compte utilisateur */}
-        {user ? (
-          <div>
+        <div style={{ padding: '20px' }}>
+          {user ? (
+            <>
+              <Link 
+                href="/client" 
+                onClick={() => setShowMobileMenu(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '15px',
+                  padding: '15px 10px',
+                  color: '#1a1a1a',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#fdf2f8';
+                  e.currentTarget.style.color = '#ec4899';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#1a1a1a';
+                }}
+              >
+                <i className="fas fa-user" style={{ fontSize: '18px', width: '20px' }}></i>
+                Mon Compte
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setShowMobileMenu(false);
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '15px',
+                  width: '100%',
+                  textAlign: 'left',
+                  padding: '15px 10px',
+                  color: '#ec4899',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  background: 'none',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#fdf2f8';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                <i className="fas fa-sign-out-alt" style={{ fontSize: '18px', width: '20px' }}></i>
+                Déconnexion
+              </button>
+            </>
+          ) : (
             <Link 
-              href="/client" 
+              href="/login" 
               onClick={() => setShowMobileMenu(false)}
               style={{
-                display: 'block',
-                padding: '15px 0',
-                color: '#1a1a1a',
-                fontSize: '16px',
-                fontWeight: '500',
-                textDecoration: 'none',
-                borderBottom: '1px solid #f0f0f0'
-              }}
-            >
-              Mon Compte
-            </Link>
-            <button
-              onClick={() => {
-                handleLogout();
-                setShowMobileMenu(false);
-              }}
-              style={{
-                display: 'block',
-                width: '100%',
-                textAlign: 'left',
-                padding: '15px 0',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '15px',
+                padding: '15px 10px',
                 color: '#ec4899',
                 fontSize: '16px',
                 fontWeight: '500',
-                background: 'none',
-                border: 'none',
-                borderBottom: '1px solid #f0f0f0',
-                cursor: 'pointer'
+                textDecoration: 'none',
+                borderRadius: '8px',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#fdf2f8';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
               }}
             >
-              Déconnexion
-            </button>
-          </div>
-        ) : (
-          <Link 
-            href="/login" 
-            onClick={() => setShowMobileMenu(false)}
-            style={{
-              display: 'block',
-              padding: '15px 0',
-              color: '#ec4899',
-              fontSize: '16px',
-              fontWeight: '500',
-              textDecoration: 'none',
-              borderBottom: '1px solid #f0f0f0'
-            }}
-          >
-            Connexion
-          </Link>
-        )}
+              <i className="fas fa-sign-in-alt" style={{ fontSize: '18px', width: '20px' }}></i>
+              Connexion
+            </Link>
+          )}
+        </div>
       </div>
     )}
     </>
