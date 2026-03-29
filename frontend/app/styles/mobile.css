@@ -4,6 +4,7 @@
 @media (max-width: 768px) {
   .hero-banner {
     height: 350px !important;
+    margin-top: 0 !important;
   }
 
   .hero-title {

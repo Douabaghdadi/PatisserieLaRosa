@@ -5,6 +5,13 @@
   padding-top: 140px;
 }
 
+/* Supprimer le padding sur mobile */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 95px;
+  }
+}
+
 /* Spacer for homepage banners */
 .homepage-banners {
   margin-top: 150px !important;
