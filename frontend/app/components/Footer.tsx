@@ -214,20 +214,20 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div style={{
+      <div className="footer-bottom" style={{
         borderTop: '1px solid rgba(255,255,255,0.08)',
         marginTop: '35px',
         padding: '16px 0'
       }}>
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-md-6">
-              <p style={{color: 'rgba(255,255,255,0.5)', fontSize: '12px', margin: 0}}>
+            <div className="col-md-6 col-12">
+              <p className="footer-copyright" style={{color: 'rgba(255,255,255,0.5)', fontSize: '12px', margin: 0}}>
                 © 2026 La Rosa. Tous droits réservés.
               </p>
             </div>
-            <div className="col-md-6 text-md-end mt-3 mt-md-0">
-              <div className="d-flex gap-4 justify-content-md-end flex-wrap">
+            <div className="col-md-6 col-12 text-md-end mt-3 mt-md-0">
+              <div className="footer-legal d-flex gap-4 justify-content-md-end flex-wrap">
                 <Link href="/privacy" style={{color: 'rgba(255,255,255,0.5)', fontSize: '12px', textDecoration: 'none'}}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#ec4899'}
                   onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
