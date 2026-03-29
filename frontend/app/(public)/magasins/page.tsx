@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import '../styles/mobile.css';
 
 const stores = [
   {
@@ -39,7 +40,7 @@ function StoreCard({ store }: { store: typeof stores[0] }) {
   const [imageError, setImageError] = useState(false);
 
   return (
-    <div style={{
+    <div className="store-card" style={{
       background: 'white',
       borderRadius: '16px',
       overflow: 'hidden',
@@ -102,7 +103,7 @@ function StoreCard({ store }: { store: typeof stores[0] }) {
       </div>
 
       {/* Store Info */}
-      <div style={{ padding: '28px' }}>
+      <div className="store-card-content" style={{ padding: '28px' }}>
         <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#333', marginBottom: '20px' }}>
           {store.name}
         </h3>
@@ -170,7 +171,7 @@ function StoreCard({ store }: { store: typeof stores[0] }) {
         </div>
 
         {/* Actions */}
-        <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
+        <div className="store-actions" style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
           <a 
             href={store.mapUrl}
             target="_blank"
@@ -236,7 +237,7 @@ export default function MagasinsPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#fafafa' }}>
       {/* Hero Section - Rose moderne */}
-      <div style={{
+      <div className="stores-hero" style={{
         background: 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
         padding: '60px 0 50px',
         textAlign: 'center',
@@ -293,7 +294,7 @@ export default function MagasinsPage() {
         </div>
 
         {/* Info Section */}
-        <div style={{
+        <div className="info-section" style={{
           marginTop: '50px',
           background: 'white',
           borderRadius: '16px',

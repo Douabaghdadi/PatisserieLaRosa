@@ -1,5 +1,50 @@
 /* Styles responsive pour mobile */
 
+/* Page Magasins - Responsive */
+@media (max-width: 768px) {
+  .stores-hero {
+    padding: 40px 0 35px !important;
+  }
+
+  .stores-hero h1 {
+    font-size: 2rem !important;
+  }
+
+  .stores-hero p {
+    font-size: 14px !important;
+    padding: 0 15px !important;
+  }
+
+  .store-card {
+    margin-bottom: 20px !important;
+  }
+
+  .store-card-content {
+    padding: 20px !important;
+  }
+
+  .store-card h3 {
+    font-size: 1.1rem !important;
+  }
+
+  .store-actions {
+    flex-direction: column !important;
+  }
+
+  .store-actions a {
+    width: 100% !important;
+  }
+
+  .info-section {
+    padding: 30px 20px !important;
+    margin-top: 30px !important;
+  }
+
+  .info-section h3 {
+    font-size: 1.2rem !important;
+  }
+}
+
 /* Page de connexion - Responsive */
 @media (max-width: 768px) {
   .login-card {
