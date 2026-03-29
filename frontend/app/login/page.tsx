@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import Header from "../components/Header";
 import { API_URL } from '@/lib/api';
+import '../styles/mobile.css';
 
 const FacebookLogin = dynamic(() => import("../components/FacebookLogin"), {
   ssr: false,
@@ -114,8 +115,9 @@ function LoginContent() {
         paddingTop: "180px"
       }}>
       {/* Carte englobant logo + formulaire */}
-      <div style={{ 
+      <div className="login-card" style={{ 
         display: "flex",
+        flexDirection: "row",
         alignItems: "center",
         gap: "50px",
         maxWidth: "650px",
@@ -126,7 +128,7 @@ function LoginContent() {
         padding: "35px"
       }}>
         {/* Logo à gauche */}
-        <div style={{ 
+        <div className="login-logo" style={{ 
           flex: "0 0 220px", 
           display: "flex", 
           justifyContent: "center",
@@ -140,9 +142,10 @@ function LoginContent() {
         </div>
 
         {/* Formulaire à droite */}
-        <div style={{ 
+        <div className="login-form" style={{ 
           flex: "1",
-          maxWidth: "280px"
+          maxWidth: "280px",
+          width: "100%"
         }}>
           {/* Titre */}
           <h2 style={{ 

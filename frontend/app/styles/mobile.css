@@ -1,5 +1,30 @@
 /* Styles responsive pour mobile */
 
+/* Page de connexion - Responsive */
+@media (max-width: 768px) {
+  .login-card {
+    flex-direction: column !important;
+    gap: 25px !important;
+    padding: 25px 20px !important;
+    margin-top: -80px !important;
+  }
+
+  .login-logo {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 180px !important;
+  }
+
+  .login-logo img {
+    max-width: 180px !important;
+  }
+
+  .login-form {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
 /* Section Features - Correction du padding sur mobile */
 @media (max-width: 768px) {
   .features-content > div {
