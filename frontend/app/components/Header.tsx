@@ -62,6 +62,7 @@ export default function Header() {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [categoryMenuTimeout, setCategoryMenuTimeout] = useState<NodeJS.Timeout | null>(null);
   const [storesMenuTimeout, setStoresMenuTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { favoritesCount } = useFavorites();
 
   useEffect(() => {
@@ -144,6 +145,22 @@ export default function Header() {
           padding: '20px 0',
           gap: '40px'
         }}>
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="d-lg-none"
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '24px',
+              color: '#1a1a1a',
+              cursor: 'pointer',
+              padding: '5px'
+            }}
+          >
+            <i className={showMobileMenu ? 'fas fa-times' : 'fas fa-bars'}></i>
+          </button>
+
           {/* Left Navigation */}
           <nav style={{
             display: 'flex',
@@ -1341,6 +1358,178 @@ export default function Header() {
         }
       }
     `}</style>
+
+    {/* Menu Mobile */}
+    {showMobileMenu && (
+      <div style={{
+        position: 'fixed',
+        top: '95px',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'white',
+        zIndex: 1025,
+        overflowY: 'auto',
+        padding: '20px'
+      }}>
+        {/* Navigation principale */}
+        <div style={{ marginBottom: '30px' }}>
+          <Link 
+            href="/" 
+            onClick={() => setShowMobileMenu(false)}
+            style={{
+              display: 'block',
+              padding: '15px 0',
+              color: '#1a1a1a',
+              fontSize: '16px',
+              fontWeight: '500',
+              textDecoration: 'none',
+              borderBottom: '1px solid #f0f0f0'
+            }}
+          >
+            Accueil
+          </Link>
+          <Link 
+            href="/shop" 
+            onClick={() => setShowMobileMenu(false)}
+            style={{
+              display: 'block',
+              padding: '15px 0',
+              color: '#1a1a1a',
+              fontSize: '16px',
+              fontWeight: '500',
+              textDecoration: 'none',
+              borderBottom: '1px solid #f0f0f0'
+            }}
+          >
+            Boutique
+          </Link>
+        </div>
+
+        {/* Catégories */}
+        <div style={{ marginBottom: '30px' }}>
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: '600',
+            color: '#ec4899',
+            marginBottom: '15px',
+            textTransform: 'uppercase',
+            letterSpacing: '1px'
+          }}>
+            Catégories
+          </h3>
+          {categories.map((cat: any) => (
+            <Link 
+              key={cat._id}
+              href={`/category/${cat._id}`}
+              onClick={() => setShowMobileMenu(false)}
+              style={{
+                display: 'block',
+                padding: '12px 0',
+                color: '#1a1a1a',
+                fontSize: '15px',
+                textDecoration: 'none',
+                borderBottom: '1px solid #f0f0f0'
+              }}
+            >
+              {cat.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Magasins */}
+        <div style={{ marginBottom: '30px' }}>
+          <Link 
+            href="/magasins" 
+            onClick={() => setShowMobileMenu(false)}
+            style={{
+              display: 'block',
+              padding: '15px 0',
+              color: '#1a1a1a',
+              fontSize: '16px',
+              fontWeight: '500',
+              textDecoration: 'none',
+              borderBottom: '1px solid #f0f0f0'
+            }}
+          >
+            Nos Magasins
+          </Link>
+          <Link 
+            href="/contact" 
+            onClick={() => setShowMobileMenu(false)}
+            style={{
+              display: 'block',
+              padding: '15px 0',
+              color: '#1a1a1a',
+              fontSize: '16px',
+              fontWeight: '500',
+              textDecoration: 'none',
+              borderBottom: '1px solid #f0f0f0'
+            }}
+          >
+            Contact
+          </Link>
+        </div>
+
+        {/* Compte utilisateur */}
+        {user ? (
+          <div>
+            <Link 
+              href="/client" 
+              onClick={() => setShowMobileMenu(false)}
+              style={{
+                display: 'block',
+                padding: '15px 0',
+                color: '#1a1a1a',
+                fontSize: '16px',
+                fontWeight: '500',
+                textDecoration: 'none',
+                borderBottom: '1px solid #f0f0f0'
+              }}
+            >
+              Mon Compte
+            </Link>
+            <button
+              onClick={() => {
+                handleLogout();
+                setShowMobileMenu(false);
+              }}
+              style={{
+                display: 'block',
+                width: '100%',
+                textAlign: 'left',
+                padding: '15px 0',
+                color: '#ec4899',
+                fontSize: '16px',
+                fontWeight: '500',
+                background: 'none',
+                border: 'none',
+                borderBottom: '1px solid #f0f0f0',
+                cursor: 'pointer'
+              }}
+            >
+              Déconnexion
+            </button>
+          </div>
+        ) : (
+          <Link 
+            href="/login" 
+            onClick={() => setShowMobileMenu(false)}
+            style={{
+              display: 'block',
+              padding: '15px 0',
+              color: '#ec4899',
+              fontSize: '16px',
+              fontWeight: '500',
+              textDecoration: 'none',
+              borderBottom: '1px solid #f0f0f0'
+            }}
+          >
+            Connexion
+          </Link>
+        )}
+      </div>
+    )}
     </>
   );
 }
