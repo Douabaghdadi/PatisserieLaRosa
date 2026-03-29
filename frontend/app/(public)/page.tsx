@@ -8,6 +8,7 @@ import FeaturesSection from '../components/FeaturesSection';
 import QualitySection from '../components/QualitySection';
 import AnimatedSectionTitle from '../components/AnimatedSectionTitle';
 import { API_URL, getImageUrl } from '@/lib/api';
+import '../styles/mobile.css';
 
 interface Product {
   _id: string;
@@ -166,6 +167,7 @@ export default function Home() {
       {/* Hero Banner - Style Gourmandise */}
       <div 
         ref={heroRef}
+        className="hero-banner"
         style={{ 
           position: 'relative', 
           height: '500px', 
@@ -203,7 +205,7 @@ export default function Home() {
           padding: '0 20px',
           zIndex: 10
         }}>
-          <h1 style={{
+          <h1 className="hero-title" style={{
             fontFamily: "'Great Vibes', 'Brush Script MT', cursive",
             fontSize: '4rem',
             color: '#ec4899',
@@ -217,7 +219,7 @@ export default function Home() {
           }}>
             La Rosa
           </h1>
-          <p style={{
+          <p className="hero-subtitle" style={{
             fontSize: '1.1rem',
             color: 'white',
             marginBottom: '8px',
@@ -239,7 +241,7 @@ export default function Home() {
             opacity: heroVisible ? 1 : 0,
             transition: 'all 0.8s ease-out 0.6s'
           }}></div>
-          <p style={{
+          <p className="hero-description" style={{
             fontSize: '1rem',
             color: 'rgba(255,255,255,0.95)',
             maxWidth: '600px',
@@ -253,7 +255,7 @@ export default function Home() {
           }}>
             Chacun son moment gourmand. Découvrez nos créations artisanales inspirées de la tradition française.
           </p>
-          <Link href="/shop" style={{
+          <Link href="/shop" className="hero-button" style={{
             display: 'inline-block',
             background: 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
             color: 'white',
@@ -298,7 +300,7 @@ export default function Home() {
 
       {/* Section Gâteaux */}
       {gateauxProducts.length > 0 && (
-        <div style={{ background: 'white', padding: '30px 0' }}>
+        <div className="product-section" style={{ background: 'white', padding: '30px 0' }}>
           <div className="container">
             {/* Titre de section élégant */}
             <AnimatedSectionTitle 
@@ -311,7 +313,7 @@ export default function Home() {
               <div className="col-lg-12">
                 {/* Carrousel */}
                 <div style={{ position: 'relative' }}>
-                  <button onClick={() => scrollGateaux('left')} style={{
+                  <button onClick={() => scrollGateaux('left')} className="carousel-button" style={{
                     position: 'absolute', left: '-15px', top: '50%', transform: 'translateY(-50%)',
                     width: '45px', height: '45px', borderRadius: '50%', border: '1px solid #ec4899', background: 'white',
                     boxShadow: '0 4px 15px rgba(0,0,0,0.1)', cursor: 'pointer', zIndex: 10,
@@ -328,7 +330,7 @@ export default function Home() {
                   }}>
                     <i className="fas fa-chevron-left"></i>
                   </button>
-                  <button onClick={() => scrollGateaux('right')} style={{
+                  <button onClick={() => scrollGateaux('right')} className="carousel-button" style={{
                     position: 'absolute', right: '-15px', top: '50%', transform: 'translateY(-50%)',
                     width: '45px', height: '45px', borderRadius: '50%', border: '1px solid #ec4899', background: 'white',
                     boxShadow: '0 4px 15px rgba(0,0,0,0.1)', cursor: 'pointer', zIndex: 10,
@@ -346,12 +348,12 @@ export default function Home() {
                     <i className="fas fa-chevron-right"></i>
                   </button>
 
-                  <div ref={gateauxScrollRef} style={{ display: 'flex', gap: '30px', overflowX: 'auto', scrollbarWidth: 'none', padding: '10px 5px' }}>
+                  <div ref={gateauxScrollRef} className="product-carousel" style={{ display: 'flex', gap: '30px', overflowX: 'auto', scrollbarWidth: 'none', padding: '10px 5px' }}>
                     {gateauxProducts.slice(0, 8).map((product) => {
                       const finalPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
                       const isFav = favorites.includes(product._id);
                       return (
-                        <div key={product._id} style={{
+                        <div key={product._id} className="product-card" style={{
                           minWidth: '300px', maxWidth: '300px', background: 'white',
                           borderRadius: '0', overflow: 'hidden', boxShadow: '0 2px 15px rgba(0,0,0,0.08)',
                           border: '1px solid #e8e8e8', flexShrink: 0,
@@ -365,7 +367,7 @@ export default function Home() {
                           e.currentTarget.style.boxShadow = '0 2px 15px rgba(0,0,0,0.08)';
                           e.currentTarget.style.transform = 'translateY(0)';
                         }}>
-                          <div style={{ position: 'relative', background: '#faf9f7', height: '280px' }}>
+                          <div className="product-image" style={{ position: 'relative', background: '#faf9f7', height: '280px' }}>
                             <Link href={`/product/${product._id}`}>
                               <img src={getImageUrl(product.image)}
                                 alt={product.name} style={{ width: '100%', height: '280px', objectFit: 'cover' }} />
@@ -414,7 +416,7 @@ export default function Home() {
                           </div>
                           <div style={{ padding: '25px 20px' }}>
                             <Link href={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
-                              <h6 style={{ fontWeight: '400', color: '#2c1810', fontSize: '16px', height: '48px', overflow: 'hidden', marginBottom: '12px', letterSpacing: '0.5px' }}>{product.name}</h6>
+                              <h6 className="product-title" style={{ fontWeight: '400', color: '#2c1810', fontSize: '16px', height: '48px', overflow: 'hidden', marginBottom: '12px', letterSpacing: '0.5px' }}>{product.name}</h6>
                             </Link>
                             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '15px',
                               background: (product.stock ?? 0) > 0 ? 'rgba(212, 175, 55, 0.1)' : '#fee2e2', padding: '5px 12px', borderRadius: '0' }}>
@@ -427,7 +429,7 @@ export default function Home() {
                               {(product.discount ?? 0) > 0 && (
                                 <span style={{ fontSize: '14px', color: '#999', textDecoration: 'line-through' }}>{product.price.toFixed(3)}</span>
                               )}
-                              <span style={{ fontSize: '22px', fontWeight: '400', color: '#2c1810' }}>{finalPrice.toFixed(3)}</span>
+                              <span className="product-price" style={{ fontSize: '22px', fontWeight: '400', color: '#2c1810' }}>{finalPrice.toFixed(3)}</span>
                               <span style={{ fontSize: '13px', color: '#999', fontWeight: '400' }}>DT</span>
                             </div>
                             

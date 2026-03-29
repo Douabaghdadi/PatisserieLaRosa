@@ -1,0 +1,84 @@
+/* Styles responsive pour mobile */
+
+/* Hero Banner */
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 350px !important;
+  }
+
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem !important;
+  }
+
+  .hero-description {
+    font-size: 0.85rem !important;
+    padding: 0 15px !important;
+  }
+
+  .hero-button {
+    padding: 12px 30px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* Sections de produits */
+@media (max-width: 768px) {
+  .product-section {
+    padding: 20px 0 !important;
+  }
+
+  .product-carousel {
+    gap: 15px !important;
+    padding: 10px 0 !important;
+  }
+
+  .product-card {
+    min-width: 250px !important;
+    max-width: 250px !important;
+  }
+
+  .product-image {
+    height: 220px !important;
+  }
+
+  .product-title {
+    font-size: 14px !important;
+    height: 40px !important;
+  }
+
+  .product-price {
+    font-size: 18px !important;
+  }
+
+  .carousel-button {
+    display: none !important;
+  }
+}
+
+/* Catégories */
+@media (max-width: 768px) {
+  .category-grid {
+    gap: 15px !important;
+  }
+
+  .category-card {
+    height: 250px !important;
+  }
+
+  .category-title {
+    font-size: 1.3rem !important;
+    padding: 30px 20px !important;
+  }
+}
+
+/* Container padding mobile */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}

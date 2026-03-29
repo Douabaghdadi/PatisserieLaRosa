@@ -59,81 +59,101 @@ export default function CategoryCards() {
   ];
 
   return (
-    <div style={{ background: '#fafafa', padding: '60px 0' }}>
-      <div className="container">
-        <div className="row g-4">
-          {mainCategories.map((cat, index) => {
-            let link = '/shop';
-            
-            if (cat.searchTerm === 'macarons') {
-              // Pour Macarons, chercher la sous-catégorie
-              const macaronsSubcategory = subcategories.find(sub => 
-                sub.name?.toLowerCase().includes('macaron')
-              );
-              link = macaronsSubcategory ? `/subcategory/${macaronsSubcategory._id}` : '/shop';
-            } else {
-              // Pour les autres, chercher la catégorie
-              const dbCategory = categories.find(c => 
-                c.name?.toLowerCase().includes(cat.searchTerm.toLowerCase())
-              );
-              link = dbCategory ? `/category/${dbCategory._id}` : '/shop';
-            }
+    <>
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .category-section {
+            padding: 30px 0 !important;
+          }
+          .category-card {
+            height: 250px !important;
+            margin-bottom: 15px;
+          }
+          .category-title {
+            font-size: 1.3rem !important;
+            padding: 30px 20px !important;
+          }
+        }
+      `}</style>
+      <div className="category-section" style={{ background: '#fafafa', padding: '60px 0' }}>
+        <div className="container">
+          <div className="row g-4">
+            {mainCategories.map((cat, index) => {
+              let link = '/shop';
+              
+              if (cat.searchTerm === 'macarons') {
+                // Pour Macarons, chercher la sous-catégorie
+                const macaronsSubcategory = subcategories.find(sub => 
+                  sub.name?.toLowerCase().includes('macaron')
+                );
+                link = macaronsSubcategory ? `/subcategory/${macaronsSubcategory._id}` : '/shop';
+              } else {
+                // Pour les autres, chercher la catégorie
+                const dbCategory = categories.find(c => 
+                  c.name?.toLowerCase().includes(cat.searchTerm.toLowerCase())
+                );
+                link = dbCategory ? `/category/${dbCategory._id}` : '/shop';
+              }
 
-            return (
-              <div key={index} className="col-md-4">
-                <Link href={link} style={{ textDecoration: 'none' }}>
-                  <div 
-                    style={{
-                      position: 'relative',
-                      height: '400px',
-                      overflow: 'hidden',
-                      cursor: 'pointer',
-                      transition: 'transform 0.3s ease',
-                      borderRadius: '0'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.02)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}
-                  >
-                    <img 
-                      src={cat.image}
-                      alt={cat.name}
+              return (
+                <div key={index} className="col-md-4 col-12">
+                  <Link href={link} style={{ textDecoration: 'none' }}>
+                    <div 
+                      className="category-card"
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        filter: 'brightness(0.75)'
+                        position: 'relative',
+                        height: '400px',
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                        transition: 'transform 0.3s ease',
+                        borderRadius: '0'
                       }}
-                    />
-                    <div style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
-                      padding: '50px 30px',
-                      textAlign: 'center'
-                    }}>
-                      <h3 style={{
-                        color: 'white',
-                        fontSize: '1.8rem',
-                        fontWeight: '700',
-                        marginBottom: '0',
-                        letterSpacing: '0.5px'
-                      }}>
-                        {cat.name}
-                      </h3>
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}
+                    >
+                      <img 
+                        src={cat.image}
+                        alt={cat.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          filter: 'brightness(0.75)'
+                        }}
+                      />
+                      <div 
+                        className="category-title"
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
+                          padding: '50px 30px',
+                          textAlign: 'center'
+                        }}>
+                        <h3 style={{
+                          color: 'white',
+                          fontSize: '1.8rem',
+                          fontWeight: '700',
+                          marginBottom: '0',
+                          letterSpacing: '0.5px'
+                        }}>
+                          {cat.name}
+                        </h3>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
