@@ -15,6 +15,12 @@
     padding: 0 15px !important;
   }
 
+  /* Force une seule carte par ligne sur mobile */
+  .store-card-col {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
   .store-card {
     margin-bottom: 20px !important;
   }

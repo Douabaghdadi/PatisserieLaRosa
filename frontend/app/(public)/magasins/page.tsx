@@ -287,7 +287,7 @@ export default function MagasinsPage() {
       <div className="container" style={{ padding: '50px 15px' }}>
         <div className="row g-4">
           {stores.map((store) => (
-            <div key={store.id} id={store.id} className="col-lg-4 col-md-6">
+            <div key={store.id} id={store.id} className="col-lg-4 col-md-6 col-12 store-card-col">
               <StoreCard store={store} />
             </div>
           ))}
