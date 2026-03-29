@@ -406,7 +406,7 @@ export default function ShopPage() {
                 <span style={{ fontWeight: '700', color: '#1a202c' }}>{filteredProducts.length}</span> produit(s) trouvé(s)
               </p>
               {(selectedBrand || selectedCategory || showDiscountOnly || showInStockOnly || priceRange.min || priceRange.max) && (
-                <button onClick={resetFilters} style={{ background: '#fee2e2', color: '#c53030', border: 'none', padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <button onClick={resetFilters} style={{ background: '#fce7f3', color: '#ec4899', border: 'none', padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <i className="fas fa-times"></i> Effacer les filtres
                 </button>
               )}
@@ -414,14 +414,14 @@ export default function ShopPage() {
 
             {loading ? (
               <div style={{ textAlign: 'center', padding: '100px 0' }}>
-                <div className="spinner-border" style={{ color: '#c53030' }} role="status"></div>
+                <div className="spinner-border" style={{ color: '#ec4899' }} role="status"></div>
               </div>
             ) : filteredProducts.length === 0 ? (
               <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '60px', textAlign: 'center', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
                 <i className="fas fa-box-open" style={{ fontSize: '50px', color: '#cbd5e1', marginBottom: '20px' }}></i>
                 <h3 style={{ color: '#1a202c', marginBottom: '10px' }}>Aucun produit trouvé</h3>
                 <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '20px' }}>Essayez de modifier vos filtres</p>
-                <button onClick={resetFilters} style={{ padding: '12px 24px', background: '#c53030', color: 'white', borderRadius: '10px', border: 'none', fontWeight: '600', cursor: 'pointer' }}>
+                <button onClick={resetFilters} style={{ padding: '12px 24px', background: '#ec4899', color: 'white', borderRadius: '10px', border: 'none', fontWeight: '600', cursor: 'pointer' }}>
                   Réinitialiser les filtres
                 </button>
               </div>
@@ -466,9 +466,9 @@ export default function ShopPage() {
                           <Link href={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
                             <h6 style={{ fontWeight: '600', color: '#333', fontSize: '14px', lineHeight: '1.4', height: '40px', overflow: 'hidden', marginBottom: '10px' }}>{product.name}</h6>
                           </Link>
-                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '10px', background: (product.stock ?? 0) > 0 ? '#dcfce7' : '#fee2e2', padding: '4px 10px', borderRadius: '20px', width: 'fit-content' }}>
-                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: (product.stock ?? 0) > 0 ? '#22c55e' : '#ef4444' }}></span>
-                            <span style={{ color: (product.stock ?? 0) > 0 ? '#16a34a' : '#dc2626', fontSize: '11px', fontWeight: '600' }}>{(product.stock ?? 0) > 0 ? 'En stock' : 'Rupture'}</span>
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '10px', background: (product.stock ?? 0) > 0 ? '#dcfce7' : '#fce7f3', padding: '4px 10px', borderRadius: '20px', width: 'fit-content' }}>
+                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: (product.stock ?? 0) > 0 ? '#22c55e' : '#ec4899' }}></span>
+                            <span style={{ color: (product.stock ?? 0) > 0 ? '#16a34a' : '#ec4899', fontSize: '11px', fontWeight: '600' }}>{(product.stock ?? 0) > 0 ? 'En stock' : 'Rupture'}</span>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '14px', marginTop: 'auto' }}>
                             {(product.discount ?? 0) > 0 && (<span style={{ fontSize: '12px', color: '#999', textDecoration: 'line-through' }}>{product.price.toFixed(3)}</span>)}
