@@ -1167,7 +1167,7 @@ export default function Header() {
     `}</style>
 
     {/* Categories Bar */}
-    <div style={{
+    <div className="categories-bar" style={{
       position: 'fixed',
       top: '95px',
       left: 0,
@@ -1178,7 +1178,7 @@ export default function Header() {
       boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
     }}>
       <div className="container">
-        <div style={{
+        <div className="categories-container" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -1203,6 +1203,7 @@ export default function Header() {
             return (
               <div 
                 key={cat._id}
+                className="category-item"
                 style={{ position: 'relative' }}
                 onMouseEnter={() => setHoveredCategory(cat._id)}
                 onMouseLeave={() => setHoveredCategory(null)}
@@ -1232,6 +1233,7 @@ export default function Header() {
                 {/* Dropdown avec image */}
                 {isHovered && (
                   <div 
+                    className="category-dropdown"
                     style={{
                       position: 'absolute',
                       top: '100%',
@@ -1330,6 +1332,15 @@ export default function Header() {
         </div>
       </div>
     </div>
+
+    <style jsx>{`
+      /* Styles responsive pour la barre de catégories */
+      @media (max-width: 768px) {
+        .categories-bar {
+          display: none !important;
+        }
+      }
+    `}</style>
     </>
   );
 }
