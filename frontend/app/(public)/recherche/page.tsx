@@ -377,9 +377,9 @@ function RechercheContent() {
                           <Link href={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
                             <h6 style={{ fontWeight: '600', color: '#333', fontSize: '14px', lineHeight: '1.4', height: '40px', overflow: 'hidden', marginBottom: '10px' }}>{product.name}</h6>
                           </Link>
-                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '10px', background: (product.stock ?? 0) > 0 ? '#dcfce7' : '#fee2e2', padding: '4px 10px', borderRadius: '20px', width: 'fit-content' }}>
-                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: (product.stock ?? 0) > 0 ? '#22c55e' : '#ef4444' }}></span>
-                            <span style={{ color: (product.stock ?? 0) > 0 ? '#16a34a' : '#dc2626', fontSize: '11px', fontWeight: '600' }}>{(product.stock ?? 0) > 0 ? 'En stock' : 'Rupture'}</span>
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '10px', background: (product.stock ?? 0) > 0 ? '#dcfce7' : '#fce7f3', padding: '4px 10px', borderRadius: '20px', width: 'fit-content' }}>
+                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: (product.stock ?? 0) > 0 ? '#22c55e' : '#ec4899' }}></span>
+                            <span style={{ color: (product.stock ?? 0) > 0 ? '#16a34a' : '#ec4899', fontSize: '11px', fontWeight: '600' }}>{(product.stock ?? 0) > 0 ? 'En stock' : 'Rupture'}</span>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '14px', marginTop: 'auto' }}>
                             {(product.discount ?? 0) > 0 && (<span style={{ fontSize: '12px', color: '#999', textDecoration: 'line-through' }}>{product.price.toFixed(3)}</span>)}

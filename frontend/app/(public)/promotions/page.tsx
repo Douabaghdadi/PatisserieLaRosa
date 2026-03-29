@@ -101,7 +101,7 @@ export default function PromotionsPage() {
     <div style={{ marginTop: '150px', backgroundColor: '#f8f9fa', minHeight: '100vh', paddingBottom: '50px' }}>
       {/* Hero Section */}
       <div style={{
-        background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%)',
+        background: 'linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be185d 100%)',
         padding: '35px 0',
         marginBottom: '30px',
         position: 'relative',
@@ -194,7 +194,7 @@ export default function PromotionsPage() {
               top: '180px'
             }}>
               <h5 style={{ fontSize: '18px', fontWeight: '700', color: '#1a202c', marginBottom: '25px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <i className="fas fa-filter" style={{ color: '#dc2626' }}></i> Filtres
+                <i className="fas fa-filter" style={{ color: '#ec4899' }}></i> Filtres
               </h5>
 
               <div style={{ marginBottom: '25px' }}>
@@ -263,7 +263,7 @@ export default function PromotionsPage() {
                 style={{
                   width: '100%',
                   padding: '14px',
-                  background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+                  background: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
                   color: 'white',
                   border: 'none',
                   borderRadius: '12px',
@@ -298,7 +298,7 @@ export default function PromotionsPage() {
 
             {loading ? (
               <div style={{ textAlign: 'center', padding: '100px 0' }}>
-                <div className="spinner-border" style={{ color: '#dc2626' }} role="status"></div>
+                <div className="spinner-border" style={{ color: '#ec4899' }} role="status"></div>
               </div>
             ) : filteredProducts.length === 0 ? (
               <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '60px', textAlign: 'center', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
@@ -344,7 +344,7 @@ export default function PromotionsPage() {
                           )}
                           <span style={{
                             position: 'absolute', top: '12px', right: '12px',
-                            background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+                            background: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
                             color: 'white', padding: '8px 12px', borderRadius: '8px',
                             fontSize: '14px', fontWeight: '800',
                             boxShadow: '0 2px 8px rgba(220, 38, 38, 0.3)'
@@ -360,13 +360,13 @@ export default function PromotionsPage() {
                             style={{
                               position: 'absolute', bottom: '12px', right: '12px',
                               width: '40px', height: '40px', borderRadius: '50%', border: 'none',
-                              background: isFavorite ? '#fee2e2' : 'white', cursor: 'pointer',
+                              background: isFavorite ? '#fce7f3' : 'white', cursor: 'pointer',
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
                               boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
                             }}
                           >
                             <i className={isFavorite ? 'fas fa-heart' : 'far fa-heart'} 
-                              style={{ color: isFavorite ? '#dc2626' : '#64748b', fontSize: '16px' }}></i>
+                              style={{ color: isFavorite ? '#ec4899' : '#64748b', fontSize: '16px' }}></i>
                           </button>
                         </div>
                         <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -376,9 +376,9 @@ export default function PromotionsPage() {
                             </h6>
                           </Link>
                           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '12px',
-                            background: (product.stock ?? 0) > 0 ? '#dcfce7' : '#fee2e2', padding: '4px 10px', borderRadius: '20px', width: 'fit-content' }}>
-                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: (product.stock ?? 0) > 0 ? '#22c55e' : '#ef4444' }}></span>
-                            <span style={{ color: (product.stock ?? 0) > 0 ? '#16a34a' : '#dc2626', fontSize: '11px', fontWeight: '600' }}>
+                            background: (product.stock ?? 0) > 0 ? '#dcfce7' : '#fce7f3', padding: '4px 10px', borderRadius: '20px', width: 'fit-content' }}>
+                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: (product.stock ?? 0) > 0 ? '#22c55e' : '#ec4899' }}></span>
+                            <span style={{ color: (product.stock ?? 0) > 0 ? '#16a34a' : '#ec4899', fontSize: '11px', fontWeight: '600' }}>
                               {(product.stock ?? 0) > 0 ? 'En stock' : 'Rupture'}
                             </span>
                           </div>
@@ -397,7 +397,7 @@ export default function PromotionsPage() {
                               gap: '8px',
                               textDecoration: 'none',
                               border: 'none',
-                              background: (product.stock ?? 0) > 0 ? 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)' : '#cbd5e1',
+                              background: (product.stock ?? 0) > 0 ? 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)' : '#cbd5e1',
                               color: 'white',
                               borderRadius: '10px',
                               padding: '12px 15px',
