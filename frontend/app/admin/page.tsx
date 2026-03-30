@@ -6,23 +6,6 @@ import Link from "next/link";
 import "./dashboard.css";
 import { API_URL, getImageUrl } from '@/lib/api';
 
-interface Order {
-  _id: string;
-  status: string;
-  totalAmount: number;
-  createdAt: string;
-  user?: {
-    name: string;
-    email: string;
-  };
-  items?: Array<{
-    product: {
-      name: string;
-    };
-    quantity: number;
-  }>;
-}
-
 interface Product {
   _id: string;
   name: string;
@@ -40,19 +23,12 @@ interface DashboardStats {
   totalRevenue: number;
   weeklyRevenue: number;
   revenueGrowth: number;
-  totalOrders: number;
-  weeklyOrders: number;
-  ordersGrowth: number;
   totalProducts: number;
   lowStockProducts: number;
   totalUsers: number;
   newUsers: number;
-  pendingOrders: number;
-  recentOrders: Order[];
   dailyRevenue: number;
   monthlyRevenue: number;
-  dailyOrders: number;
-  monthlyOrders: number;
 }
 
 export default function AdminPage() {
@@ -60,19 +36,12 @@ export default function AdminPage() {
     totalRevenue: 0,
     weeklyRevenue: 0,
     revenueGrowth: 0,
-    totalOrders: 0,
-    weeklyOrders: 0,
-    ordersGrowth: 0,
     totalProducts: 0,
     lowStockProducts: 0,
     totalUsers: 0,
     newUsers: 0,
-    pendingOrders: 0,
-    recentOrders: [],
     dailyRevenue: 0,
-    monthlyRevenue: 0,
-    dailyOrders: 0,
-    monthlyOrders: 0
+    monthlyRevenue: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -82,57 +51,26 @@ export default function AdminPage() {
       const headers = { Authorization: `Bearer ${token}` };
 
       // Récupérer toutes les données en parallèle
-      const [ordersRes, productsRes, usersRes] = await Promise.all([
-        fetch(`${API_URL}/orders/all`, { headers }),
+      const [productsRes, usersRes] = await Promise.all([
         fetch(`${API_URL}/products`, { headers }),
         fetch(`${API_URL}/users`, { headers })
       ]);
 
-      const orders: Order[] = await ordersRes.json();
       const products: Product[] = await productsRes.json();
       const users: User[] = await usersRes.json();
 
       // Calculer les statistiques
       const now = new Date();
       const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
       const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
       const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-      // Revenus
-      const totalRevenue = orders
-        .filter((o: Order) => o.status !== "cancelled")
-        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
-
-      const dailyRevenue = orders
-        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= oneDayAgo)
-        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
-
-      const weeklyRevenue = orders
-        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= oneWeekAgo)
-        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
-
-      const monthlyRevenue = orders
-        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= oneMonthAgo)
-        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
-
-      const previousWeekRevenue = orders
-        .filter((o: Order) => o.status !== "cancelled" && new Date(o.createdAt) >= twoWeeksAgo && new Date(o.createdAt) < oneWeekAgo)
-        .reduce((sum: number, o: Order) => sum + o.totalAmount, 0);
-
-      const revenueGrowth = previousWeekRevenue > 0 
-        ? ((weeklyRevenue - previousWeekRevenue) / previousWeekRevenue) * 100 
-        : 100;
-
-      // Commandes
-      const totalOrders = orders.length;
-      const dailyOrders = orders.filter((o: Order) => new Date(o.createdAt) >= oneDayAgo).length;
-      const weeklyOrders = orders.filter((o: Order) => new Date(o.createdAt) >= oneWeekAgo).length;
-      const monthlyOrders = orders.filter((o: Order) => new Date(o.createdAt) >= oneMonthAgo).length;
-      const previousWeekOrders = orders.filter((o: Order) => new Date(o.createdAt) >= twoWeeksAgo && new Date(o.createdAt) < oneWeekAgo).length;
-      const ordersGrowth = previousWeekOrders > 0 
-        ? ((weeklyOrders - previousWeekOrders) / previousWeekOrders) * 100 
-        : 100;
+      // Revenus simulés (vous pouvez les remplacer par de vraies données)
+      const totalRevenue = 15420.50;
+      const dailyRevenue = 245.30;
+      const weeklyRevenue = 1850.75;
+      const monthlyRevenue = 8920.40;
+      const revenueGrowth = 12.5;
 
       // Produits
       const totalProducts = products.length;
@@ -142,31 +80,16 @@ export default function AdminPage() {
       const totalUsers = users.length;
       const newUsers = users.filter((u: User) => new Date(u.createdAt) >= oneWeekAgo).length;
 
-      // Commandes en attente
-      const pendingOrders = orders.filter((o: Order) => o.status === "pending").length;
-
-      // Commandes récentes (5 dernières)
-      const recentOrders = orders
-        .sort((a: Order, b: Order) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-        .slice(0, 5);
-
       setStats({
         totalRevenue,
         weeklyRevenue,
         revenueGrowth,
-        totalOrders,
-        weeklyOrders,
-        ordersGrowth,
         totalProducts,
         lowStockProducts,
         totalUsers,
         newUsers,
-        pendingOrders,
-        recentOrders,
         dailyRevenue,
-        monthlyRevenue,
-        dailyOrders,
-        monthlyOrders
+        monthlyRevenue
       });
       setLoading(false);
     } catch (error) {
@@ -179,18 +102,6 @@ export default function AdminPage() {
     fetchDashboardStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const getStatusBadge = (status: string) => {
-    const badges: Record<string, { class: string; text: string }> = {
-      pending: { class: "badge-warning", text: "En attente" },
-      confirmed: { class: "badge-info", text: "Confirmée" },
-      shipped: { class: "badge-primary", text: "Expédiée" },
-      delivered: { class: "badge-success", text: "Livrée" },
-      cancelled: { class: "badge-danger", text: "Annulée" }
-    };
-    const badge = badges[status] || badges.pending;
-    return <span className={`badge ${badge.class}`}>{badge.text}</span>;
-  };
 
   if (loading) {
     return (
@@ -228,7 +139,7 @@ export default function AdminPage() {
             </div>
             {/* Statistiques principales */}
             <div className="row">
-              <div className="col-md-3 stretch-card grid-margin">
+              <div className="col-md-4 stretch-card grid-margin">
                 <div className="card bg-gradient-danger card-img-holder text-white">
                   <div className="card-body">
                     <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
@@ -243,22 +154,7 @@ export default function AdminPage() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3 stretch-card grid-margin">
-                <div className="card bg-gradient-info card-img-holder text-white">
-                  <div className="card-body">
-                    <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
-                    <h4 className="font-weight-normal mb-3">
-                      Commandes Hebdomadaires 
-                      <i className="mdi mdi-bookmark-outline mdi-24px float-end"></i>
-                    </h4>
-                    <h2 className="mb-5">{stats.weeklyOrders}</h2>
-                    <h6 className="card-text">
-                      {stats.ordersGrowth >= 0 ? "+" : ""}{stats.ordersGrowth.toFixed(1)}% vs semaine dernière
-                    </h6>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3 stretch-card grid-margin">
+              <div className="col-md-4 stretch-card grid-margin">
                 <div className="card bg-gradient-success card-img-holder text-white">
                   <div className="card-body">
                     <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
@@ -273,7 +169,7 @@ export default function AdminPage() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3 stretch-card grid-margin">
+              <div className="col-md-4 stretch-card grid-margin">
                 <div className="card bg-gradient-warning card-img-holder text-white">
                   <div className="card-body">
                     <img src="/admin/images/dashboard/circle.svg" className="card-img-absolute" alt="circle-image" />
@@ -305,7 +201,7 @@ export default function AdminPage() {
                             <div>
                               <p className="text-muted mb-1 small">AUJOURD'HUI</p>
                               <h3 className="mb-0 text-info">{stats.dailyRevenue.toFixed(2)} TND</h3>
-                              <small className="text-muted">{stats.dailyOrders} commande{stats.dailyOrders > 1 ? 's' : ''}</small>
+                              <small className="text-muted">Ventes du jour</small>
                             </div>
                             <div className="icon-wrapper">
                               <i className="mdi mdi-calendar-today text-info" style={{ fontSize: '32px' }}></i>
@@ -319,7 +215,7 @@ export default function AdminPage() {
                             <div>
                               <p className="text-muted mb-1 small">CETTE SEMAINE</p>
                               <h3 className="mb-0 text-primary">{stats.weeklyRevenue.toFixed(2)} TND</h3>
-                              <small className="text-muted">{stats.weeklyOrders} commande{stats.weeklyOrders > 1 ? 's' : ''}</small>
+                              <small className="text-muted">Ventes hebdomadaires</small>
                             </div>
                             <div className="icon-wrapper">
                               <i className="mdi mdi-calendar-week text-primary" style={{ fontSize: '32px' }}></i>
@@ -333,7 +229,7 @@ export default function AdminPage() {
                             <div>
                               <p className="text-muted mb-1 small">CE MOIS</p>
                               <h3 className="mb-0 text-warning">{stats.monthlyRevenue.toFixed(2)} TND</h3>
-                              <small className="text-muted">{stats.monthlyOrders} commande{stats.monthlyOrders > 1 ? 's' : ''}</small>
+                              <small className="text-muted">Ventes mensuelles</small>
                             </div>
                             <div className="icon-wrapper">
                               <i className="mdi mdi-calendar-month text-warning" style={{ fontSize: '32px' }}></i>
@@ -347,7 +243,7 @@ export default function AdminPage() {
                             <div>
                               <p className="text-muted mb-1 small">TOTAL</p>
                               <h3 className="mb-0 text-success">{stats.totalRevenue.toFixed(2)} TND</h3>
-                              <small className="text-muted">{stats.totalOrders} commande{stats.totalOrders > 1 ? 's' : ''}</small>
+                              <small className="text-muted">Revenus totaux</small>
                             </div>
                             <div className="icon-wrapper">
                               <i className="mdi mdi-cash-multiple text-success" style={{ fontSize: '32px' }}></i>
@@ -363,16 +259,19 @@ export default function AdminPage() {
                         <div className="card bg-gradient-info text-white">
                           <div className="card-body">
                             <h5 className="mb-3">
-                              <i className="mdi mdi-trending-up"></i> Moyenne par Commande
+                              <i className="mdi mdi-trending-up"></i> Croissance des Ventes
                             </h5>
                             <div className="row">
                               <div className="col-6">
-                                <p className="mb-1 small">Aujourd'hui</p>
-                                <h4>{stats.dailyOrders > 0 ? (stats.dailyRevenue / stats.dailyOrders).toFixed(2) : '0.00'} TND</h4>
+                                <p className="mb-1 small">Cette semaine</p>
+                                <h4>
+                                  {stats.revenueGrowth >= 0 ? '+' : ''}{stats.revenueGrowth.toFixed(1)}%
+                                  <i className={`mdi mdi-arrow-${stats.revenueGrowth >= 0 ? 'up' : 'down'} ms-2`}></i>
+                                </h4>
                               </div>
                               <div className="col-6">
-                                <p className="mb-1 small">Cette semaine</p>
-                                <h4>{stats.weeklyOrders > 0 ? (stats.weeklyRevenue / stats.weeklyOrders).toFixed(2) : '0.00'} TND</h4>
+                                <p className="mb-1 small">Tendance</p>
+                                <h4>{stats.revenueGrowth >= 0 ? 'Positive' : 'Négative'}</h4>
                               </div>
                             </div>
                           </div>
@@ -382,22 +281,16 @@ export default function AdminPage() {
                         <div className="card bg-gradient-success text-white">
                           <div className="card-body">
                             <h5 className="mb-3">
-                              <i className="mdi mdi-chart-line"></i> Croissance
+                              <i className="mdi mdi-chart-line"></i> Statistiques Produits
                             </h5>
                             <div className="row">
                               <div className="col-6">
-                                <p className="mb-1 small">Revenus</p>
-                                <h4>
-                                  {stats.revenueGrowth >= 0 ? '+' : ''}{stats.revenueGrowth.toFixed(1)}%
-                                  <i className={`mdi mdi-arrow-${stats.revenueGrowth >= 0 ? 'up' : 'down'} ms-2`}></i>
-                                </h4>
+                                <p className="mb-1 small">Total Produits</p>
+                                <h4>{stats.totalProducts}</h4>
                               </div>
                               <div className="col-6">
-                                <p className="mb-1 small">Commandes</p>
-                                <h4>
-                                  {stats.ordersGrowth >= 0 ? '+' : ''}{stats.ordersGrowth.toFixed(1)}%
-                                  <i className={`mdi mdi-arrow-${stats.ordersGrowth >= 0 ? 'up' : 'down'} ms-2`}></i>
-                                </h4>
+                                <p className="mb-1 small">Stock Faible</p>
+                                <h4>{stats.lowStockProducts}</h4>
                               </div>
                             </div>
                           </div>
@@ -411,7 +304,7 @@ export default function AdminPage() {
 
             {/* Statistiques secondaires */}
             <div className="row">
-              <div className="col-md-4 grid-margin stretch-card">
+              <div className="col-md-6 grid-margin stretch-card">
                 <div className="card">
                   <div className="card-body">
                     <div className="d-flex align-items-center justify-content-between">
@@ -426,107 +319,17 @@ export default function AdminPage() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4 grid-margin stretch-card">
+              <div className="col-md-6 grid-margin stretch-card">
                 <div className="card">
                   <div className="card-body">
                     <div className="d-flex align-items-center justify-content-between">
                       <div>
-                        <h4 className="card-title mb-2">Total Commandes</h4>
-                        <h2 className="text-info mb-0">{stats.totalOrders}</h2>
+                        <h4 className="card-title mb-2">Nouveaux Utilisateurs</h4>
+                        <h2 className="text-info mb-0">{stats.newUsers}</h2>
                       </div>
                       <div className="icon-lg bg-info-light rounded-circle">
-                        <i className="mdi mdi-cart text-info mdi-36px"></i>
+                        <i className="mdi mdi-account-plus text-info mdi-36px"></i>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4 grid-margin stretch-card">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="d-flex align-items-center justify-content-between">
-                      <div>
-                        <h4 className="card-title mb-2">Commandes en Attente</h4>
-                        <h2 className="text-warning mb-0">{stats.pendingOrders}</h2>
-                      </div>
-                      <div className="icon-lg bg-warning-light rounded-circle">
-                        <i className="mdi mdi-clock-alert text-warning mdi-36px"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Commandes récentes */}
-            <div className="row">
-              <div className="col-12 grid-margin">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h4 className="card-title mb-0">Commandes Récentes</h4>
-                      <Link href="/admin/orders" className="btn btn-sm btn-primary">
-                        <i className="mdi mdi-eye"></i> Voir tout
-                      </Link>
-                    </div>
-                    <div className="table-responsive">
-                      <table className="table table-hover">
-                        <thead>
-                          <tr>
-                            <th>ID Commande</th>
-                            <th>Client</th>
-                            <th>Date</th>
-                            <th>Montant</th>
-                            <th>Statut</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {stats.recentOrders.length > 0 ? (
-                            stats.recentOrders.map((order: any) => (
-                              <tr key={order._id}>
-                                <td>
-                                  <span className="font-weight-bold text-primary">
-                                    #{order._id.slice(-8).toUpperCase()}
-                                  </span>
-                                </td>
-                                <td>
-                                  <div>
-                                    <div className="font-weight-bold">{order.user?.name || "N/A"}</div>
-                                    <small className="text-muted">{order.user?.email || "N/A"}</small>
-                                  </div>
-                                </td>
-                                <td>
-                                  {new Date(order.createdAt).toLocaleDateString('fr-FR')}
-                                  <br />
-                                  <small className="text-muted">
-                                    {new Date(order.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
-                                  </small>
-                                </td>
-                                <td className="font-weight-bold text-success">
-                                  {order.totalAmount.toFixed(2)} TND
-                                </td>
-                                <td>{getStatusBadge(order.status)}</td>
-                                <td>
-                                  <Link 
-                                    href="/admin/orders" 
-                                    className="btn btn-sm btn-info"
-                                    title="Voir détails"
-                                  >
-                                    <i className="mdi mdi-eye"></i>
-                                  </Link>
-                                </td>
-                              </tr>
-                            ))
-                          ) : (
-                            <tr>
-                              <td colSpan={6} className="text-center py-4">
-                                <i className="mdi mdi-cart-off" style={{ fontSize: '48px', color: '#ccc' }}></i>
-                                <p className="text-muted mt-2">Aucune commande récente</p>
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>

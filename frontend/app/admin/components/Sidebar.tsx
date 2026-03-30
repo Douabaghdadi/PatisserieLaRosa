@@ -13,7 +13,6 @@ const menuItems = [
   { path: "/admin", icon: "mdi-view-dashboard", label: "Dashboard", color: "#d946a6" },
   { path: "/admin/users", icon: "mdi-account-group", label: "Utilisateurs", color: "#ec4899" },
   { path: "/admin/products", icon: "mdi-package-variant-closed", label: "Produits", color: "#06b6d4" },
-  { path: "/admin/orders", icon: "mdi-cart-outline", label: "Commandes", color: "#10b981" },
   { path: "/admin/categories", icon: "mdi-shape", label: "Catégories", color: "#f59e0b" },
   { path: "/admin/subcategories", icon: "mdi-shape-outline", label: "Sous-catégories", color: "#f97316" },
   { path: "/admin/flavors", icon: "mdi-palette", label: "Goûts", color: "#8b5cf6" },
@@ -219,7 +218,7 @@ export default function Sidebar() {
         <div className="sidebar-section-title">Menu Principal</div>
         
         <ul className="sidebar-nav">
-          {menuItems.slice(0, 4).map((item) => (
+          {menuItems.slice(0, 3).map((item) => (
             <li key={item.path} className="nav-item">
               <Link 
                 href={item.path} 
@@ -241,7 +240,7 @@ export default function Sidebar() {
         <div className="sidebar-section-title">Catalogue</div>
         
         <ul className="sidebar-nav">
-          {menuItems.slice(4, 7).map((item) => (
+          {menuItems.slice(3, 6).map((item) => (
             <li key={item.path} className="nav-item">
               <Link 
                 href={item.path} 
@@ -263,7 +262,7 @@ export default function Sidebar() {
         <div className="sidebar-section-title">Communication</div>
         
         <ul className="sidebar-nav">
-          {menuItems.slice(7).map((item) => (
+          {menuItems.slice(6).map((item) => (
             <li key={item.path} className="nav-item">
               <Link 
                 href={item.path} 
