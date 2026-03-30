@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useFavorites } from '../context/FavoritesContext';
+import '../styles/mobile.css';
 
 interface User {
   _id?: string;
@@ -63,7 +64,18 @@ export default function Header() {
   const [categoryMenuTimeout, setCategoryMenuTimeout] = useState<NodeJS.Timeout | null>(null);
   const [storesMenuTimeout, setStoresMenuTimeout] = useState<NodeJS.Timeout | null>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const { favoritesCount } = useFavorites();
+
+  const toggleCategoryExpansion = (categoryId: string) => {
+    const newExpanded = new Set(expandedCategories);
+    if (newExpanded.has(categoryId)) {
+      newExpanded.delete(categoryId);
+    } else {
+      newExpanded.add(categoryId);
+    }
+    setExpandedCategories(newExpanded);
+  };
 
   useEffect(() => {
     const apiUrl = API_URL;
@@ -1449,35 +1461,147 @@ export default function Header() {
           }}>
             Catégories
           </h3>
-          {categories.map((cat: any) => (
-            <Link 
-              key={cat._id}
-              href={`/category/${cat._id}`}
-              onClick={() => setShowMobileMenu(false)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '15px',
-                padding: '12px 10px',
-                color: '#1a1a1a',
-                fontSize: '15px',
-                textDecoration: 'none',
-                borderRadius: '8px',
-                transition: 'all 0.2s'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#fdf2f8';
-                e.currentTarget.style.color = '#ec4899';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#1a1a1a';
-              }}
-            >
-              <i className="fas fa-chevron-right" style={{ fontSize: '12px', width: '20px', color: '#ec4899' }}></i>
-              {cat.name}
-            </Link>
-          ))}
+          {categories.map((cat: any) => {
+            const categorySubcategories = subcategories.filter((sub: any) => sub.category?._id === cat._id);
+            const hasSubcategories = categorySubcategories.length > 0;
+            const isExpanded = expandedCategories.has(cat._id);
+            
+            return (
+              <div 
+                key={cat._id}
+                className={hasSubcategories ? 'mobile-category-with-subs' : ''}
+              >
+                {/* Catégorie principale */}
+                <div 
+                  className="mobile-category-main"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '12px 10px',
+                    borderRadius: '8px',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <Link 
+                    href={`/category/${cat._id}`}
+                    onClick={() => setShowMobileMenu(false)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px',
+                      flex: 1,
+                      color: '#1a1a1a',
+                      fontSize: '15px',
+                      fontWeight: hasSubcategories ? '600' : '500',
+                      textDecoration: 'none',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = '#ec4899';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = '#1a1a1a';
+                    }}
+                  >
+                    <i className="fas fa-chevron-right" style={{ fontSize: '12px', width: '20px', color: '#ec4899' }}></i>
+                    {cat.name}
+                    {hasSubcategories && (
+                      <span style={{
+                        fontSize: '11px',
+                        color: '#999',
+                        background: '#f8f9fa',
+                        padding: '2px 8px',
+                        borderRadius: '12px',
+                        marginLeft: '8px'
+                      }}>
+                        {categorySubcategories.length}
+                      </span>
+                    )}
+                  </Link>
+                  
+                  {/* Bouton d'expansion si la catégorie a des sous-catégories */}
+                  {hasSubcategories && (
+                    <button
+                      onClick={() => toggleCategoryExpansion(cat._id)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        padding: '8px',
+                        cursor: 'pointer',
+                        color: '#ec4899',
+                        fontSize: '14px',
+                        borderRadius: '50%',
+                        width: '32px',
+                        height: '32px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.3s',
+                        transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = '#fdf2f8';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'none';
+                      }}
+                    >
+                      <i className="fas fa-chevron-down"></i>
+                    </button>
+                  )}
+                </div>
+
+                {/* Sous-catégories (affichées si expandées) */}
+                {hasSubcategories && isExpanded && (
+                  <div 
+                    className="mobile-subcategories mobile-category-expansion"
+                    style={{
+                      paddingLeft: '35px',
+                      marginBottom: '8px',
+                      borderLeft: '2px solid #fce7f3',
+                      marginLeft: '25px'
+                    }}
+                  >
+                    {categorySubcategories.map((sub: any, index: number) => (
+                      <Link
+                        key={sub._id}
+                        href={`/subcategory/${sub._id}`}
+                        onClick={() => setShowMobileMenu(false)}
+                        className="mobile-subcategory-item"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '12px',
+                          padding: '10px 15px',
+                          color: '#666',
+                          fontSize: '14px',
+                          textDecoration: 'none',
+                          borderRadius: '6px',
+                          transition: 'all 0.2s',
+                          marginBottom: '4px',
+                          position: 'relative'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#fdf2f8';
+                          e.currentTarget.style.color = '#ec4899';
+                          e.currentTarget.style.paddingLeft = '20px';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = '#666';
+                          e.currentTarget.style.paddingLeft = '15px';
+                        }}
+                      >
+                        <i className="fas fa-circle" style={{ fontSize: '6px', color: '#ec4899' }}></i>
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Magasins et Contact */}
