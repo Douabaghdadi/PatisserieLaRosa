@@ -190,64 +190,6 @@
   }
 }
 
-/* Footer - Responsive */
-@media (max-width: 768px) {
-  .footer {
-    padding-top: 30px !important;
-  }
-
-  .footer-brand {
-    margin-bottom: 25px !important;
-    text-align: center !important;
-  }
-
-  .footer-brand img {
-    margin: 0 auto !important;
-  }
-
-  .footer-description {
-    text-align: center !important;
-    font-size: 13px !important;
-  }
-
-  .footer-social {
-    justify-content: center !important;
-  }
-
-  .footer-links,
-  .footer-categories {
-    margin-bottom: 25px !important;
-  }
-
-  .footer-title {
-    font-size: 14px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .footer-contact {
-    margin-bottom: 20px !important;
-  }
-
-  .footer-contact > div {
-    font-size: 12px !important;
-  }
-
-  .footer-bottom {
-    margin-top: 25px !important;
-    padding: 15px 0 !important;
-  }
-
-  .footer-copyright {
-    text-align: center !important;
-    margin-bottom: 10px !important;
-  }
-
-  .footer-legal {
-    justify-content: center !important;
-    font-size: 11px !important;
-  }
-}
-
 /* Page Contact - Responsive */
 @media (max-width: 768px) {
   .contact-hero {
@@ -298,85 +240,126 @@
 /* Footer - Responsive */
 @media (max-width: 768px) {
   .footer {
-    padding-top: 30px !important;
+    padding-top: 25px !important;
+    background: linear-gradient(135deg, #d946a6 0%, #ec4899 50%, #f472b6 100%) !important;
+  }
+
+  /* Masquer le logo sur mobile pour gagner de l'espace */
+  .footer-brand .mb-3 {
+    display: none !important;
   }
 
   .footer-brand {
     text-align: center !important;
-    margin-bottom: 25px !important;
-  }
-
-  .footer-brand .mb-3 {
-    display: flex !important;
-    justify-content: center !important;
+    margin-bottom: 20px !important;
+    padding: 0 15px !important;
   }
 
   .footer-description {
-    font-size: 12px !important;
-    padding: 0 10px !important;
+    font-size: 13px !important;
+    padding: 0 !important;
+    line-height: 1.6 !important;
+    margin-bottom: 15px !important;
+    color: rgba(255, 255, 255, 0.95) !important;
   }
 
   .footer-social {
     justify-content: center !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 0 !important;
   }
 
+  .footer-social a {
+    width: 38px !important;
+    height: 38px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    font-size: 14px !important;
+  }
+
+  /* Liens Rapides et Catégories côte à côte */
   .footer-links,
   .footer-categories {
     flex: 0 0 50% !important;
     max-width: 50% !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 25px !important;
+    padding: 0 10px !important;
   }
 
   .footer-title {
-    font-size: 14px !important;
-    margin-bottom: 12px !important;
+    font-size: 15px !important;
+    margin-bottom: 15px !important;
+    font-weight: 700 !important;
+    color: white !important;
   }
 
   .footer-links ul li,
   .footer-categories ul li {
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
   }
 
   .footer-links ul li a,
   .footer-categories ul li a {
-    font-size: 12px !important;
+    font-size: 13px !important;
+    color: rgba(255, 255, 255, 0.9) !important;
   }
 
+  /* Section Contact en pleine largeur */
   .footer-contact {
     flex: 0 0 100% !important;
     max-width: 100% !important;
+    padding: 0 15px !important;
   }
 
   .footer-contact .d-flex {
-    margin-bottom: 15px !important;
+    margin-bottom: 18px !important;
+    gap: 12px !important;
   }
 
   .footer-contact .d-flex > div:first-child {
-    width: 28px !important;
-    height: 28px !important;
+    width: 32px !important;
+    height: 32px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
   }
 
-  .footer-contact .d-flex > div:last-child > div {
-    font-size: 11px !important;
+  .footer-contact .d-flex > div:first-child i {
+    color: white !important;
+    font-size: 14px !important;
   }
 
+  .footer-contact .d-flex > div:last-child > div:first-child {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: white !important;
+    margin-bottom: 5px !important;
+  }
+
+  .footer-contact .d-flex > div:last-child > div:not(:first-child) {
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Footer Bottom */
   .footer-bottom {
-    margin-top: 25px !important;
-    padding: 14px 0 !important;
+    margin-top: 30px !important;
+    padding: 16px 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
 
   .footer-copyright {
     text-align: center !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 12px !important;
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.85) !important;
   }
 
   .footer-legal {
     justify-content: center !important;
-    gap: 15px !important;
+    gap: 20px !important;
   }
 
   .footer-legal a {
     font-size: 11px !important;
+    color: rgba(255, 255, 255, 0.85) !important;
   }
 }
