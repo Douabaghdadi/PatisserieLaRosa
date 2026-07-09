@@ -123,4 +123,6 @@ jobs:
             docker compose pull
             docker compose down
             docker compose up -d
+            cp /opt/larosa/nginx.conf /etc/nginx/sites-available/patisserielarosa.tn
+            nginx -t && systemctl reload nginx
             docker system prune -f
