@@ -129,9 +129,9 @@ export default function ContactPage() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <h5 style={{ fontSize: isMobile ? "14px" : "15px", fontWeight: "600", color: "#333", marginBottom: "5px" }}>Adresses</h5>
                   <p style={{ fontSize: isMobile ? "13px" : "14px", color: "#666", margin: 0, lineHeight: "1.6", wordBreak: "break-word" }}>
-                    Av Habib Bourguiba, Korba<br />
-                    Rue dddddddd, Korba<br />
-                    Rue Aaaaaaaaa, Kelibia
+                    Av. De Martyrs (à côté de BH Bank), Kélibia 8090<br />
+                    Av. Habib Bourguiba (Route de Nabeul), Korba<br />
+                    Av. Habib Bourguiba (Route de Nabeul), Korba
                   </p>
                 </div>
               </div>

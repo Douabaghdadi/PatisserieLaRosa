@@ -419,8 +419,8 @@ export default function Header() {
                         <i className="fas fa-store" style={{ color: 'white', fontSize: '12px' }}></i>
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: '600', color: '#1a1a1a', marginBottom: '2px' }}>Korba</div>
-                        <div style={{ fontSize: '11px', color: '#999' }}>Av Habib Bourguiba</div>
+                        <div style={{ fontWeight: '600', color: '#1a1a1a', marginBottom: '2px' }}>Kélibia</div>
+                        <div style={{ fontSize: '11px', color: '#999' }}>Av. De Martyrs (à côté de BH Bank)</div>
                       </div>
                       <i className="fas fa-chevron-right" style={{ color: '#ec4899', fontSize: '10px' }}></i>
                     </Link>
@@ -461,7 +461,7 @@ export default function Header() {
                       </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: '600', color: '#1a1a1a', marginBottom: '2px' }}>Korba</div>
-                        <div style={{ fontSize: '11px', color: '#999' }}>Rue dddddddd</div>
+                        <div style={{ fontSize: '11px', color: '#999' }}>Av. Habib Bourguiba (Route de Nabeul)</div>
                       </div>
                       <i className="fas fa-chevron-right" style={{ color: '#ec4899', fontSize: '10px' }}></i>
                     </Link>
@@ -500,8 +500,8 @@ export default function Header() {
                         <i className="fas fa-store" style={{ color: 'white', fontSize: '12px' }}></i>
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: '600', color: '#1a1a1a', marginBottom: '2px' }}>Kelibia</div>
-                        <div style={{ fontSize: '11px', color: '#999' }}>Rue Aaaaaaaaa</div>
+                        <div style={{ fontWeight: '600', color: '#1a1a1a', marginBottom: '2px' }}>Korba</div>
+                        <div style={{ fontSize: '11px', color: '#999' }}>Av. Habib Bourguiba (Route de Nabeul)</div>
                       </div>
                       <i className="fas fa-chevron-right" style={{ color: '#ec4899', fontSize: '10px' }}></i>
                     </Link>

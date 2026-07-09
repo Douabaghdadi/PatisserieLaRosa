@@ -165,9 +165,9 @@ export default function Footer() {
                 </div>
                 <div>
                   <div style={{color: 'white', fontWeight: '600', marginBottom: '3px', fontSize: '13px'}}>Adresses</div>
-                  <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px', lineHeight: '1.5'}}>Av Habib Bourguiba, Korba</div>
-                  <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px', lineHeight: '1.5'}}>Rue dddddddd, Korba</div>
-                  <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px', lineHeight: '1.5'}}>Rue Aaaaaaaaa, Kelibia</div>
+                  <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px', lineHeight: '1.5'}}>Av. De Martyrs (à côté de BH Bank), Kélibia 8090</div>
+                  <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px', lineHeight: '1.5'}}>Av. Habib Bourguiba (Route de Nabeul), Korba</div>
+                  <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px', lineHeight: '1.5'}}>Av. Habib Bourguiba (Route de Nabeul), Korba</div>
                 </div>
               </div>
               

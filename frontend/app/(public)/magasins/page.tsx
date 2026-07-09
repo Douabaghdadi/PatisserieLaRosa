@@ -5,9 +5,19 @@ import '../../styles/mobile.css';
 
 const stores = [
   {
+    id: 'kelibia',
+    name: 'La Rosa Kélibia',
+    address: 'Av. De Martyrs (à côté de BH Bank), Kélibia 8090',
+    city: 'Kélibia',
+    phone: '+216 22 644 528',
+    hours: '9h - 21h',
+    image: '/img/stores/store-korba.jpg',
+    mapUrl: 'https://www.google.com/maps/search/La+Rosa+Kelibia'
+  },
+  {
     id: 'korba-1',
     name: 'La Rosa Korba',
-    address: 'Av Habib Bourguiba, Korba',
+    address: 'Av. Habib Bourguiba (Route de Nabeul), Korba',
     city: 'Korba',
     phone: '+216 22 644 528',
     hours: '9h - 21h',
@@ -17,22 +27,12 @@ const stores = [
   {
     id: 'korba-2',
     name: 'La Rosa Korba',
-    address: 'Rue dddddddd, Korba',
+    address: 'Av. Habib Bourguiba (Route de Nabeul), Korba',
     city: 'Korba',
     phone: '+216 22 644 528',
     hours: '9h - 21h',
     image: '/img/stores/store-korba.jpg',
     mapUrl: 'https://www.google.com/maps/search/La+Rosa+Korba'
-  },
-  {
-    id: 'kelibia',
-    name: 'La Rosa Kelibia',
-    address: 'Rue Aaaaaaaaa, Kelibia',
-    city: 'Kelibia',
-    phone: '+216 22 644 528',
-    hours: '9h - 21h',
-    image: '/img/stores/store-korba.jpg',
-    mapUrl: 'https://www.google.com/maps/search/La+Rosa+Kelibia'
   }
 ];
 
