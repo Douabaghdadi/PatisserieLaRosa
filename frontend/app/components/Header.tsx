@@ -1271,20 +1271,16 @@ export default function Header() {
                       background: 'white',
                       border: '1px solid #e5e5e5',
                       borderRadius: '0',
-                      width: '700px',
-                      height: '350px',
+                      minWidth: '220px',
                       boxShadow: '0 8px 30px rgba(0, 0, 0, 0.15)',
                       zIndex: 10050,
                       overflow: 'hidden',
-                      pointerEvents: 'auto',
-                      display: 'flex'
+                      pointerEvents: 'auto'
                     }}
                     onMouseEnter={() => setHoveredCategory(cat._id)}
                     onMouseLeave={() => setHoveredCategory(null)}
                   >
-                    {/* Liste des sous-catégories à gauche */}
                     <div style={{ 
-                      flex: '0 0 280px',
                       padding: '15px 0',
                       background: 'white',
                       overflowY: 'auto'
@@ -1333,25 +1329,6 @@ export default function Header() {
                           Aucune sous-catégorie
                         </div>
                       )}
-                    </div>
-
-                    {/* Image à droite */}
-                    <div style={{ 
-                      flex: 1,
-                      background: '#d4af37',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      height: '350px'
-                    }}>
-                      <img 
-                        src={cat.image?.startsWith('http') ? cat.image : cat.image ? `${API_URL}${cat.image}` : '/img/category-patisserie.jpg'}
-                        alt={cat.name}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }}
-                      />
                     </div>
                   </div>
                 )}
