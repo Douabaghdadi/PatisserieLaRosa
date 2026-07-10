@@ -1267,14 +1267,11 @@ export default function Header() {
                       position: 'absolute',
                       top: '100%',
                       ...(isLastTwo ? { right: '0' } : { left: '0' }),
-                      marginTop: '10px',
-                      background: 'white',
-                      border: '1px solid #e5e5e5',
-                      borderRadius: '0',
+                      marginTop: '0px',
+                      paddingTop: '10px',
+                      background: 'transparent',
                       minWidth: '220px',
-                      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.15)',
                       zIndex: 10050,
-                      overflow: 'hidden',
                       pointerEvents: 'auto'
                     }}
                     onMouseEnter={() => setHoveredCategory(cat._id)}
@@ -1283,6 +1280,8 @@ export default function Header() {
                     <div style={{ 
                       padding: '15px 0',
                       background: 'white',
+                      border: '1px solid #e5e5e5',
+                      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.15)',
                       overflowY: 'auto'
                     }}>
                       {categorySubcategories.length > 0 ? (
