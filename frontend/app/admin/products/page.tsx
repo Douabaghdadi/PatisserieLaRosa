@@ -123,7 +123,7 @@ export default function ProductsPage() {
       flavors: product.flavors?.map((f: any) => f._id) || []
     });
     setImageFile(null);
-    setImagePreview(product.image || "");
+    setImagePreview(product.image ? getImageUrl(product.image) : "");
     setShowModal(true);
   };
 
@@ -139,8 +139,12 @@ export default function ProductsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.subcategories.length === 0) {
+      alert("Veuillez sélectionner au moins une sous-catégorie");
+      return;
+    }
     setSubmitting(true);
-    
+
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
@@ -149,15 +153,21 @@ export default function ProductsPage() {
       formDataToSend.append("discount", formData.discount);
       formDataToSend.append("stock", formData.stock);
       formDataToSend.append("subcategories", JSON.stringify(formData.subcategories));
+      formDataToSend.append("flavors", JSON.stringify(formData.flavors));
       if (imageFile) formDataToSend.append("image", imageFile);
 
-      const url = editingProduct ? `http://localhost:5000/api/products/${editingProduct._id}` : "http://localhost:5000/api/products";
-      await fetch(url, { method: editingProduct ? "PUT" : "POST", body: formDataToSend });
-      
+      const url = editingProduct ? `${API_URL}/products/${editingProduct._id}` : `${API_URL}/products`;
+      const response = await fetch(url, { method: editingProduct ? "PUT" : "POST", body: formDataToSend });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || "Erreur lors de l'enregistrement");
+      }
+
       setShowModal(false);
       fetchProducts();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erreur:", error);
+      alert(error.message || "Erreur lors de l'enregistrement");
     } finally {
       setSubmitting(false);
     }
@@ -216,7 +226,7 @@ export default function ProductsPage() {
                     <tbody>
                       {filtered.length > 0 ? filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((product: any) => (
                         <tr key={product._id}>
-                          <td><img src={product.image} alt={product.name} style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "5px" }} /></td>
+                          <td><img src={getImageUrl(product.image)} alt={product.name} style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "5px" }} /></td>
                           <td>{product.name}</td>
                           <td>{product.category?.name}</td>
                           <td>{product.discount > 0 ? (<><span className="text-decoration-line-through text-muted">{product.price}</span> <span className="text-success fw-bold">{(product.price * (1 - product.discount / 100)).toFixed(2)}</span></>) : product.price} TND</td>

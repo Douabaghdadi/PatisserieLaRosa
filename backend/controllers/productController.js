@@ -64,13 +64,14 @@ exports.createProduct = async (req, res) => {
     flavorIds = flavorIds && Array.isArray(flavorIds) ? flavorIds : (flavorIds ? [flavorIds] : []);
     
     const firstSubcategory = await Subcategory.findById(subcategoryIds[0]);
+    if (!firstSubcategory) return res.status(400).json({ error: 'Veuillez sélectionner au moins une sous-catégorie valide' });
     
     const productData = {
       ...req.body,
       subcategories: subcategoryIds,
       flavors: flavorIds,
       category: firstSubcategory.category,
-      image: req.file ? `http://localhost:5000/uploads/${req.file.filename}` : req.body.image
+      image: req.file ? `/uploads/${req.file.filename}` : req.body.image
     };
     const product = new Product(productData);
     await product.save();
@@ -96,13 +97,14 @@ exports.updateProduct = async (req, res) => {
     flavorIds = flavorIds && Array.isArray(flavorIds) ? flavorIds : (flavorIds ? [flavorIds] : []);
     
     const firstSubcategory = await Subcategory.findById(subcategoryIds[0]);
+    if (!firstSubcategory) return res.status(400).json({ error: 'Veuillez sélectionner au moins une sous-catégorie valide' });
     
     const updateData = {
       ...req.body,
       subcategories: subcategoryIds,
       flavors: flavorIds,
       category: firstSubcategory.category,
-      image: req.file ? `http://localhost:5000/uploads/${req.file.filename}` : req.body.image
+      image: req.file ? `/uploads/${req.file.filename}` : req.body.image
     };
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
     if (!product) return res.status(404).json({ error: 'Produit non trouvé' });
