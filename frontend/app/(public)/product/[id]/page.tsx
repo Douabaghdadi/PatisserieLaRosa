@@ -1,9 +1,8 @@
 'use client';
 import { API_URL, getImageUrl } from '@/lib/api';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import Header from '../../../components/Header';
 import ProductReviews from '../../../components/ProductReviews';
 import StarRating from '../../../components/StarRating';
 import { useFavorites } from '../../../context/FavoritesContext';
@@ -11,6 +10,12 @@ import { useFavorites } from '../../../context/FavoritesContext';
 interface Subcategory {
   _id: string;
   name: string;
+}
+
+interface Flavor {
+  _id: string;
+  name: string;
+  color?: string;
 }
 
 interface Product {
@@ -26,355 +31,355 @@ interface Product {
   brand?: { _id: string; name: string };
   category?: { _id: string; name: string };
   subcategories?: Subcategory[];
+  flavors?: Flavor[];
 }
+
+const WHATSAPP_NUMBER = '21622644528';
+const PHONE_DISPLAY = '+216 22 644 528';
+
+const formatPrice = (value: number) => value.toFixed(3);
+
+const getFinalPrice = (p: Product) =>
+  (p.discount ?? 0) > 0 ? p.price * (1 - (p.discount ?? 0) / 100) : p.price;
+
+const styles = `
+  .pd-page { background: #fafafa; min-height: 100vh; padding: 40px 0 70px; }
+  @media (max-width: 991.98px) { .pd-page { padding-top: 16px; } }
+
+  /* Breadcrumb */
+  .pd-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 24px; }
+  .pd-breadcrumb a { color: #64748b; text-decoration: none; font-weight: 500; transition: color .2s; }
+  .pd-breadcrumb a:hover { color: #ec4899; }
+  .pd-breadcrumb .pd-sep { color: #cbd5e1; font-size: 9px; }
+  .pd-breadcrumb .pd-current { color: #1e293b; font-weight: 600; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Image */
+  @media (min-width: 992px) { .pd-gallery-sticky { position: sticky; top: 180px; } }
+  .pd-gallery { position: relative; aspect-ratio: 1 / 1; border-radius: 24px; overflow: hidden; background: #fef3f8; border: 1px solid #fce7f3; box-shadow: 0 10px 40px rgba(236, 72, 153, .08); }
+  .pd-gallery img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+  .pd-gallery:hover img { transform: scale(1.04); }
+  .pd-badge { position: absolute; top: 16px; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; color: white; }
+  .pd-badge-discount { left: 16px; background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 4px 12px rgba(236, 72, 153, .35); }
+  .pd-badge-out { right: 16px; background: rgba(30, 41, 59, .85); }
+
+  /* Infos */
+  @media (min-width: 992px) { .pd-info { padding: 8px 0 0 12px; } }
+  .pd-eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .pd-eyebrow a { color: #ec4899; text-decoration: none; }
+  .pd-eyebrow a:hover { color: #be185d; }
+  .pd-eyebrow .pd-dot { width: 4px; height: 4px; border-radius: 50%; background: #f9a8d4; }
+  .pd-title { font-size: 38px; font-weight: 700; color: #1e293b; line-height: 1.15; letter-spacing: -.5px; margin: 0 0 14px; word-break: break-word; }
+  @media (max-width: 575.98px) { .pd-title { font-size: 28px; } }
+  .pd-rating { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; font-size: 13px; color: #64748b; }
+  .pd-rating a { color: #64748b; text-decoration: none; border-bottom: 1px dashed #cbd5e1; }
+  .pd-rating a:hover { color: #ec4899; border-color: #ec4899; }
+
+  .pd-price-block { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 22px 0; margin-bottom: 24px; border-top: 1px solid #f1e8ee; border-bottom: 1px solid #f1e8ee; }
+  .pd-price { font-size: 36px; font-weight: 800; color: #db2777; letter-spacing: -1px; line-height: 1; }
+  .pd-price small { font-size: 16px; font-weight: 700; color: #f472b6; margin-left: 4px; letter-spacing: 0; }
+  .pd-old-price { font-size: 17px; color: #94a3b8; text-decoration: line-through; }
+  .pd-stock { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .pd-stock::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pd-stock-in { background: #dcfce7; color: #16a34a; }
+  .pd-stock-out { background: #fee2e2; color: #dc2626; }
+  .pd-saving { width: 100%; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #16a34a; }
+
+  .pd-description { font-size: 15px; line-height: 1.75; color: #475569; white-space: pre-line; margin-bottom: 24px; }
+
+  .pd-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #94a3b8; margin-bottom: 10px; }
+  .pd-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+  .pd-chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: white; border: 1px solid #fce7f3; color: #334155; font-size: 13px; font-weight: 500; }
+  .pd-swatch { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
+
+  .pd-actions { display: flex; gap: 12px; margin-bottom: 12px; }
+  .pd-btn-order { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 20px; border-radius: 14px; background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white; font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 20px rgba(236, 72, 153, .3); transition: transform .2s, box-shadow .2s; }
+  .pd-btn-order:hover { color: white; transform: translateY(-2px); box-shadow: 0 12px 28px rgba(236, 72, 153, .4); }
+  .pd-btn-order i { font-size: 19px; }
+  .pd-btn-order.pd-disabled { background: #cbd5e1; box-shadow: none; pointer-events: none; }
+  .pd-btn-fav { width: 58px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 14px; border: 2px solid #fce7f3; background: white; color: #ec4899; font-size: 20px; cursor: pointer; transition: all .2s; }
+  .pd-btn-fav:hover, .pd-btn-fav.pd-active { background: #fdf2f8; border-color: #f9a8d4; }
+  .pd-call { font-size: 13px; color: #64748b; margin-bottom: 28px; }
+  .pd-call a { color: #db2777; font-weight: 600; text-decoration: none; }
+
+  .pd-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .pd-feature { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; text-align: center; background: white; border: 1px solid #f1f5f9; border-radius: 16px; }
+  .pd-feature-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: #fdf2f8; color: #ec4899; font-size: 16px; }
+  .pd-feature span { font-size: 12px; font-weight: 600; color: #475569; line-height: 1.3; }
+
+  /* Sections */
+  .pd-section { margin-top: 56px; }
+  .pd-card { background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 28px; box-shadow: 0 4px 20px rgba(0, 0, 0, .03); }
+  @media (max-width: 575.98px) { .pd-card { padding: 20px; } }
+  .pd-section-title { display: flex; align-items: center; gap: 12px; font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 24px; }
+  .pd-section-title::before { content: ''; width: 4px; height: 24px; border-radius: 2px; background: linear-gradient(180deg, #ec4899 0%, #db2777 100%); }
+
+  /* Produits similaires */
+  .pd-related { display: block; height: 100%; background: white; border: 1px solid #fce7f3; border-radius: 18px; overflow: hidden; text-decoration: none; transition: transform .25s, box-shadow .25s; }
+  .pd-related:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(236, 72, 153, .15); }
+  .pd-related-img { aspect-ratio: 1 / 1; background: #fef3f8; overflow: hidden; }
+  .pd-related-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .pd-related:hover .pd-related-img img { transform: scale(1.06); }
+  .pd-related-body { padding: 14px 16px 16px; }
+  .pd-related-name { font-size: 14px; font-weight: 600; color: #1e293b; line-height: 1.3; min-height: 2.6em; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .pd-related-price { font-size: 16px; font-weight: 800; color: #db2777; }
+  .pd-related-price small { font-size: 11px; font-weight: 700; color: #94a3b8; margin-left: 3px; }
+
+  /* Chargement */
+  .pd-skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #fce7f3 50%, #f1f5f9 75%); background-size: 200% 100%; animation: pd-shimmer 1.4s infinite; border-radius: 12px; }
+  @keyframes pd-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+`;
 
 export default function ProductPage() {
   const params = useParams();
   const [product, setProduct] = useState<Product | null>(null);
+  const [related, setRelated] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
   useEffect(() => {
     fetch(`${API_URL}/products/${params.id}`)
-      .then(r => r.json())
+      .then(r => (r.ok ? r.json() : null))
       .then(data => {
         setProduct(data);
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   }, [params.id]);
+
+  const productId = product?._id;
+  const categoryId = product?.category?._id;
+
+  useEffect(() => {
+    if (!categoryId) return;
+    fetch(`${API_URL}/products`)
+      .then(r => r.json())
+      .then((data: Product[]) => {
+        setRelated(data.filter(p => p.category?._id === categoryId && p._id !== productId).slice(0, 4));
+      })
+      .catch(() => {});
+  }, [categoryId, productId]);
 
   if (loading) {
     return (
-      <div className="container-fluid py-5" style={{marginTop: '130px', background: '#f7fafc', minHeight: '100vh'}}>
-        <div className="text-center py-5">
-          <div className="spinner-border" style={{color: '#ec4899'}} role="status"></div>
+      <>
+        <style>{styles}</style>
+        <div className="pd-page">
+          <div className="container">
+            <div className="pd-skeleton" style={{ width: '260px', height: '14px', marginBottom: '24px' }}></div>
+            <div className="row g-4 g-lg-5">
+              <div className="col-lg-6">
+                <div className="pd-skeleton" style={{ aspectRatio: '1 / 1', borderRadius: '24px' }}></div>
+              </div>
+              <div className="col-lg-6">
+                <div className="pd-skeleton" style={{ width: '40%', height: '12px', marginBottom: '16px' }}></div>
+                <div className="pd-skeleton" style={{ width: '75%', height: '38px', marginBottom: '18px' }}></div>
+                <div className="pd-skeleton" style={{ width: '30%', height: '14px', marginBottom: '32px' }}></div>
+                <div className="pd-skeleton" style={{ width: '45%', height: '40px', marginBottom: '32px' }}></div>
+                <div className="pd-skeleton" style={{ width: '100%', height: '56px' }}></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (!product) {
     return (
-      <div className="container-fluid py-5" style={{marginTop: '130px'}}>
-        <div style={{
-          background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%)',
-          border: '1px solid rgba(236, 72, 153, 0.2)',
-          borderRadius: '12px',
-          padding: '20px',
-          color: '#ec4899'
-        }}>Produit non trouvé</div>
-      </div>
+      <>
+        <style>{styles}</style>
+        <div className="pd-page">
+          <div className="container">
+            <div className="pd-card" style={{ maxWidth: '520px', margin: '40px auto', textAlign: 'center', padding: '48px 28px' }}>
+              <div className="pd-feature-icon" style={{ width: '64px', height: '64px', fontSize: '26px', margin: '0 auto 20px', borderRadius: '18px' }}>
+                <i className="fas fa-cookie-bite"></i>
+              </div>
+              <h1 style={{ fontSize: '24px', color: '#1e293b', marginBottom: '10px' }}>Produit introuvable</h1>
+              <p style={{ color: '#64748b', fontSize: '15px', marginBottom: '28px' }}>
+                Ce produit n&apos;existe pas ou n&apos;est plus disponible.
+              </p>
+              <Link href="/shop" className="pd-btn-order" style={{ display: 'inline-flex', flex: 'none' }}>
+                <i className="fas fa-arrow-left" style={{ fontSize: '14px' }}></i> Retour à la boutique
+              </Link>
+            </div>
+          </div>
+        </div>
+      </>
     );
   }
 
-  const finalPrice = (product.discount ?? 0) > 0 
-    ? (product.price * (1 - (product.discount ?? 0) / 100)).toFixed(2)
-    : product.price.toFixed(2);
+  const hasDiscount = (product.discount ?? 0) > 0;
+  const finalPrice = getFinalPrice(product);
+  const inStock = (product.stock ?? 0) > 0;
+  const favorite = isFavorite(product._id);
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Bonjour La Rosa, je souhaite commander : ${product.name} (${formatPrice(finalPrice)} DT)`
+  )}`;
 
   return (
     <>
-      <Header />
-      <div style={{paddingTop: '110px', backgroundColor: '#f7fafc', minHeight: '100vh'}}>
-        <div className="container" style={{paddingBottom: '40px'}}>
-        {/* Breadcrumb */}
-        <nav aria-label="breadcrumb" style={{marginBottom: '10px'}}>
-          <ol className="breadcrumb" style={{backgroundColor: 'transparent', padding: 0, margin: 0}}>
-            <li className="breadcrumb-item">
-              <Link href="/" style={{color: '#718096', textDecoration: 'none', fontWeight: '500'}}>Accueil</Link>
-            </li>
-            <li className="breadcrumb-item">
-              <Link href="/shop" style={{color: '#718096', textDecoration: 'none', fontWeight: '500'}}>Boutique</Link>
-            </li>
+      <style>{styles}</style>
+      <div className="pd-page">
+        <div className="container">
+          {/* Breadcrumb */}
+          <nav aria-label="breadcrumb" className="pd-breadcrumb">
+            <Link href="/">Accueil</Link>
+            <i className="fas fa-chevron-right pd-sep"></i>
+            <Link href="/shop">Boutique</Link>
             {product.category && (
-              <li className="breadcrumb-item">
-                <span style={{color: '#718096'}}>{product.category.name}</span>
-              </li>
+              <>
+                <i className="fas fa-chevron-right pd-sep"></i>
+                <Link href={`/category/${product.category._id}`}>{product.category.name}</Link>
+              </>
             )}
-            <li className="breadcrumb-item active" style={{color: '#1a202c', fontWeight: '600'}}>{product.name}</li>
-          </ol>
-        </nav>
+            <i className="fas fa-chevron-right pd-sep"></i>
+            <span className="pd-current" aria-current="page">{product.name}</span>
+          </nav>
 
-        {/* Product Card */}
-        <div style={{
-          backgroundColor: 'white', 
-          borderRadius: '16px', 
-          boxShadow: '0 4px 20px rgba(0,0,0,0.06)', 
-          overflow: 'hidden',
-          border: '1px solid #e2e8f0',
-          maxWidth: '1100px',
-          margin: '0 auto'
-        }}>
-          <div className="row g-0">
-            {/* Product Image */}
+          <div className="row g-4 g-lg-5 align-items-start">
+            {/* Image */}
             <div className="col-lg-6">
-              <div style={{
-                padding: '0', 
-                background: 'linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%)', 
-                height: '100%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                position: 'relative',
-                minHeight: '365px',
-                overflow: 'hidden'
-              }}>
-                <img 
-                  src={getImageUrl(product.image)} 
-                  style={{width: '100%', height: '100%', objectFit: 'cover'}} 
-                  alt={product.name} 
-                />
-                {(product.discount ?? 0) > 0 && (
-                  <div style={{
-                    position: 'absolute', 
-                    top: '20px', 
-                    left: '20px',
-                    background: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
-                    color: 'white',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    boxShadow: '0 4px 15px rgba(236, 72, 153, 0.3)'
-                  }}>
-                    -{product.discount}%
-                  </div>
-                )}
-                {(product.stock ?? 0) === 0 && (
-                  <div style={{
-                    position: 'absolute', 
-                    top: '20px', 
-                    right: '20px',
-                    background: '#718096',
-                    color: 'white',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    boxShadow: '0 4px 15px rgba(113, 128, 150, 0.3)'
-                  }}>
-                    Rupture de stock
-                  </div>
-                )}
+              <div className="pd-gallery-sticky">
+                <div className="pd-gallery">
+                  <img src={getImageUrl(product.image)} alt={product.name} />
+                  {hasDiscount && <span className="pd-badge pd-badge-discount">-{product.discount}%</span>}
+                  {!inStock && <span className="pd-badge pd-badge-out">Rupture de stock</span>}
+                </div>
               </div>
             </div>
 
-            {/* Product Info */}
+            {/* Infos */}
             <div className="col-lg-6">
-              <div style={{
-                padding: '30px',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                justifyContent: 'space-between'
-              }}>
-                <div>
-                {/* Title */}
-                <h1 style={{
-                  fontSize: '28px', 
-                  fontWeight: '700', 
-                  color: '#2d3748', 
-                  marginBottom: '10px', 
-                  lineHeight: '1.2',
-                  letterSpacing: '-0.5px'
-                }}>{product.name}</h1>
-                
-                {/* Rating */}
-                <div style={{marginBottom: '16px'}}>
-                  <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                    <StarRating rating={product.rating || 0} readonly size={16} />
-                    <span style={{color: '#a0aec0', fontSize: '13px', fontWeight: '400'}}>
-                      ({product.ratingCount || 0} avis)
-                    </span>
-                  </div>
-                </div>
-
-                {/* Subcategories */}
-                {product.subcategories && product.subcategories.length > 0 && (
-                  <div style={{marginBottom: '20px'}}>
-                    {product.subcategories.map((sub: Subcategory) => (
-                      <span key={sub._id} style={{
-                        display: 'inline-block', 
-                        backgroundColor: '#f7fafc', 
-                        color: '#4a5568', 
-                        padding: '5px 12px', 
-                        borderRadius: '18px', 
-                        fontSize: '12px', 
-                        fontWeight: '500', 
-                        marginRight: '6px', 
-                        marginBottom: '6px',
-                        border: '1px solid #e2e8f0'
-                      }}>{sub.name}</span>
+              <div className="pd-info">
+                {(product.category || (product.subcategories?.length ?? 0) > 0) && (
+                  <div className="pd-eyebrow">
+                    {product.category && (
+                      <Link href={`/category/${product.category._id}`}>{product.category.name}</Link>
+                    )}
+                    {product.subcategories?.map(sub => (
+                      <Fragment key={sub._id}>
+                        <span className="pd-dot"></span>
+                        <Link href={`/subcategory/${sub._id}`}>{sub.name}</Link>
+                      </Fragment>
                     ))}
                   </div>
                 )}
 
-                {/* Price */}
-                <div style={{
-                  background: '#f8fafc', 
-                  padding: '20px', 
-                  borderRadius: '12px', 
-                  marginBottom: '20px',
-                  border: '1px solid #e2e8f0'
-                }}>
-                  {(product.discount ?? 0) > 0 ? (
-                    <>
-                      <div style={{fontSize: '14px', color: '#cbd5e0', textDecoration: 'line-through', marginBottom: '4px', fontWeight: '500'}}>
-                        {product.price.toFixed(3)} DT
-                      </div>
-                      <div style={{fontSize: '32px', fontWeight: '800', color: '#2d3748', marginBottom: '8px', letterSpacing: '-1px'}}>
-                        {finalPrice} <span style={{fontSize: '16px', color: '#a0aec0', fontWeight: '600'}}>DT</span>
-                      </div>
-                      <div style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        background: 'linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(72, 187, 120, 0.05) 100%)',
-                        color: '#276749',
-                        padding: '5px 12px',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontWeight: '600'
-                      }}>
-                        <i className="fas fa-check-circle"></i>
-                        Économisez {(product.price - parseFloat(finalPrice)).toFixed(3)} DT
-                      </div>
-                    </>
-                  ) : (
-                    <div style={{fontSize: '32px', fontWeight: '800', color: '#2d3748', letterSpacing: '-1px'}}>
-                      {product.price.toFixed(3)} <span style={{fontSize: '16px', color: '#a0aec0', fontWeight: '600'}}>DT</span>
+                <h1 className="pd-title">{product.name}</h1>
+
+                <div className="pd-rating">
+                  <StarRating rating={product.rating || 0} readonly size={16} />
+                  {(product.ratingCount ?? 0) > 0 && (
+                    <strong style={{ color: '#1e293b' }}>{(product.rating ?? 0).toFixed(1)}</strong>
+                  )}
+                  <a href="#avis">{product.ratingCount || 0} avis</a>
+                </div>
+
+                {/* Prix */}
+                <div className="pd-price-block">
+                  <div className="pd-price">
+                    {formatPrice(finalPrice)}<small>DT</small>
+                  </div>
+                  {hasDiscount && <span className="pd-old-price">{formatPrice(product.price)} DT</span>}
+                  <span className={`pd-stock ${inStock ? 'pd-stock-in' : 'pd-stock-out'}`}>
+                    {inStock ? 'En stock' : 'Rupture de stock'}
+                  </span>
+                  {hasDiscount && (
+                    <div className="pd-saving">
+                      <i className="fas fa-tag"></i>
+                      Vous économisez {formatPrice(product.price - finalPrice)} DT
                     </div>
                   )}
                 </div>
 
-                {/* Stock Status */}
-                {product.stock === 0 && (
-                  <div style={{
-                    marginBottom: '15px',
-                    padding: '12px 16px',
-                    background: 'linear-gradient(135deg, rgba(113, 128, 150, 0.1) 0%, rgba(113, 128, 150, 0.05) 100%)',
-                    borderRadius: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    border: '1px solid rgba(113, 128, 150, 0.2)'
-                  }}>
-                    <i className="fas fa-times-circle" style={{color: '#718096', fontSize: '18px'}}></i>
-                    <div>
-                      <span style={{color: '#4a5568', fontSize: '14px', fontWeight: '700', display: 'block'}}>
-                        Rupture de stock
-                      </span>
-                      <span style={{color: '#718096', fontSize: '12px'}}>
-                        Ce produit n&apos;est plus disponible actuellement
-                      </span>
+                {product.description && <p className="pd-description">{product.description}</p>}
+
+                {product.flavors && product.flavors.length > 0 && (
+                  <>
+                    <div className="pd-label">Goûts disponibles</div>
+                    <div className="pd-chips">
+                      {product.flavors.map(flavor => (
+                        <span key={flavor._id} className="pd-chip">
+                          {flavor.color && <span className="pd-swatch" style={{ background: flavor.color }}></span>}
+                          {flavor.name}
+                        </span>
+                      ))}
                     </div>
-                  </div>
+                  </>
                 )}
 
-                {/* Wishlist Button */}
-                <button 
-                  onClick={() => {
-                    if (isFavorite(product._id)) {
-                      removeFavorite(product._id);
-                    } else {
-                      addFavorite(product._id);
-                    }
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: '14px',
-                    backgroundColor: 'rgba(236, 72, 153, 0.12)',
-                    color: '#4a5568',
-                    border: '2px solid rgba(236, 72, 153, 0.3)',
-                    borderRadius: '12px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    marginTop: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(236, 72, 153, 0.18)';
-                    e.currentTarget.style.borderColor = 'rgba(236, 72, 153, 0.4)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(236, 72, 153, 0.12)';
-                    e.currentTarget.style.borderColor = 'rgba(236, 72, 153, 0.3)';
-                  }}
-                >
-                  <i className={isFavorite(product._id) ? "fas fa-heart" : "far fa-heart"} style={{fontSize: '15px', color: '#ec4899'}}></i>
-                  {isFavorite(product._id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-                </button>
+                {/* Actions */}
+                <div className="pd-actions">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`pd-btn-order ${inStock ? '' : 'pd-disabled'}`}
+                    aria-disabled={!inStock}
+                  >
+                    <i className="fab fa-whatsapp"></i>
+                    {inStock ? 'Commander sur WhatsApp' : 'Indisponible pour le moment'}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => (favorite ? removeFavorite(product._id) : addFavorite(product._id))}
+                    className={`pd-btn-fav ${favorite ? 'pd-active' : ''}`}
+                    aria-label={favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+                    title={favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+                  >
+                    <i className={favorite ? 'fas fa-heart' : 'far fa-heart'}></i>
+                  </button>
                 </div>
+                <p className="pd-call">
+                  Vous préférez appeler ? <a href={`tel:+${WHATSAPP_NUMBER}`}>{PHONE_DISPLAY}</a>
+                </p>
 
-                {/* Features */}
-                <div style={{marginTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap'}}>
+                {/* Garanties */}
+                <div className="pd-features">
                   {[
                     { icon: 'fa-truck', text: 'Livraison rapide' },
                     { icon: 'fa-birthday-cake', text: 'Fraîcheur garantie' },
                     { icon: 'fa-award', text: 'Qualité artisanale' }
-                  ].map((feature, index) => (
-                    <div key={index} style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-                      <i className={`fas ${feature.icon}`} style={{color: '#ec4899', fontSize: '11px'}}></i>
-                      <span style={{color: '#718096', fontSize: '11px', fontWeight: '500'}}>{feature.text}</span>
+                  ].map(feature => (
+                    <div key={feature.text} className="pd-feature">
+                      <div className="pd-feature-icon"><i className={`fas ${feature.icon}`}></i></div>
+                      <span>{feature.text}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Description */}
-        <div style={{
-          backgroundColor: 'white', 
-          borderRadius: '14px', 
-          boxShadow: '0 4px 20px rgba(0,0,0,0.04)', 
-          padding: '25px', 
-          marginTop: '20px',
-          border: '1px solid #e2e8f0'
-        }}>
-          <h3 style={{
-            fontSize: '18px', 
-            fontWeight: '700', 
-            color: '#1a202c', 
-            marginBottom: '15px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
-          }}>
-            <span style={{
-              width: '3px',
-              height: '18px',
-              background: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
-              borderRadius: '2px'
-            }}></span>
-            Description du produit
-          </h3>
-          <p style={{
-            fontSize: '14px', 
-            lineHeight: '1.7', 
-            color: '#4a5568', 
-            whiteSpace: 'pre-line'
-          }}>{product.description}</p>
-        </div>
+          {/* Avis */}
+          <section id="avis" className="pd-section pd-card" style={{ scrollMarginTop: '180px' }}>
+            <ProductReviews productId={product._id} />
+          </section>
 
-        {/* Reviews */}
-        <div style={{
-          backgroundColor: 'white', 
-          borderRadius: '14px', 
-          boxShadow: '0 4px 20px rgba(0,0,0,0.04)', 
-          padding: '25px', 
-          marginTop: '20px', 
-          marginBottom: '40px',
-          border: '1px solid #e2e8f0'
-        }}>
-          <ProductReviews productId={product._id} />
+          {/* Produits similaires */}
+          {related.length > 0 && (
+            <section className="pd-section">
+              <h2 className="pd-section-title">Vous aimerez aussi</h2>
+              <div className="row g-3 g-md-4">
+                {related.map(item => (
+                  <div key={item._id} className="col-6 col-lg-3">
+                    <Link href={`/product/${item._id}`} className="pd-related">
+                      <div className="pd-related-img">
+                        <img src={getImageUrl(item.image)} alt={item.name} />
+                      </div>
+                      <div className="pd-related-body">
+                        <div className="pd-related-name">{item.name}</div>
+                        <div className="pd-related-price">
+                          {formatPrice(getFinalPrice(item))}<small>DT</small>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
-      </div>
       </div>
     </>
   );

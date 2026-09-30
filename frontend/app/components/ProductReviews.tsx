@@ -100,28 +100,32 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
   };
 
   return (
-    <div style={{ marginTop: "40px" }}>
-      <h3 style={{ fontSize: "24px", fontWeight: "600", marginBottom: "24px", color: "#333" }}>
-        Avis clients ({reviews.length})
+    <div>
+      <h3 style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "24px", fontWeight: "700", marginBottom: "24px", color: "#1e293b" }}>
+        <span style={{ width: "4px", height: "24px", borderRadius: "2px", background: "linear-gradient(180deg, #ec4899 0%, #db2777 100%)" }}></span>
+        Avis clients
+        <span style={{ fontSize: "14px", fontWeight: "600", color: "#db2777", background: "#fdf2f8", padding: "3px 10px", borderRadius: "999px" }}>
+          {reviews.length}
+        </span>
       </h3>
 
       {/* Formulaire d'ajout d'avis */}
       {isLoggedIn ? (
         canReview ? (
-          <div style={{ backgroundColor: "#f8f9fa", padding: "24px", borderRadius: "12px", marginBottom: "32px" }}>
-            <h4 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px", color: "#333" }}>
+          <div style={{ backgroundColor: "#fdf2f8", padding: "24px", borderRadius: "16px", marginBottom: "28px", border: "1px solid #fce7f3" }}>
+            <h4 style={{ fontSize: "17px", fontWeight: "700", marginBottom: "16px", color: "#1e293b" }}>
               Donnez votre avis
             </h4>
             <form onSubmit={submitReview}>
               <div style={{ marginBottom: "16px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", color: "#555" }}>
-                  Note :
+                <label style={{ display: "block", marginBottom: "8px", fontSize: "13px", fontWeight: "600", color: "#64748b" }}>
+                  Votre note
                 </label>
-                <StarRating rating={newRating} onRatingChange={setNewRating} size={24} />
+                <StarRating rating={newRating} onRatingChange={setNewRating} size={26} />
               </div>
               <div style={{ marginBottom: "16px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", color: "#555" }}>
-                  Commentaire (optionnel) :
+                <label style={{ display: "block", marginBottom: "8px", fontSize: "13px", fontWeight: "600", color: "#64748b" }}>
+                  Commentaire (optionnel)
                 </label>
                 <textarea
                   value={newComment}
@@ -129,15 +133,18 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
                   placeholder="Partagez votre expérience avec ce produit..."
                   style={{
                     width: "100%",
-                    padding: "12px",
-                    border: "2px solid #e2e8f0",
-                    borderRadius: "8px",
+                    padding: "12px 14px",
+                    border: "2px solid #fce7f3",
+                    borderRadius: "12px",
                     fontSize: "14px",
                     resize: "vertical",
-                    minHeight: "80px",
+                    minHeight: "90px",
                     boxSizing: "border-box",
-                    outline: "none"
+                    outline: "none",
+                    background: "white"
                   }}
+                  onFocus={(e) => e.target.style.borderColor = "#f9a8d4"}
+                  onBlur={(e) => e.target.style.borderColor = "#fce7f3"}
                   maxLength={500}
                 />
               </div>
@@ -145,14 +152,15 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
                 type="submit"
                 disabled={!newRating || loading}
                 style={{
-                  backgroundColor: newRating ? "#81C784" : "#ccc",
+                  background: newRating ? "linear-gradient(135deg, #ec4899 0%, #db2777 100%)" : "#cbd5e1",
                   color: "white",
                   border: "none",
                   padding: "12px 24px",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   fontSize: "14px",
-                  fontWeight: "600",
-                  cursor: newRating ? "pointer" : "not-allowed"
+                  fontWeight: "700",
+                  cursor: newRating ? "pointer" : "not-allowed",
+                  boxShadow: newRating ? "0 6px 16px rgba(236, 72, 153, 0.3)" : "none"
                 }}
               >
                 {loading ? "Envoi..." : "Publier l'avis"}
@@ -160,8 +168,9 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
             </form>
           </div>
         ) : (
-          <div style={{ backgroundColor: "#fff3cd", padding: "16px", borderRadius: "8px", marginBottom: "32px", border: "1px solid #ffc107" }}>
-            <p style={{ color: "#856404", margin: 0, fontSize: "14px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", backgroundColor: "#f8fafc", padding: "14px 18px", borderRadius: "12px", marginBottom: "28px", border: "1px solid #f1f5f9" }}>
+            <i className="fas fa-info-circle" style={{ color: "#94a3b8" }}></i>
+            <p style={{ color: "#64748b", margin: 0, fontSize: "14px" }}>
               {hasReviewed 
                 ? "Vous avez déjà laissé un avis pour ce produit." 
                 : "Vous devez acheter ce produit avant de pouvoir laisser un avis."}
@@ -169,9 +178,9 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
           </div>
         )
       ) : (
-        <div style={{ backgroundColor: "#f0f9ff", padding: "16px", borderRadius: "8px", marginBottom: "32px", textAlign: "center" }}>
-          <p style={{ color: "#0369a1", margin: 0 }}>
-            <a href="/login" style={{ color: "#81C784", textDecoration: "none", fontWeight: "600" }}>
+        <div style={{ backgroundColor: "#fdf2f8", padding: "16px 18px", borderRadius: "12px", marginBottom: "28px", textAlign: "center", border: "1px solid #fce7f3" }}>
+          <p style={{ color: "#64748b", margin: 0, fontSize: "14px" }}>
+            <a href="/login" style={{ color: "#db2777", textDecoration: "none", fontWeight: "700" }}>
               Connectez-vous
             </a> pour laisser un avis
           </p>
@@ -181,37 +190,54 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
       {/* Liste des avis */}
       <div>
         {reviews.length === 0 ? (
-          <p style={{ color: "#666", textAlign: "center", padding: "40px 0" }}>
-            Aucun avis pour le moment. Soyez le premier à donner votre avis !
-          </p>
+          <div style={{ textAlign: "center", padding: "32px 0 12px" }}>
+            <i className="far fa-comment-dots" style={{ fontSize: "32px", color: "#f9a8d4", marginBottom: "12px", display: "block" }}></i>
+            <p style={{ color: "#64748b", margin: 0, fontSize: "14px" }}>
+              Aucun avis pour le moment. Soyez le premier à donner votre avis !
+            </p>
+          </div>
         ) : (
           reviews.map((review) => (
             <div
               key={review._id}
               style={{
-                border: "1px solid #e2e8f0",
-                borderRadius: "12px",
-                padding: "20px",
-                marginBottom: "16px",
-                backgroundColor: "white"
+                display: "flex",
+                gap: "14px",
+                padding: "20px 0",
+                borderTop: "1px solid #f1f5f9"
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
-                <div>
-                  <div style={{ fontWeight: "600", color: "#333", marginBottom: "4px" }}>
+              <div style={{
+                width: "42px",
+                height: "42px",
+                flexShrink: 0,
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%)",
+                color: "#db2777",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "700",
+                fontSize: "16px"
+              }}>
+                {review.user.name.charAt(0).toUpperCase()}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", marginBottom: "4px" }}>
+                  <div style={{ fontWeight: "700", color: "#1e293b", fontSize: "15px" }}>
                     {review.user.name}
                   </div>
-                  <StarRating rating={review.rating} readonly size={16} />
+                  <div style={{ color: "#94a3b8", fontSize: "13px", whiteSpace: "nowrap" }}>
+                    {new Date(review.createdAt).toLocaleDateString("fr-FR")}
+                  </div>
                 </div>
-                <div style={{ color: "#666", fontSize: "14px" }}>
-                  {new Date(review.createdAt).toLocaleDateString("fr-FR")}
-                </div>
+                <StarRating rating={review.rating} readonly size={15} />
+                {review.comment && (
+                  <p style={{ color: "#475569", lineHeight: "1.65", margin: "8px 0 0", fontSize: "14px" }}>
+                    {review.comment}
+                  </p>
+                )}
               </div>
-              {review.comment && (
-                <p style={{ color: "#555", lineHeight: "1.6", margin: 0 }}>
-                  {review.comment}
-                </p>
-              )}
             </div>
           ))
         )}
