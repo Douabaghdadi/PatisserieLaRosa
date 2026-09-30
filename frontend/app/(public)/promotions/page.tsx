@@ -328,7 +328,7 @@ export default function PromotionsPage() {
                             <img 
                               src={getImageUrl(product.image)}
                               alt={product.name}
-                              style={{ width: '100%', height: '280px', objectFit: 'contain', padding: '20px' }}
+                              style={{ width: '100%', height: '280px', objectFit: 'cover', display: 'block' }}
                             />
                           </Link>
                           {product.brand?.name && (

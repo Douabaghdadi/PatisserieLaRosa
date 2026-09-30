@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import { API_URL, getImageUrl } from '@/lib/api';
@@ -13,6 +14,7 @@ interface Flavor {
 }
 
 export default function FlavorsPage() {
+  const router = useRouter();
   const [flavors, setFlavors] = useState<Flavor[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -40,6 +42,19 @@ export default function FlavorsPage() {
     }
   };
 
+  // Affiche l'erreur renvoyée par l'API ; si le token est expiré/invalide, renvoie vers le login
+  const handleApiError = async (res: Response, fallback: string) => {
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 401) {
+      alert('Votre session a expiré. Veuillez vous reconnecter.');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      router.push('/login');
+      return;
+    }
+    alert(data.message || data.error || fallback);
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce goût ?')) return;
 
@@ -54,9 +69,12 @@ export default function FlavorsPage() {
 
       if (res.ok) {
         fetchFlavors();
+      } else {
+        await handleApiError(res, 'Erreur lors de la suppression');
       }
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
+      alert('Erreur lors de la suppression');
     }
   };
 
@@ -94,9 +112,12 @@ export default function FlavorsPage() {
       if (res.ok) {
         setShowModal(false);
         fetchFlavors();
+      } else {
+        await handleApiError(res, "Erreur lors de l'enregistrement");
       }
     } catch (error) {
       console.error('Erreur:', error);
+      alert("Erreur lors de l'enregistrement");
     } finally {
       setSubmitting(false);
     }

@@ -354,7 +354,7 @@ function RechercheContent() {
                         }}>
                         <div style={{ position: 'relative', backgroundColor: '#fafafa', height: '260px' }}>
                           <Link href={`/product/${product._id}`}>
-                            <img src={getImageUrl(product.image)} alt={product.name} style={{ width: '100%', height: '260px', objectFit: 'contain', padding: '20px' }} />
+                            <img src={getImageUrl(product.image)} alt={product.name} style={{ width: '100%', height: '260px', objectFit: 'cover', display: 'block' }} />
                           </Link>
                           {product.brand?.name && (
                             <span style={{ position: 'absolute', top: '10px', left: '10px', background: '#333', color: 'white', padding: '5px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '600' }}>{product.brand.name}</span>

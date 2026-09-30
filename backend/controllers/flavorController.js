@@ -30,6 +30,9 @@ exports.createFlavor = async (req, res) => {
     const newFlavor = await flavor.save();
     res.status(201).json(newFlavor);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Ce goût existe déjà' });
+    }
     res.status(400).json({ message: error.message });
   }
 };
@@ -47,6 +50,9 @@ exports.updateFlavor = async (req, res) => {
     }
     res.json(flavor);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Ce goût existe déjà' });
+    }
     res.status(400).json({ message: error.message });
   }
 };

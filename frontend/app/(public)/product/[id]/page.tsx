@@ -34,9 +34,6 @@ interface Product {
   flavors?: Flavor[];
 }
 
-const WHATSAPP_NUMBER = '21622644528';
-const PHONE_DISPLAY = '+216 22 644 528';
-
 const formatPrice = (value: number) => value.toFixed(3);
 
 const getFinalPrice = (p: Product) =>
@@ -91,15 +88,11 @@ const styles = `
   .pd-chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: white; border: 1px solid #fce7f3; color: #334155; font-size: 13px; font-weight: 500; }
   .pd-swatch { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
 
-  .pd-actions { display: flex; gap: 12px; margin-bottom: 12px; }
-  .pd-btn-order { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 20px; border-radius: 14px; background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white; font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 20px rgba(236, 72, 153, .3); transition: transform .2s, box-shadow .2s; }
-  .pd-btn-order:hover { color: white; transform: translateY(-2px); box-shadow: 0 12px 28px rgba(236, 72, 153, .4); }
-  .pd-btn-order i { font-size: 19px; }
-  .pd-btn-order.pd-disabled { background: #cbd5e1; box-shadow: none; pointer-events: none; }
-  .pd-btn-fav { width: 58px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 14px; border: 2px solid #fce7f3; background: white; color: #ec4899; font-size: 20px; cursor: pointer; transition: all .2s; }
-  .pd-btn-fav:hover, .pd-btn-fav.pd-active { background: #fdf2f8; border-color: #f9a8d4; }
-  .pd-call { font-size: 13px; color: #64748b; margin-bottom: 28px; }
-  .pd-call a { color: #db2777; font-weight: 600; text-decoration: none; }
+  .pd-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 24px; border-radius: 14px; border: 2px solid transparent; background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white; font-size: 15px; font-weight: 700; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px rgba(236, 72, 153, .3); transition: transform .2s, box-shadow .2s; }
+  .pd-btn-primary:hover { color: white; transform: translateY(-2px); box-shadow: 0 12px 28px rgba(236, 72, 153, .4); }
+  .pd-btn-fav { width: 100%; margin-bottom: 28px; }
+  .pd-btn-fav i { font-size: 18px; }
+  .pd-btn-fav.pd-active, .pd-btn-fav.pd-active:hover { background: #fdf2f8; border-color: #f9a8d4; color: #db2777; box-shadow: none; }
 
   .pd-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .pd-feature { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; text-align: center; background: white; border: 1px solid #f1f5f9; border-radius: 16px; }
@@ -198,7 +191,7 @@ export default function ProductPage() {
               <p style={{ color: '#64748b', fontSize: '15px', marginBottom: '28px' }}>
                 Ce produit n&apos;existe pas ou n&apos;est plus disponible.
               </p>
-              <Link href="/shop" className="pd-btn-order" style={{ display: 'inline-flex', flex: 'none' }}>
+              <Link href="/shop" className="pd-btn-primary">
                 <i className="fas fa-arrow-left" style={{ fontSize: '14px' }}></i> Retour à la boutique
               </Link>
             </div>
@@ -212,9 +205,6 @@ export default function ProductPage() {
   const finalPrice = getFinalPrice(product);
   const inStock = (product.stock ?? 0) > 0;
   const favorite = isFavorite(product._id);
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    `Bonjour La Rosa, je souhaite commander : ${product.name} (${formatPrice(finalPrice)} DT)`
-  )}`;
 
   return (
     <>
@@ -308,31 +298,15 @@ export default function ProductPage() {
                   </>
                 )}
 
-                {/* Actions */}
-                <div className="pd-actions">
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`pd-btn-order ${inStock ? '' : 'pd-disabled'}`}
-                    aria-disabled={!inStock}
-                  >
-                    <i className="fab fa-whatsapp"></i>
-                    {inStock ? 'Commander sur WhatsApp' : 'Indisponible pour le moment'}
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => (favorite ? removeFavorite(product._id) : addFavorite(product._id))}
-                    className={`pd-btn-fav ${favorite ? 'pd-active' : ''}`}
-                    aria-label={favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-                    title={favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-                  >
-                    <i className={favorite ? 'fas fa-heart' : 'far fa-heart'}></i>
-                  </button>
-                </div>
-                <p className="pd-call">
-                  Vous préférez appeler ? <a href={`tel:+${WHATSAPP_NUMBER}`}>{PHONE_DISPLAY}</a>
-                </p>
+                {/* Favoris */}
+                <button
+                  type="button"
+                  onClick={() => (favorite ? removeFavorite(product._id) : addFavorite(product._id))}
+                  className={`pd-btn-primary pd-btn-fav ${favorite ? 'pd-active' : ''}`}
+                >
+                  <i className={favorite ? 'fas fa-heart' : 'far fa-heart'}></i>
+                  {favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+                </button>
 
                 {/* Garanties */}
                 <div className="pd-features">
