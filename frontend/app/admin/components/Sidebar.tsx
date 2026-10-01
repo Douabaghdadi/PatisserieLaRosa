@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface User {
   name: string;
@@ -21,13 +21,19 @@ const menuItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [user] = useState<User | null>(() => {
-    if (typeof window !== 'undefined') {
-      const userData = localStorage.getItem('user');
-      return userData ? JSON.parse(userData) : null;
+  const [user, setUser] = useState<User | null>(null);
+
+  // Lu après le montage pour que le rendu serveur et client soient identiques
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        setUser(JSON.parse(userData));
+      } catch {
+        // JSON invalide dans le localStorage
+      }
     }
-    return null;
-  });
+  }, []);
 
   const isActive = (path: string) => {
     if (path === "/admin") return pathname === "/admin";

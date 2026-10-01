@@ -3,7 +3,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "./dashboard.css";
 
 export const metadata = {
-  title: "Admin - Parapharmacie",
+  title: "Admin - La Rosa",
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
