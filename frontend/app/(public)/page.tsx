@@ -19,7 +19,7 @@ interface Product {
   image?: string;
   stock?: number;
   brand?: { name: string };
-  subcategory?: { name: string };
+  subcategories?: { _id: string; name: string }[];
   category?: { _id: string; name: string };
 }
 
@@ -37,6 +37,7 @@ export default function Home() {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
   const gateauxScrollRef = useRef<HTMLDivElement>(null);
   const patisserieFineScrollRef = useRef<HTMLDivElement>(null);
+  const tartesScrollRef = useRef<HTMLDivElement>(null);
   const nouveautesScrollRef = useRef<HTMLDivElement>(null);
   const [heroVisible, setHeroVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -107,6 +108,20 @@ export default function Home() {
           container.scrollBy({ left: 330, behavior: 'smooth' });
         }
       }
+
+      // Auto-scroll Tartes & Mini-tartes
+      if (tartesScrollRef.current) {
+        const container = tartesScrollRef.current;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+
+        if (container.scrollLeft >= maxScroll - 10) {
+          // Retour au début
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          // Scroll vers la droite
+          container.scrollBy({ left: 330, behavior: 'smooth' });
+        }
+      }
     }, 3000); // Défile toutes les 3 secondes
 
     return () => clearInterval(autoScrollInterval);
@@ -114,19 +129,22 @@ export default function Home() {
 
   // Filtrer les produits par catégorie
   const gateauxCategory = categories.find(c => c.name?.toLowerCase().includes('gateau') || c.name?.toLowerCase().includes('gâteau'));
-  const patisserieFineCategory = categories.find(c => 
-    c.name?.toLowerCase().includes('pâtisserie fine') || 
-    c.name?.toLowerCase().includes('patisserie fine')
-  );
-  
   const gateauxProducts = products.filter(p => 
     p.category?.name?.toLowerCase().includes('gateau') ||
     p.category?.name?.toLowerCase().includes('gâteau')
   );
   
-  const patisserieFineProducts = products.filter(p => 
-    p.category?.name?.toLowerCase().includes('pâtisserie fine') ||
-    p.category?.name?.toLowerCase().includes('patisserie fine')
+  // Uniquement la sous-catégorie "Pâtisserie Fine" (pas toute la catégorie du même nom)
+  const patisserieFineProducts = products.filter(p =>
+    p.subcategories?.some(s =>
+      s?.name?.toLowerCase().includes('pâtisserie fine') ||
+      s?.name?.toLowerCase().includes('patisserie fine')
+    )
+  );
+
+  // Sous-catégories "Tartes" et "Mini-tarte"
+  const tartesProducts = products.filter(p =>
+    p.subcategories?.some(s => s?.name?.toLowerCase().includes('tarte'))
   );
 
   const scrollGateaux = (direction: 'left' | 'right') => {
@@ -141,6 +159,15 @@ export default function Home() {
   const scrollPatisserieFine = (direction: 'left' | 'right') => {
     if (patisserieFineScrollRef.current) {
       patisserieFineScrollRef.current.scrollBy({
+        left: direction === 'left' ? -300 : 300,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollTartes = (direction: 'left' | 'right') => {
+    if (tartesScrollRef.current) {
+      tartesScrollRef.current.scrollBy({
         left: direction === 'left' ? -300 : 300,
         behavior: 'smooth'
       });
@@ -519,6 +546,174 @@ export default function Home() {
 
                   <div ref={patisserieFineScrollRef} className="product-carousel" style={{ display: 'flex', gap: '30px', overflowX: 'auto', scrollbarWidth: 'none', padding: '10px 5px' }}>
                     {patisserieFineProducts.slice(0, 8).map((product) => {
+                      const finalPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
+                      const isFav = favorites.includes(product._id);
+                      return (
+                        <div key={product._id} className="product-card" style={{
+                          minWidth: '300px', maxWidth: '300px', background: 'white',
+                          borderRadius: '0', overflow: 'hidden', boxShadow: '0 2px 15px rgba(0,0,0,0.08)',
+                          border: '1px solid #e8e8e8', flexShrink: 0,
+                          transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                          e.currentTarget.style.transform = 'translateY(-5px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = '0 2px 15px rgba(0,0,0,0.08)';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                        }}>
+                          <div className="product-image" style={{ position: 'relative', background: '#faf9f7', height: '280px' }}>
+                            <Link href={`/product/${product._id}`}>
+                              <img src={getImageUrl(product.image)}
+                                alt={product.name} style={{ width: '100%', height: '280px', objectFit: 'cover' }} />
+                            </Link>
+                            {(product.discount ?? 0) > 0 && (
+                              <span style={{ position: 'absolute', top: '15px', right: '15px', background: '#ec4899',
+                                color: 'white', padding: '8px 14px', borderRadius: '0', fontSize: '11px', fontWeight: '700',
+                                letterSpacing: '1px'
+                              }}>-{product.discount}%</span>
+                            )}
+                            {/* Bouton favoris */}
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                if (isFav) {
+                                  removeFavorite(product._id);
+                                } else {
+                                  addFavorite(product._id);
+                                }
+                              }}
+                              style={{
+                                position: 'absolute',
+                                bottom: '15px',
+                                right: '15px',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                border: '1px solid #ec4899',
+                                background: isFav ? '#ec4899' : 'white',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                transition: 'all 0.2s ease'
+                              }}
+                            >
+                              <i 
+                                className={isFav ? 'fas fa-heart' : 'far fa-heart'} 
+                                style={{ 
+                                  color: isFav ? 'white' : '#ec4899',
+                                  fontSize: '16px'
+                                }}
+                              ></i>
+                            </button>
+                          </div>
+                          <div style={{ padding: '25px 20px' }}>
+                            <Link href={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
+                              <h6 className="product-title" style={{ fontWeight: '400', color: '#2c1810', fontSize: '16px', height: '48px', overflow: 'hidden', marginBottom: '12px', letterSpacing: '0.5px' }}>{product.name}</h6>
+                            </Link>
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '15px',
+                              background: (product.stock ?? 0) > 0 ? 'rgba(212, 175, 55, 0.1)' : '#fee2e2', padding: '5px 12px', borderRadius: '0' }}>
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: (product.stock ?? 0) > 0 ? '#ec4899' : '#ef4444' }}></span>
+                              <span style={{ color: (product.stock ?? 0) > 0 ? '#ec4899' : '#dc2626', fontSize: '11px', fontWeight: '600', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                                {(product.stock ?? 0) > 0 ? 'Disponible' : 'Rupture'}
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '20px' }}>
+                              {(product.discount ?? 0) > 0 && (
+                                <span style={{ fontSize: '14px', color: '#999', textDecoration: 'line-through' }}>{product.price.toFixed(3)}</span>
+                              )}
+                              <span className="product-price" style={{ fontSize: '22px', fontWeight: '400', color: '#2c1810' }}>{finalPrice.toFixed(3)}</span>
+                              <span style={{ fontSize: '13px', color: '#999', fontWeight: '400' }}>DT</span>
+                            </div>
+                            
+                            {/* Bouton Voir simple */}
+                            <Link href={`/product/${product._id}`}  style={{
+                              width: '100%', border: '1px solid #ec4899', background: (product.stock ?? 0) > 0 ? 'transparent' : '#e8e8e8',
+                              color: (product.stock ?? 0) > 0 ? '#ec4899' : '#999', borderRadius: '0', padding: '12px', cursor: (product.stock ?? 0) > 0 ? 'pointer' : 'not-allowed',
+                              fontSize: '12px', fontWeight: '600', display: 'block', textAlign: 'center', textDecoration: 'none',
+                              letterSpacing: '1px', textTransform: 'uppercase', transition: 'all 0.3s'
+                            }}
+                            onMouseEnter={(e) => {
+                              if ((product.stock ?? 0) > 0) {
+                                e.currentTarget.style.background = '#ec4899';
+                                e.currentTarget.style.color = 'white';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if ((product.stock ?? 0) > 0) {
+                                e.currentTarget.style.background = 'transparent';
+                                e.currentTarget.style.color = '#ec4899';
+                              }
+                            }}>
+                              Voir les détails
+                            </Link>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Section Tartes & Mini-tartes */}
+      {tartesProducts.length > 0 && (
+        <div className="product-section" style={{ background: 'white', padding: '30px 0' }}>
+          <div className="container">
+            {/* Titre de section élégant */}
+            <AnimatedSectionTitle 
+              subtitle="Nos Créations"
+              title="Tartes & Mini-tartes"
+            />
+
+            <div className="row g-5">
+              {/* Produits */}
+              <div className="col-lg-12">
+                {/* Carrousel */}
+                <div style={{ position: 'relative' }}>
+                  <button onClick={() => scrollTartes('left')} className="carousel-button" style={{
+                    position: 'absolute', left: '-15px', top: '50%', transform: 'translateY(-50%)',
+                    width: '45px', height: '45px', borderRadius: '50%', border: '1px solid #ec4899', background: 'white',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)', cursor: 'pointer', zIndex: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#ec4899', transition: 'all 0.3s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#ec4899';
+                    e.currentTarget.style.color = 'white';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'white';
+                    e.currentTarget.style.color = '#ec4899';
+                  }}>
+                    <i className="fas fa-chevron-left"></i>
+                  </button>
+                  <button onClick={() => scrollTartes('right')} className="carousel-button" style={{
+                    position: 'absolute', right: '-15px', top: '50%', transform: 'translateY(-50%)',
+                    width: '45px', height: '45px', borderRadius: '50%', border: '1px solid #ec4899', background: 'white',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)', cursor: 'pointer', zIndex: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#ec4899', transition: 'all 0.3s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#ec4899';
+                    e.currentTarget.style.color = 'white';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'white';
+                    e.currentTarget.style.color = '#ec4899';
+                  }}>
+                    <i className="fas fa-chevron-right"></i>
+                  </button>
+
+                  <div ref={tartesScrollRef} className="product-carousel" style={{ display: 'flex', gap: '30px', overflowX: 'auto', scrollbarWidth: 'none', padding: '10px 5px' }}>
+                    {tartesProducts.slice(0, 8).map((product) => {
                       const finalPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
                       const isFav = favorites.includes(product._id);
                       return (
